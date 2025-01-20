@@ -1,0 +1,40 @@
+name: Deploy Site to GH Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "latest"
+
+      # Install dependencies (if any themes use npm/yarn)
+      - name: Install Dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          fi
+
+      # Build the site
+      - name: Build
+        run: hugo --minify
+
+      # Deploy to gh-pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
