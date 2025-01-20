@@ -37,6 +37,6 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         personal_token: ${{ secrets.GITHUB_TOKEN }}
-        external_repository: bgutowski/$(basename $GITHUB_REPOSITORY)-gh-pages
+        external_repository: bugswithblas.com
         publish_dir: ./public
         publish_branch: gh-pages
