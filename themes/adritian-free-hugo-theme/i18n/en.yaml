@@ -4,7 +4,7 @@
 - id: "meta_description"
   translation: "Explore in-depth articles on penetration testing, bug hunting, ethical hacking, and cybersecurity. Learn tools, techniques, and tips to excel in the field."
 - id: "meta_keywords"
-  translation: "keywords" content="penetration testing, bug hunting, ethical hacking, cybersecurity, bug bounty, hacking tools, vulnerability assessment, Blas, ethical hacker blog"
+  translation: "penetration testing, bug hunting, ethical hacking, cybersecurity, bug bounty, hacking tools, vulnerability assessment, Blas, ethical hacker, blog"
 - id: "meta_author"
   translation: "Błażej Gutowski"
 - id: "meta_image"
