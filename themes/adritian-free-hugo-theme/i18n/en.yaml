@@ -46,20 +46,20 @@
 
 ## Homepage head title
 - id: "head_title"
-  translation: "Let’s secure the digital world together, one bug at a time!"
+  translation: "Bugs with Blas | Penetration Testing & Bug Hunting Blog"
 
 - id: "head_description"
-  translation: "Welcome to Bugs with Blas – A page dedicated to penetration testing, bug hunting, and cybersecurity insights. Explore projects, learn tools, and discover real-world vulnerabilities to enhance your ethical hacking skills. Let’s secure the digital world, one bug at a time!"
+  translation: "Explore in-depth articles on penetration testing, bug hunting, ethical hacking, and cybersecurity. Learn tools, techniques, and tips to excel in the field."
 
 ## Homepage showcase
 - id: "showcase_title"
-  translation: "Welcome to Bugs with Blas"
+  translation: "Let’s secure the digital world together"
 
 - id: "showcase_subtitle"
-  translation: "Let's dive into an example"
+  translation: "One bug at a time!"
 
 - id: "showcase_description"
-  translation: ""
+  translation: "Explore in-depth articles on penetration testing, bug hunting, ethical hacking, and cybersecurity. Learn tools, techniques, and tips to excel in the field."
 
 - id: "showcase_button"
   translation: "Contact"
@@ -74,15 +74,13 @@
 
 - id: "about_content"
   translation:  <p class="lead">
-      Here you can add some information about you. A small excerpt that describes 
-      your experience, for example.   
+      I am an experienced IT Administrator with a strong foundation in network and server management. 
+      I have recently transitioned my focus to cybersecurity, driven by a passion for this field.   
       </p>
       <p class="lead">
-      As an experienced IT Administrator, I have spent years managing networks and servers, gaining a strong foundation in IT infrastructure. 
-      Recently, I’ve transitioned my focus to cybersecurity, driven by a passion to deepen my knowledge and expertise. 
-      I’ve successfully passed the Burp Suite Certified Professional exam and am eager to expand my skills in penetration testing and bug hunting. 
-      My goal is to continuously explore new techniques, tackle real-world vulnerabilities, and become a proficient security specialist, dedicated to safeguarding 
-      digital environments.
+      I have successfully passed the Burp Suite Certified Professional exam and am eager to expand my skills in penetration testing and bug hunting. 
+      I am dedicated to continuous learning and aim to become a proficient security specialist, capable of safeguarding digital environments by exploring
+       new techniques and tackling real-world vulnerabilities.
     </p>
 
 - id: "about_button"
@@ -97,13 +95,13 @@
   translation: "Experience"
 
 - id: "experience_description"
-  translation: "This is where you can highlight a bit over your experience. Years of total experience, specialization, etc."
+  translation: "My experience, skills and certificates"
 
 - id: "experience_button"
   translation: "LinkedIn" 
 
 - id: "experience_button_url"
-  translation: "https://www.linkedin.com/in/adrianmoreno/"
+  translation: "https://pl.linkedin.com/in/bgutowski"
 
 - id: "experience_button2"
   translation: "Download resume"
