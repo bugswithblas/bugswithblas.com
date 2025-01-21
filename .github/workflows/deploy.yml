@@ -40,3 +40,4 @@ jobs:
         external_repository: bgutowski/bugswithblas.com
         publish_dir: ./public
         publish_branch: gh-pages
+        cname: bugswithblas.com
