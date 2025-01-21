@@ -13,12 +13,6 @@ theme = "adritian-free-hugo-theme"
   homepageExperienceCount = 6
 
   [params.analytics]
-  ## Analytics parameters.
-  ### Supported so far: Vercel (Page Insights, Analytics)
-  ### And Google (Tag Manager, Analytics)
-
-  # controls vercel page insights - disabled by default
-  # to enable, just set to true
   vercelPageInsights = false
   vercelAnalytics = false
   
@@ -37,7 +31,7 @@ theme = "adritian-free-hugo-theme"
     enable = true
 
 [params.languages.selector.disable]
-  footer = false
+  footer = true
 
 [languages]
   [languages.en]
@@ -49,35 +43,18 @@ theme = "adritian-free-hugo-theme"
     weight = 0
 
     [languages.en.menus]
-      [[languages.en.menus.header]]
-        name = 'About'
-        URL = '#about'
-        weight = 2
 
-        [[languages.en.menus.header]]
-        name = "Experience"
-        URL = "#experience"
-        weight = 3
 
       [[languages.en.menus.header]]
         name = "Blog"
         URL = "/blog"
-        weight = 4
-
-      [[languages.en.menus.footer]]
-        name = "About"
-        URL = "#about"
         weight = 2
 
       [[languages.en.menus.footer]]
-        name = "Experience"
-        URL = "#experience"
-        weight = 3
+        name = "Blog"
+        URL = "/blog"
+        weight = 2
 
-      [[languages.en.menus.footer]]
-        name = "Contact"
-        URL = "#contact"
-        weight = 4
   
   
 
@@ -121,8 +98,8 @@ theme = "adritian-free-hugo-theme"
 
 [params.blog]
 layout = "sidebar" # options: default, sidebar
-sidebarWidth = "25" # percentage width of the sidebar
-showCategories = true
+sidebarWidth = "20" # percentage width of the sidebar
+showCategories = false
 showRecentPosts = true
 recentPostCount = 5
-listStyle = "summary" # options: simple, summary
+listStyle = "simple" # options: simple, summary
