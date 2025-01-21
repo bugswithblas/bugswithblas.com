@@ -27,9 +27,6 @@ jobs:
         git config --global user.name "bgutowski"
         git config --global user.email "blazej.gutowski@pm.me"
 
-    - name: Clean Hugo
-      run: hugo clean
-
     - name: Build Site
       run: hugo --minify --gc
 
