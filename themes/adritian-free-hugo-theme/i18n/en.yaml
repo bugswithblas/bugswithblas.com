@@ -53,16 +53,17 @@
 
 ## Homepage showcase
 - id: "showcase_title"
-  translation: "Let’s secure the digital world together"
+  translation: "Who am I?"
 
 - id: "showcase_subtitle"
-  translation: "One bug at a time!"
+  translation: "I am an experienced IT Administrator with a strong foundation in network and server management. 
+      I have recently transitioned my focus to cybersecurity, driven by a passion for this field. "
 
 - id: "showcase_description"
-  translation: "Explore in-depth articles on penetration testing, bug hunting, ethical hacking, and cybersecurity. Learn tools, techniques, and tips to excel in the field."
+  translation: "I have successfully passed the Burp Suite Certified Professional exam and am eager to expand my skills in penetration testing and bug hunting. 
+      I am dedicated to continuous learning and aim to become a proficient security specialist, capable of safeguarding digital environments by exploring
+       new techniques and tackling real-world vulnerabilities."
 
-- id: "showcase_button"
-  translation: "Contact"
 
   ## not visible but used for accessibility
 - id: "showcase_image_alt"
@@ -108,12 +109,6 @@
 
 - id: "experience_button2_url"
   translation: "/img/general/user-smile-fill.svg"
-
-- id: "experience_button3"
-  translation: "View all"
-
-- id: "experience_button3_url"
-  translation: "/experience"
 
 ## Homepage client & work
 - id: "client_work_title"
