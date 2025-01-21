@@ -24,11 +24,11 @@ theme = "adritian-free-hugo-theme"
   # google analytics and tag manager. to enable, set "enabled" to true
   # and add the tracking code (UA-something for analytics, GTM-something for tag manager)
   [params.analytics.googleAnalytics]
-      code = "UA-XXXXX-Y"
-      enabled = false
+      code = "G-R3M6L1SYWE"
+      enabled = true
   [params.analytics.googleTagManager]
-      code = "GTM-XXXXX"
-      enabled = false
+      code = "GTM-W7D949VG"
+      enabled = true
 
 [build]
   [build.buildStats]
