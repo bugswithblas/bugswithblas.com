@@ -12,10 +12,10 @@
 
 ## Header
 - id: "logo_text1"
-  translation: "Adritian"
+  translation: "BugsWith"
 
 - id: "logo_text2"
-  translation: "Demo"
+  translation: "Blas"
 
 - id: "nav_home"
   translation: "HOME"
@@ -28,21 +28,21 @@
   translation: "Toggle navigation"
 
 ## Footer
-- id: "footer_notice"
-  translation: "Free Hugo theme by Adrián Moreno Peña."
+#- id: "footer_notice"
+#  translation: "Free Hugo theme by Adrián Moreno Peña."
 
-- id: "language"
-  translation: "Language"
+#- id: "language"
+#  translation: "Language"
 
-- id: "toggle_theme"
-  translation: "Toggle theme"
+#- id: "toggle_theme"
+#  translation: "Toggle theme"
 
-- id: "theme_light"
-  translation: "☀️ Light"
-- id: "theme_dark"
-  translation: "🌑 Dark"
-- id: "theme_auto"
-  translation: "✨ Auto"
+#- id: "theme_light"
+#  translation: "☀️ Light"
+#- id: "theme_dark"
+#  translation: "🌑 Dark"
+#- id: "theme_auto"
+#  translation: "✨ Auto"
 
 ## Homepage head title
 - id: "head_title"

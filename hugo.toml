@@ -7,7 +7,8 @@ theme = "adritian-free-hugo-theme"
   title = 'Bugs with Blas'
   description = 'Bugs with Blas'
   images = ['/img/og-img.png']
-  sections = ["showcase", "about", "education", "experience", "client-and-work", "testimonial", "contact", "newsletter"]
+  sections = ["about", "education", "experience"]
+  # sections = ["showcase", "about", "education", "experience", "client-and-work", "testimonial", "contact", "newsletter"]
 
   homepageExperienceCount = 6
 
