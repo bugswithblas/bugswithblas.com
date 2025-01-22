@@ -44,7 +44,7 @@ title = "BugsWithBlas"
     {name = "github", url = "https://github.com/bgutowski"},
     {name = "instagram", url = "https://instagram .com/blas.gutowski"},
     {name = "gmail", url = "mailto:blasgutowski@gmail.com"},
-    {name = "burp", url = "https://portswigger.net/web-security/e/c/690adbbe21505dc3"},
+    #{name = "burp", url = "https://portswigger.net/web-security/e/c/690adbbe21505dc3"},
 
   ]
 
