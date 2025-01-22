@@ -1,12 +1,13 @@
 ---
-title: "Passing the Burp Suite Certified Professional Exam: My Experience"
-date: 2025-01-22T12:00:00+00:00
+title: "{{ replace .File.ContentBaseName `-` ` ` | title }}"
 description: "After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the Burp Suite Certified Professional exam."
-lastmod: 2025-01-22
 showTableOfContents: true
 tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
 type: "post"
 draft: false
+date: {{ .Date }}
+lastmod: {{ now.Format "2006-01-02" }}
+type: "post"
 ---
 
 After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional** (BSCP) exam! This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.
