@@ -5,7 +5,7 @@ enableRobotsTXT = true
 # Choose one of emacs, trac or perldoc
 pygmentsStyle = "monokai"
 theme = "gokarna"
-title = "Gokarna"
+title = "BugsWithBlas"
 
 [params]
   avatarAltText = "avatar"
@@ -35,17 +35,15 @@ title = "Gokarna"
 
   description = "Sky above, sand below and peace within"
   footer = "The Marauders"
-  metaKeywords = ["blog", "gokarna", "hugo"]
+  metaKeywords = ["Błażej Gutowski, bugswithblas, bug bounty hunting, ethical hacking, penetration testing blog, cybersecurity portfolio, CV Błażej Gutowski, pentesting tutorials, bug hunting tips, web application security, cybersecurity blog, ethical hacking tutorials, bug bounty reports, hacking tools and techniques, cybersecurity career, OWASP vulnerabilities, security testing blog, vulnerability research, information security, ethical hacker portfolio"]
   showBackToTopButton = true # true or false for "back to top" button on posts and pages
 
   socialIcons = [
-    {name = "twitter", url = "https://example.com"},
-    {name = "linkedin", url = "https://example.com"},
-    {name = "stackoverflow", url = "https://example.com"},
-    {name = "dribbble", url = "https://example.com"},
-    {name = "instagram", url = "https://example.com"},
-    {name = "twitch", url = "https://example.com"},
-    {name = "email", url = "mailto:example@example.com"}
+    {name = "linkedin", url = "https://pl.linkedin.com/in/bgutowski"},
+    {name = "youtube", url = "https://www.youtube.com/@bugswithblas"},
+    {name = "github", url = "https://github.com/bgutowski"},
+    {name = "instagram", url = "https://instagrm.com/blas.gutowski"},
+    {name = "email", url = "mailto:blasgutowski@gmail.com"}
   ]
 
 [menu]
@@ -61,35 +59,35 @@ title = "Gokarna"
     url = "/posts/"
     weight = 2
 
-  [[menu.main]]
-    name = "Projects"
-    pre = "<span data-feather='code'></span>"
-    url = "/projects/"
-    weight = 3
+#  [[menu.main]]
+#    name = "Projects"
+#    pre = "<span data-feather='code'></span>"
+#    url = "/projects/"
+#    weight = 3
 
-  [[menu.main]]
-    name = "Tags"
-    pre = "<span data-feather='tag'></span>"
-    url = "/tags/"
-    weight = 4
+#  [[menu.main]]
+#    name = "Tags"
+#    pre = "<span data-feather='tag'></span>"
+#    url = "/tags/"
+#    weight = 4
 
-  [[menu.main]]
-    identifier = "github"
-    pre = "<span data-feather='github'></span>"
-    url = "https://github.com/gokarna-theme/gokarna-hugo"
-    weight = 5
+#  [[menu.main]]
+#    identifier = "github"
+#    pre = "<span data-feather='github'></span>"
+#    url = "https://github.com/gokarna-theme/gokarna-hugo"
+#    weight = 5
 
-  [[menu.main]]
-    identifier = "buymeacoffee"
-    pre = "<span data-feather='coffee'></span>"
-    url = "https://www.buymeacoffee.com/avijitgupta"
-    weight = 6
+#  [[menu.main]]
+#    identifier = "buymeacoffee"
+#    pre = "<span data-feather='coffee'></span>"
+#    url = "https://www.buymeacoffee.com/avijitgupta"
+#    weight = 6
 
-  [[menu.main]]
-    identifier = "rss"
-    pre = "<span data-feather='rss'></span>"
-    url = "/index.xml"
-    weight = 7
+#  [[menu.main]]
+#    identifier = "rss"
+#    pre = "<span data-feather='rss'></span>"
+#    url = "/index.xml"
+#    weight = 7
 
 [markup]
   [markup.tableOfContents]
