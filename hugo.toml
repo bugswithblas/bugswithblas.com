@@ -43,7 +43,9 @@ title = "BugsWithBlas"
     {name = "youtube", url = "https://www.youtube.com/@bugswithblas"},
     {name = "github", url = "https://github.com/bgutowski"},
     {name = "instagram", url = "https://instagram .com/blas.gutowski"},
-    {name = "email", url = "mailto:blasgutowski@gmail.com"}
+    {name = "gmail", url = "mailto:blasgutowski@gmail.com"},
+    {name = "burp", url = "https://portswigger.net/web-security/e/c/690adbbe21505dc3"},
+
   ]
 
 [menu]
@@ -71,23 +73,6 @@ title = "BugsWithBlas"
 #    url = "/tags/"
 #    weight = 4
 
-#  [[menu.main]]
-#    identifier = "github"
-#    pre = "<span data-feather='github'></span>"
-#    url = "https://github.com/gokarna-theme/gokarna-hugo"
-#    weight = 5
-
-#  [[menu.main]]
-#    identifier = "buymeacoffee"
-#    pre = "<span data-feather='coffee'></span>"
-#    url = "https://www.buymeacoffee.com/avijitgupta"
-#    weight = 6
-
-#  [[menu.main]]
-#    identifier = "rss"
-#    pre = "<span data-feather='rss'></span>"
-#    url = "/index.xml"
-#    weight = 7
 
 [markup]
   [markup.tableOfContents]
