@@ -1,5 +1,5 @@
 ---
-title: "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+title: "Passing the Burp Suite Certified Practitioner Exam - My Experience"
 description: "After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the Burp Suite Certified Professional exam."
 showTableOfContents: true
 tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
@@ -9,7 +9,7 @@ date: 2025-01-22T10:00:00+01:00
 type: "post"
 ---
 
-After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional** (BSCP) exam! This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.
+After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional** (BSCP) exam! You can view my certification [here](https://portswigger.net/web-security/e/c/690adbbe21505dc3). This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.
 
 ## Why I Chose the Burp Suite Certification
 
