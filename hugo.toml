@@ -1,84 +1,65 @@
-baseURL = "https://bugswithblas.com/"
-languageCode = "en"
-enableEmoji = true
-enableRobotsTXT = true
-# Choose one of emacs, trac or perldoc
-pygmentsStyle = "monokai"
-theme = "gokarna"
-title = "BugsWithBlas"
+baseURL = 'https://bugswithblas.com'
+languageCode = 'en-us'
+title = 'Bugs with Blas'
+theme = 'maverick'
+
+[permalinks]
+  pages = "/:slug"
 
 [params]
-  avatarAltText = "avatar"
-  avatarSize = "size-m"
-  avatarURL = "/images/avatar.png"
-
-  customHeadHTML = """
-    <!-- KaTeX -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-          // customised options
-          // • auto-render specific keys, e.g.:
-          delimiters: [
-            {left: '$$', right: '$$', display: true},
-            {left: '$', right: '$', display: false},
-          ],
-          // • rendering keys, e.g.:
-          throwOnError : false
-        });
-      });
-    </script>
-  """
-
+  logo = '/assets/favicon.ico'
   description = "Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting."
-  footer = "The Marauders"
-  metaKeywords = ["Błażej Gutowski, bugswithblas, bug bounty hunting, ethical hacking, penetration testing blog, cybersecurity portfolio, CV Błażej Gutowski, pentesting tutorials, bug hunting tips, web application security, cybersecurity blog, ethical hacking tutorials, bug bounty reports, hacking tools and techniques, cybersecurity career, OWASP vulnerabilities, security testing blog, vulnerability research, information security, ethical hacker portfolio"]
-  showBackToTopButton = true # true or false for "back to top" button on posts and pages
+  author = 'Blazej Gutowski'
+  items = 10
 
-  socialIcons = [
-    {name = "linkedin", url = "https://pl.linkedin.com/in/bgutowski"},
-    {name = "youtube", url = "https://www.youtube.com/@bugswithblas"},
-    {name = "github", url = "https://github.com/bgutowski"},
-    {name = "instagram", url = "https://instagram .com/blas.gutowski"},
-    {name = "gmail", url = "mailto:blasgutowski@gmail.com"},
-    #{name = "burp", url = "https://portswigger.net/web-security/e/c/690adbbe21505dc3"},
-
-  ]
+  [params.comments]
+    enabled = true
+    githubRepo = 'canhtran/maverick'
+    theme = 'github-light'
 
 [menu]
   [[menu.main]]
-    name = "Home"
-    pre = "<span data-feather='home'></span>"
-    url = "/"
-    weight = 1
-
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = "-110"
   [[menu.main]]
-    name = "Posts"
-    pre = "<span data-feather='book'></span>"
+    identifier = "posts"
+    name = "Post"
     url = "/posts/"
-    weight = 2
-
-#  [[menu.main]]
-#    name = "Projects"
-#    pre = "<span data-feather='code'></span>"
-#    url = "/projects/"
-#    weight = 3
-
-#  [[menu.main]]
-#    name = "Tags"
-#    pre = "<span data-feather='tag'></span>"
-#    url = "/tags/"
-#    weight = 4
-
+    weight = -200
 
 [markup]
-  [markup.tableOfContents]
-    startLevel = 1
-    endLevel = 4
-    ordered = false
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    hl_inline = false
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    noHl = false
+    style = 'monokailight'
+    tabWidth = 4
 
-[minify]
-    minifyOutput = true
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML"]
+
+[outputFormats.RSS]
+  mediatype = "application/rss"
+  baseName = "atom"
+
+[outputFormats.JSON]
+  mediatype = "application/json"
+  baseName = "feed"
+
+ignoreErrors = ["error-remote-getjson"]
