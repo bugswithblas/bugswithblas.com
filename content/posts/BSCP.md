@@ -2,7 +2,7 @@
 title: "Passing the Burp Suite Certified Professional Exam: My Experience"
 date: 2025-01-22T12:00:00+00:00
 description: "After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the Burp Suite Certified Professional exam."
-lastmod: 2025-01-22T12:00:00+00:00
+lastmod: 2025-01-22
 showTableOfContents: true
 tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
 type: "post"
