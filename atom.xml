@@ -1,0 +1,23 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bugs with Blas</title><description>Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description><link>https://bugswithblas.com/</link><language>en</language><copyright>Copyright 2025, Calvin Tran</copyright><lastBuildDate>Wed, 22 Jan 2025 10:00:00 +0100</lastBuildDate><generator>Hugo - gohugo.io</generator><docs>http://cyber.harvard.edu/rss/rss.html</docs><atom:link href="https://bugswithblas.com//atom.xml" rel="self" type="application/atom+xml"/><item><title>Passing the Burp Suite Certified Practitioner Exam - My Experience</title><link>https://bugswithblas.com/posts/passing-the-burp-suite-certified-professional-exam/</link><description>&lt;p>After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the &lt;strong>Burp Suite Certified Professional&lt;/strong> (BSCP) exam! You can view my certification &lt;a href="https://portswigger.net/web-security/e/c/690adbbe21505dc3">here&lt;/a>. This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.&lt;/p>
+&lt;h2 id="why-i-chose-the-burp-suite-certification">Why I Chose the Burp Suite Certification&lt;/h2>
+&lt;p>Burp Suite is a leading tool for web application security testing, widely used by penetration testers and bug bounty hunters alike. Achieving this certification demonstrates proficiency in using Burp Suite to identify and exploit web application vulnerabilities effectively. For me, it was a logical choice to showcase my dedication to mastering the tools of the trade.&lt;/p>
+&lt;h2 id="preparing-for-the-exam">Preparing for the Exam&lt;/h2>
+&lt;p>Preparation for the exam was both challenging and rewarding. Here&amp;rsquo;s how I approached it:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Understanding Burp Suite Fundamentals&lt;/strong>: I ensured I was well-versed in Burp Suite&amp;rsquo;s essential features, like the Proxy, Repeater, Intruder, and Scanner.&lt;/li>
+&lt;li>&lt;strong>Hands-On Practice&lt;/strong>: Practice is key, so I spent countless hours using Burp Suite on real-world applications (in safe, legal environments like labs and practice platforms).&lt;/li>
+&lt;li>&lt;strong>Learning the OWASP Top Ten&lt;/strong>: Since many exam scenarios revolve around common web vulnerabilities, I dived deep into OWASP vulnerabilities, such as SQL Injection, Cross-Site Scripting (XSS), and Insecure Deserialization.&lt;/li>
+&lt;li>&lt;strong>Building Custom Tools&lt;/strong>: The exam also tests scripting and customization skills, so I familiarized myself with the Burp Extender API and basic Python scripting.&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-exam-experience">The Exam Experience&lt;/h2>
+&lt;p>The BSCP exam is designed to test not just theoretical knowledge but also practical problem-solving abilities. It consists of:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Realistic Scenarios&lt;/strong>: You are given a virtual environment with vulnerable applications and tasked with finding and exploiting issues.&lt;/li>
+&lt;li>&lt;strong>Time Management&lt;/strong>: With limited time to solve all challenges, staying calm and prioritizing tasks is crucial.&lt;/li>
+&lt;li>&lt;strong>Tool Proficiency&lt;/strong>: Knowing how to use Burp Suite effectively under pressure makes all the difference.&lt;/li>
+&lt;/ul>
+&lt;h2 id="key-takeaways">Key Takeaways&lt;/h2>
+&lt;ol>
+&lt;li>&lt;strong>Practical Skills Matter&lt;/strong>: Unlike many certifications, the BSCP exam focuses on applying knowledge in a hands-on environment. This makes it highly relevant for real-world pentesting.&lt;/li>
+&lt;li>&lt;strong>Preparation Is Crucial&lt;/strong>: Familiarity with both the tool and the types of&lt;/li>
+&lt;/ol></description><author>Blazej Gutowski</author><guid>https://bugswithblas.com/posts/passing-the-burp-suite-certified-professional-exam/</guid><pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate></item></channel></rss>
