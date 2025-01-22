@@ -5,8 +5,7 @@ showTableOfContents: true
 tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
 type: "post"
 draft: false
-date: {{ .Date }}
-lastmod: {{ now.Format "2006-01-02" }}
+date: 2025-01-22T10:00:00+01:00
 type: "post"
 ---
 
