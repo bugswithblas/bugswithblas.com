@@ -1,13 +1,14 @@
 ---
-date: {{ "2025-01-22" }}
-description: "After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional**"
-# image: ""
-lastmod: {{ now.Format "2025-01-22" }}
-showTableOfContents: true
-# tags: ["",]
 title: "Passing the Burp Suite Certified Professional Exam: My Experience"
+date: 2025-01-22T12:00:00+00:00
+description: "After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the Burp Suite Certified Professional exam."
+lastmod: 2025-01-22T12:00:00+00:00
+showTableOfContents: true
+tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
 type: "post"
+draft: false
 ---
+
 After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional** (BSCP) exam! This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.
 
 ## Why I Chose the Burp Suite Certification
@@ -34,11 +35,4 @@ The BSCP exam is designed to test not just theoretical knowledge but also practi
 ## Key Takeaways
 
 1. **Practical Skills Matter**: Unlike many certifications, the BSCP exam focuses on applying knowledge in a hands-on environment. This makes it highly relevant for real-world pentesting.  
-2. **Preparation Is Crucial**: Familiarity with both the tool and the types of vulnerabilities you'll encounter is essential.  
-3. **Keep Learning**: Passing the exam is just the beginning. There’s always more to learn in the ever-evolving field of cybersecurity.
-
-## What’s Next?
-
-With this certification under my belt, I’m excited to apply my skills in penetration testing and bug hunting. I plan to continue sharing my journey through this blog, discussing vulnerabilities, pentesting techniques, and tips for aspiring security professionals.
-
-If you’re considering the BSCP exam or want to explore a career in web application security, feel free to reach out—I’d be happy to share more about my experience!
+2. **Preparation Is Crucial**: Familiarity with both the tool and the types of 
