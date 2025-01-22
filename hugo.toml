@@ -10,7 +10,7 @@ title = "BugsWithBlas"
 [params]
   avatarAltText = "avatar"
   avatarSize = "size-m"
-  avatarURL = "/images/avatar.webp"
+  avatarURL = "/images/avatar.png"
 
   customHeadHTML = """
     <!-- KaTeX -->
@@ -33,7 +33,7 @@ title = "BugsWithBlas"
     </script>
   """
 
-  description = "Sky above, sand below and peace within"
+  description = "Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting."
   footer = "The Marauders"
   metaKeywords = ["Błażej Gutowski, bugswithblas, bug bounty hunting, ethical hacking, penetration testing blog, cybersecurity portfolio, CV Błażej Gutowski, pentesting tutorials, bug hunting tips, web application security, cybersecurity blog, ethical hacking tutorials, bug bounty reports, hacking tools and techniques, cybersecurity career, OWASP vulnerabilities, security testing blog, vulnerability research, information security, ethical hacker portfolio"]
   showBackToTopButton = true # true or false for "back to top" button on posts and pages
@@ -42,7 +42,7 @@ title = "BugsWithBlas"
     {name = "linkedin", url = "https://pl.linkedin.com/in/bgutowski"},
     {name = "youtube", url = "https://www.youtube.com/@bugswithblas"},
     {name = "github", url = "https://github.com/bgutowski"},
-    {name = "instagram", url = "https://instagrm.com/blas.gutowski"},
+    {name = "instagram", url = "https://instagram .com/blas.gutowski"},
     {name = "email", url = "mailto:blasgutowski@gmail.com"}
   ]
 
