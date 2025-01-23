@@ -6,7 +6,6 @@ tags: ["Burp Suite", "Certification", "Cybersecurity", "Pentesting"]
 type: "post"
 draft: false
 date: 2025-01-22T10:00:00+01:00
-type: "post"
 ---
 
 After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the **Burp Suite Certified Professional** (BSCP) exam! You can view my certification [here](https://portswigger.net/web-security/e/c/690adbbe21505dc3). This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.
