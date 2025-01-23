@@ -1,23 +1,77 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bugs with Blas</title><description>Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description><link>https://bugswithblas.com/</link><language>en</language><copyright>Copyright 2025, Calvin Tran</copyright><lastBuildDate>Wed, 22 Jan 2025 10:00:00 +0100</lastBuildDate><generator>Hugo - gohugo.io</generator><docs>http://cyber.harvard.edu/rss/rss.html</docs><atom:link href="https://bugswithblas.com//atom.xml" rel="self" type="application/atom+xml"/><item><title>Passing the Burp Suite Certified Practitioner Exam - My Experience</title><link>https://bugswithblas.com/posts/passing-the-burp-suite-certified-professional-exam/</link><description>&lt;p>After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the &lt;strong>Burp Suite Certified Professional&lt;/strong> (BSCP) exam! You can view my certification &lt;a href="https://portswigger.net/web-security/e/c/690adbbe21505dc3">here&lt;/a>. This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.&lt;/p>
-&lt;h2 id="why-i-chose-the-burp-suite-certification">Why I Chose the Burp Suite Certification&lt;/h2>
-&lt;p>Burp Suite is a leading tool for web application security testing, widely used by penetration testers and bug bounty hunters alike. Achieving this certification demonstrates proficiency in using Burp Suite to identify and exploit web application vulnerabilities effectively. For me, it was a logical choice to showcase my dedication to mastering the tools of the trade.&lt;/p>
-&lt;h2 id="preparing-for-the-exam">Preparing for the Exam&lt;/h2>
-&lt;p>Preparation for the exam was both challenging and rewarding. Here&amp;rsquo;s how I approached it:&lt;/p>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bugs with Blas</title><description>Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description><link>https://bugswithblas.com/</link><language>en</language><copyright>Copyright 2025, Calvin Tran</copyright><lastBuildDate>Wed, 22 Jan 2025 10:00:00 +0100</lastBuildDate><generator>Hugo - gohugo.io</generator><docs>http://cyber.harvard.edu/rss/rss.html</docs><atom:link href="https://bugswithblas.com//atom.xml" rel="self" type="application/atom+xml"/><item><title>Burp Suite Certified Practitioner in 2025 - Reflections and Lessons Learned</title><link>https://bugswithblas.com/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</link><description>&lt;h2 id="a-bit-about-me">A Bit About Me&lt;/h2>
+&lt;p>To provide some context, let me share my background. I have nearly seven years of experience as an IT administrator, where I managed servers, networks, internal websites, and IT infrastructure. This role has given me a solid understanding of how applications and websites function, from the hardware level through servers and firewalls, all the way to the end user. These fundamentals have allowed me to grasp how web applications operate &amp;ldquo;in the background.&amp;rdquo;&lt;/p>
+&lt;p>Throughout my education and career, I&amp;rsquo;ve also dabbled in coding, working on websites, Android apps, and scripts for internal use. While I wouldn&amp;rsquo;t label myself a programmer, I consider myself a capable code reader. I believe these experiences have provided me with a strong foundation to venture into penetration testing.&lt;/p>
+&lt;h3 id="why-this-certification">Why This Certification?&lt;/h3>
+&lt;p>At a certain point in my career, I felt the need for change. The &amp;ldquo;programming train&amp;rdquo; wasn&amp;rsquo;t appealing to me, and I found it challenging to build a portfolio that would lead to a well-paying job. Inspired by one of my favorite shows, &lt;em>Mr. Robot&lt;/em>, I decided to take a leap and explore something new. After conducting a brief market reconnaissance, I set my sights on becoming a penetration tester.&lt;/p>
+&lt;p>In 2023, I began preparing for the OSCP certification but faced setbacks and ultimately didn&amp;rsquo;t pass. However, I decided to take a step back and focus on mastering Burp Suite. But enough about my journey—let&amp;rsquo;s dive into the Burp Suite Exam.&lt;/p>
+&lt;h3 id="outline-of-the-article">Outline of the Article&lt;/h3>
+&lt;p>In this article, I want to share my experience of passing the Burp Suite Exam. I will provide tips, tricks, and resources that I found helpful along the way, as well as my feelings about the entire process. Whether you&amp;rsquo;re considering this certification or just curious about the world of penetration testing, I hope my insights will be valuable to you.&lt;/p>
+&lt;h2 id="preparation">Preparation&lt;/h2>
+&lt;p>Before diving into the Burp Suite Exam, there are a few essential things you should know. For a comprehensive list of requirements, check out the official &lt;a href="https://portswigger.net/web-security/certification/how-it-works#requirements">PortSwigger certification page&lt;/a>.&lt;/p>
+&lt;p>One crucial detail I initially overlooked was the need for a license for the Pro version of Burp Suite. While most of the requirements are relatively low, you will need to budget $449.00 for the Pro version if you don&amp;rsquo;t already have access to it, plus an additional $99 for the exam. If your current job provides access to Burp Suite, you can use that license. According to PortSwigger:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;If you have a Burp Suite Professional license, but it is registered under an email domain of the company you work for rather than your personal email address, you will still be absolutely fine, from a technical perspective, to use that license for taking the exam. So long as you have access to a valid, active Burp Suite Professional license at the time of your certification, you will be able to use it to take the exam.&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;p>If you have any concerns about using a company-registered license, it&amp;rsquo;s best to discuss this with your employer, as they can provide guidance.&lt;/p>
+&lt;h3 id="materials">Materials&lt;/h3>
+&lt;p>Here are the resources I personally utilized during my preparation:&lt;/p>
 &lt;ul>
-&lt;li>&lt;strong>Understanding Burp Suite Fundamentals&lt;/strong>: I ensured I was well-versed in Burp Suite&amp;rsquo;s essential features, like the Proxy, Repeater, Intruder, and Scanner.&lt;/li>
-&lt;li>&lt;strong>Hands-On Practice&lt;/strong>: Practice is key, so I spent countless hours using Burp Suite on real-world applications (in safe, legal environments like labs and practice platforms).&lt;/li>
-&lt;li>&lt;strong>Learning the OWASP Top Ten&lt;/strong>: Since many exam scenarios revolve around common web vulnerabilities, I dived deep into OWASP vulnerabilities, such as SQL Injection, Cross-Site Scripting (XSS), and Insecure Deserialization.&lt;/li>
-&lt;li>&lt;strong>Building Custom Tools&lt;/strong>: The exam also tests scripting and customization skills, so I familiarized myself with the Burp Extender API and basic Python scripting.&lt;/li>
-&lt;/ul>
-&lt;h2 id="the-exam-experience">The Exam Experience&lt;/h2>
-&lt;p>The BSCP exam is designed to test not just theoretical knowledge but also practical problem-solving abilities. It consists of:&lt;/p>
+&lt;li>&lt;strong>PortSwigger Topics and Labs&lt;/strong>: I covered all topics and labs except for the expert level. You can find them &lt;a href="https://portswigger.net/web-security/all-topics">here&lt;/a>.&lt;/li>
+&lt;li>&lt;strong>YouTube Community Solutions&lt;/strong>: I found valuable insights from channels like:
 &lt;ul>
-&lt;li>&lt;strong>Realistic Scenarios&lt;/strong>: You are given a virtual environment with vulnerable applications and tasked with finding and exploiting issues.&lt;/li>
-&lt;li>&lt;strong>Time Management&lt;/strong>: With limited time to solve all challenges, staying calm and prioritizing tasks is crucial.&lt;/li>
-&lt;li>&lt;strong>Tool Proficiency&lt;/strong>: Knowing how to use Burp Suite effectively under pressure makes all the difference.&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/c/Intigriti">Intigriti&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/c/JarnoTimmermans">Jarno Timmermans&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="key-takeaways">Key Takeaways&lt;/h2>
-&lt;ol>
-&lt;li>&lt;strong>Practical Skills Matter&lt;/strong>: Unlike many certifications, the BSCP exam focuses on applying knowledge in a hands-on environment. This makes it highly relevant for real-world pentesting.&lt;/li>
-&lt;li>&lt;strong>Preparation Is Crucial&lt;/strong>: Familiarity with both the tool and the types of&lt;/li>
-&lt;/ol></description><author>Blazej Gutowski</author><guid>https://bugswithblas.com/posts/passing-the-burp-suite-certified-professional-exam/</guid><pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate></item></channel></rss>
+&lt;/li>
+&lt;li>&lt;strong>PortSwigger Research Articles&lt;/strong>: These were particularly helpful for understanding concepts like request smuggling. Check them out &lt;a href="https://portswigger.net/research/articles">here&lt;/a>.&lt;/li>
+&lt;li>&lt;strong>Botesjuan Repository&lt;/strong>: This is a fantastic resource, especially for learning how to exploit vulnerabilities like XSS to steal cookies rather than just triggering alerts in the browser. You can find it &lt;a href="https://github.com/botesjuan/Burp-Suite-Certified-Practitioner-Exam-Study">here&lt;/a>.&lt;/li>
+&lt;li>&lt;strong>Botesjuan YouTube Playlist&lt;/strong>: This playlist is a great companion resource, with shoutouts to &lt;a href="https://www.youtube.com/c/z3nsh3ll">z3nsh3ll&lt;/a> and &lt;a href="https://www.youtube.com/c/JohnHammond010">John Hammond&lt;/a>.&lt;/li>
+&lt;li>&lt;strong>My Own Site&lt;/strong>: I created a site that mirrors the Botesjuan repository but offers better navigation and includes a section with all payloads. You can visit it &lt;a href="https://oscp-7.gitbook.io/bscp-notes">here&lt;/a>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="study-methods">Study Methods&lt;/h3>
+&lt;p>My study approach was straightforward: I completed all topics and labs except for the expert ones. After that, I revisited and retook topics where I felt less confident, utilizing all the materials mentioned above—sometimes reading through them multiple times. I also tackled several mystery labs and completed a practice exam, which I highly recommend to familiarize yourself with the exam format.&lt;/p>
+&lt;p>Following this, I revisited more mystery labs. You can follow the proposed methodology outlined on the PortSwigger website:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;Work through the topics within the academy, completing every apprentice and practitioner-level lab as you go. As you reach the end of each topic, use the mystery labs feature to practice solving the labs with no contextual clues. When you&amp;rsquo;ve completed all the practitioner-level labs, practice solving mystery labs from all available topics to develop your recon and discovery skills. Then complete a practice exam to familiarize yourself with the exam format. Make sure to read the exam hints and tips, as they contain invaluable information that you&amp;rsquo;ll need to be successful in the exam.&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;p>From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again.&lt;/p>
+&lt;h3 id="time-commitment">Time Commitment&lt;/h3>
+&lt;p>I began my preparation in May and passed the exam in January. Throughout this period, I was working full-time and had various personal commitments, including , brithdays, travels and holidays. Therefore, my timeline may not be representative of what others might experience. In hindsight, I believe that 5-6 months is a reasonable timeframe for preparation. However, if you are organized and have more time to dedicate, you could potentially complete it in 3-4 months. Keep in mind that everyone&amp;rsquo;s experience will vary.&lt;/p>
+&lt;h2 id="exam-experience">Exam Experience&lt;/h2>
+&lt;p>So the exam are two APP, websites very similar to those in labs.&lt;/p>
+&lt;pre>&lt;code> - Describe the exam format (e.g., number of questions, time limit, question types).
+- Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).
+- **Exam Tips:**
+- Share any specific tips or strategies that helped you succeed on the exam (e.g., time management, question elimination, reading questions carefully).
+- Discuss any common pitfalls to avoid.
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>&lt;strong>Reflections and Lessons Learned&lt;/strong>
+&lt;ul>
+&lt;li>Share your thoughts and feelings after passing the exam.&lt;/li>
+&lt;li>Discuss the value of the certification and its impact on your career.&lt;/li>
+&lt;li>Offer advice to others who are preparing for the exam.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Conclusion&lt;/strong>
+&lt;ul>
+&lt;li>Summarize your key takeaways.&lt;/li>
+&lt;li>Reiterate the importance of dedication, perseverance, and effective study habits.&lt;/li>
+&lt;li>Offer a final encouraging message to aspiring practitioners.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>3. Writing Tips&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Be Personal and Engaging:&lt;/strong> Share your own experiences, anecdotes, and emotions.&lt;/li>
+&lt;li>&lt;strong>Use Clear and Concise Language:&lt;/strong> Avoid jargon whenever possible.&lt;/li>
+&lt;li>&lt;strong>Provide Specific Examples:&lt;/strong> Illustrate your points with concrete examples from your study and exam experience.&lt;/li>
+&lt;li>&lt;strong>Focus on Practical Advice:&lt;/strong> Provide actionable tips and strategies that other candidates can implement in their own preparation.&lt;/li>
+&lt;li>&lt;strong>Proofread Carefully:&lt;/strong> Ensure your article is free of any grammatical or spelling errors.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>4. Optional Additions&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Include screenshots or visuals:&lt;/strong> To illustrate concepts or your study process.&lt;/li>
+&lt;li>&lt;strong>Create a Q&amp;amp;A section:&lt;/strong> To answer common questions about the exam.&lt;/li>
+&lt;li>&lt;strong>Link to relevant resources:&lt;/strong> For readers who want to learn more.&lt;/li>
+&lt;/ul></description><author>Blazej Gutowski</author><guid>https://bugswithblas.com/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</guid><pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate></item></channel></rss>
