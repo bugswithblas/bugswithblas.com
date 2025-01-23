@@ -55,23 +55,15 @@
 &lt;p&gt;From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again.&lt;/p&gt;
 &lt;h3 id=&#34;time-commitment&#34;&gt;Time Commitment&lt;/h3&gt;
 &lt;p&gt;I began my preparation in May and passed the exam in January. Throughout this period, I was working full-time and had various personal commitments, including , brithdays, travels and holidays. Therefore, my timeline may not be representative of what others might experience. In hindsight, I believe that 5-6 months is a reasonable timeframe for preparation. However, if you are organized and have more time to dedicate, you could potentially complete it in 3-4 months. Keep in mind that everyone&amp;rsquo;s experience will vary.&lt;/p&gt;
+&lt;h2 id=&#34;exam-experience&#34;&gt;Exam Experience&lt;/h2&gt;
+&lt;p&gt;So the exam are two APP, websites very similar to those in labs.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    - Describe the exam format (e.g., number of questions, time limit, question types).
+    - Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).
+- **Exam Tips:**
+    - Share any specific tips or strategies that helped you succeed on the exam (e.g., time management, question elimination, reading questions carefully).
+    - Discuss any common pitfalls to avoid.
+&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Exam Experience&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Format and Structure:&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;Describe the exam format (e.g., number of questions, time limit, question types).&lt;/li&gt;
-&lt;li&gt;Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Exam Tips:&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;Share any specific tips or strategies that helped you succeed on the exam (e.g., time management, question elimination, reading questions carefully).&lt;/li&gt;
-&lt;li&gt;Discuss any common pitfalls to avoid.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Reflections and Lessons Learned&lt;/strong&gt;
 &lt;ul&gt;
 &lt;li&gt;Share your thoughts and feelings after passing the exam.&lt;/li&gt;
@@ -104,38 +96,6 @@
 </description>
       <author>Blazej Gutowski</author>
       <guid>http://localhost:1313/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</guid>
-      <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
-    </item>
-    
-    <item>
-      <title>Passing the Burp Suite Certified Practitioner Exam - My Experience</title>
-      <link>http://localhost:1313/posts/passing-the-burp-suite-certified-professional-exam/</link>
-      <description>&lt;p&gt;After months of studying, practicing, and sharpening my skills, I am thrilled to share that I have passed the &lt;strong&gt;Burp Suite Certified Professional&lt;/strong&gt; (BSCP) exam! You can view my certification &lt;a href=&#34;https://portswigger.net/web-security/e/c/690adbbe21505dc3&#34;&gt;here&lt;/a&gt;. This milestone is not only a validation of my expertise in web application security but also a stepping stone in my transition from IT administration to cybersecurity and ethical hacking.&lt;/p&gt;
-&lt;h2 id=&#34;why-i-chose-the-burp-suite-certification&#34;&gt;Why I Chose the Burp Suite Certification&lt;/h2&gt;
-&lt;p&gt;Burp Suite is a leading tool for web application security testing, widely used by penetration testers and bug bounty hunters alike. Achieving this certification demonstrates proficiency in using Burp Suite to identify and exploit web application vulnerabilities effectively. For me, it was a logical choice to showcase my dedication to mastering the tools of the trade.&lt;/p&gt;
-&lt;h2 id=&#34;preparing-for-the-exam&#34;&gt;Preparing for the Exam&lt;/h2&gt;
-&lt;p&gt;Preparation for the exam was both challenging and rewarding. Here&amp;rsquo;s how I approached it:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Understanding Burp Suite Fundamentals&lt;/strong&gt;: I ensured I was well-versed in Burp Suite&amp;rsquo;s essential features, like the Proxy, Repeater, Intruder, and Scanner.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hands-On Practice&lt;/strong&gt;: Practice is key, so I spent countless hours using Burp Suite on real-world applications (in safe, legal environments like labs and practice platforms).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Learning the OWASP Top Ten&lt;/strong&gt;: Since many exam scenarios revolve around common web vulnerabilities, I dived deep into OWASP vulnerabilities, such as SQL Injection, Cross-Site Scripting (XSS), and Insecure Deserialization.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Building Custom Tools&lt;/strong&gt;: The exam also tests scripting and customization skills, so I familiarized myself with the Burp Extender API and basic Python scripting.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;the-exam-experience&#34;&gt;The Exam Experience&lt;/h2&gt;
-&lt;p&gt;The BSCP exam is designed to test not just theoretical knowledge but also practical problem-solving abilities. It consists of:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Realistic Scenarios&lt;/strong&gt;: You are given a virtual environment with vulnerable applications and tasked with finding and exploiting issues.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Time Management&lt;/strong&gt;: With limited time to solve all challenges, staying calm and prioritizing tasks is crucial.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Tool Proficiency&lt;/strong&gt;: Knowing how to use Burp Suite effectively under pressure makes all the difference.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;key-takeaways&#34;&gt;Key Takeaways&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Practical Skills Matter&lt;/strong&gt;: Unlike many certifications, the BSCP exam focuses on applying knowledge in a hands-on environment. This makes it highly relevant for real-world pentesting.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Preparation Is Crucial&lt;/strong&gt;: Familiarity with both the tool and the types of&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-      <author>Blazej Gutowski</author>
-      <guid>http://localhost:1313/posts/passing-the-burp-suite-certified-professional-exam/</guid>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
     </item>
     

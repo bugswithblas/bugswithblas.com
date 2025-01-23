@@ -68,8 +68,10 @@ From my perspective, if a topic seems challenging, revisit it after taking the p
 I began my preparation in May and passed the exam in January. Throughout this period, I was working full-time and had various personal commitments, including , brithdays, travels and holidays. Therefore, my timeline may not be representative of what others might experience. In hindsight, I believe that 5-6 months is a reasonable timeframe for preparation. However, if you are organized and have more time to dedicate, you could potentially complete it in 3-4 months. Keep in mind that everyone's experience will vary.
 
 
-- **Exam Experience**
-    - **Format and Structure:**
+## Exam Experience
+
+So the exam are two APP, websites very similar to those in labs. 
+
         - Describe the exam format (e.g., number of questions, time limit, question types).
         - Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).
     - **Exam Tips:**
