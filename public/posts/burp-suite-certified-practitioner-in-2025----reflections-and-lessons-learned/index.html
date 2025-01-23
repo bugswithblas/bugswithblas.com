@@ -27,7 +27,7 @@
   <meta itemprop="description" content="A Bit About Me To provide some context, let me share my background. I have nearly seven years of experience as an IT administrator, where I managed servers, networks, internal websites, and IT infrastructure. This role has given me a solid understanding of how applications and websites function, from the hardware level through servers and firewalls, all the way to the end user. These fundamentals have allowed me to grasp how web applications operate “in the background.”">
   <meta itemprop="datePublished" content="2025-01-22T10:00:00+01:00">
   <meta itemprop="dateModified" content="2025-01-22T10:00:00+01:00">
-  <meta itemprop="wordCount" content="1165">
+  <meta itemprop="wordCount" content="1475">
   <meta itemprop="keywords" content="Burp,Suite,Certification,Cybersecurity,Pentesting">
     
     <link rel="canonical" href="http://localhost:1313/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/">
@@ -90,7 +90,7 @@
       },
       "image": "http://localhost:1313/assets/favicon.ico",
       "url" : "http:\/\/localhost:1313\/posts\/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned\/",
-      "wordCount" : "1165",
+      "wordCount" : "1475",
       "genre" : [ "Burp" , "Suite" , "Certification" , "Cybersecurity" , "Pentesting" ],
       "keywords" : [ "Burp" , "Suite" , "Certification" , "Cybersecurity" , "Pentesting" ]
   }
@@ -165,43 +165,35 @@
 <h3 id="time-commitment">Time Commitment</h3>
 <p>I began my preparation in May and passed the exam in January. Throughout this period, I was working full-time and had various personal commitments, including , brithdays, travels and holidays. Therefore, my timeline may not be representative of what others might experience. In hindsight, I believe that 5-6 months is a reasonable timeframe for preparation. However, if you are organized and have more time to dedicate, you could potentially complete it in 3-4 months. Keep in mind that everyone&rsquo;s experience will vary.</p>
 <h2 id="exam-experience">Exam Experience</h2>
-<p>So the exam are two APP, websites very similar to those in labs.</p>
-<pre><code>    - Describe the exam format (e.g., number of questions, time limit, question types).
-    - Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).
-- **Exam Tips:**
-    - Share any specific tips or strategies that helped you succeed on the exam (e.g., time management, question elimination, reading questions carefully).
-    - Discuss any common pitfalls to avoid.
-</code></pre>
-<ul>
-<li><strong>Reflections and Lessons Learned</strong>
-<ul>
-<li>Share your thoughts and feelings after passing the exam.</li>
-<li>Discuss the value of the certification and its impact on your career.</li>
-<li>Offer advice to others who are preparing for the exam.</li>
-</ul>
+<p>The exam consists of two applications that closely resemble those found in the labs. Each application involves three main steps:</p>
+<ol>
+<li>Gain access to a standard user account (the username is likely &ldquo;carlos&rdquo;).</li>
+<li>Elevate privileges to the administrator account.</li>
+<li>Retrieve the contents of the file located at <code>/home/carlos/secret</code>.</li>
+</ol>
+<p>For more details, you can read about the exam structure <a href="https://portswigger.net/web-security/certification/how-it-works#what-the-exam-involves">here</a>.</p>
+<p>The exam duration is four hours.</p>
+<h3 id="my-tips">My Tips</h3>
+<p>I passed the exam on my second attempt and discovered various approaches that can be effective. Here are my recommendations:</p>
+<ol>
+<li>
+<p><strong>Start with Active Scanning</strong>: Begin by actively scanning both applications simultaneously. This process may take some time, but it’s worth it. As you explore the websites, generate requests and, if you identify any interesting areas, run a scan for specific insertion points or requests.</p>
+<p>In my second attempt, this strategy proved beneficial. While I was running SQLMap on the first application, I took the opportunity to familiarize myself with the second application. This approach may not suit everyone, but it allowed me to manage my time effectively. As I mentioned during my learning phase, spend time getting comfortable with Burp Suite extensions and be ready to use them quickly during the exam.</p>
 </li>
-<li><strong>Conclusion</strong>
-<ul>
-<li>Summarize your key takeaways.</li>
-<li>Reiterate the importance of dedication, perseverance, and effective study habits.</li>
-<li>Offer a final encouraging message to aspiring practitioners.</li>
-</ul>
+<li>
+<p><strong>Utilize Two Screens</strong>: If possible, set up a dual-screen configuration. Use one larger screen for Burp Suite and the second for your study materials, protocol documentation, and the exam applications. This setup can significantly enhance your workflow.</p>
 </li>
-</ul>
-<p><strong>3. Writing Tips</strong></p>
-<ul>
-<li><strong>Be Personal and Engaging:</strong> Share your own experiences, anecdotes, and emotions.</li>
-<li><strong>Use Clear and Concise Language:</strong> Avoid jargon whenever possible.</li>
-<li><strong>Provide Specific Examples:</strong> Illustrate your points with concrete examples from your study and exam experience.</li>
-<li><strong>Focus on Practical Advice:</strong> Provide actionable tips and strategies that other candidates can implement in their own preparation.</li>
-<li><strong>Proofread Carefully:</strong> Ensure your article is free of any grammatical or spelling errors.</li>
-</ul>
-<p><strong>4. Optional Additions</strong></p>
-<ul>
-<li><strong>Include screenshots or visuals:</strong> To illustrate concepts or your study process.</li>
-<li><strong>Create a Q&amp;A section:</strong> To answer common questions about the exam.</li>
-<li><strong>Link to relevant resources:</strong> For readers who want to learn more.</li>
-</ul>
+<li>
+<p><strong>Be Aware of Obfuscation Techniques</strong>: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.</p>
+</li>
+</ol>
+<h2 id="reflections-and-lessons-learned">Reflections and Lessons Learned</h2>
+<p>After passing the Burp Suite Exam, I felt a profound sense of accomplishment and relief. The journey was challenging, but it ultimately reinforced my passion for penetration testing and web security. The experience taught me the importance of resilience; failing the exam the first time only fueled my determination to succeed on the second attempt.</p>
+<p>The value of this certification extends beyond just a piece of paper. It has significantly enhanced my credibility in the cybersecurity field and opened up new career opportunities. Employers recognize the effort and knowledge required to obtain this certification, and it has positioned me as a more competitive candidate in the job market.</p>
+<p>For those preparing for the exam, my advice is to stay organized and focused. Make use of all available resources, practice extensively, and don’t hesitate to revisit challenging topics. Remember that persistence is key; if you encounter setbacks, view them as learning opportunities rather than failures.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In summary, my journey to passing the Burp Suite Exam has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.</p>
+<p>Dedication, perseverance, and effective study habits are crucial for success in this field. As you embark on your own journey, remember that every challenge you face is an opportunity for growth. Stay motivated, keep pushing forward, and believe in your ability to succeed. To all aspiring practitioners, I encourage you to embrace the journey ahead—your hard work will pay off!</p>
 
       
       <div class="post-date">

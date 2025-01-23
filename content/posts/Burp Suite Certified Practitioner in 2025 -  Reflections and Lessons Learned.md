@@ -70,32 +70,39 @@ I began my preparation in May and passed the exam in January. Throughout this pe
 
 ## Exam Experience
 
-So the exam are two APP, websites very similar to those in labs. 
+The exam consists of two applications that closely resemble those found in the labs. Each application involves three main steps:
 
-        - Describe the exam format (e.g., number of questions, time limit, question types).
-        - Discuss the types of challenges you encountered (e.g., technical difficulties, time constraints, unexpected question types).
-    - **Exam Tips:**
-        - Share any specific tips or strategies that helped you succeed on the exam (e.g., time management, question elimination, reading questions carefully).
-        - Discuss any common pitfalls to avoid.
-- **Reflections and Lessons Learned**
-    - Share your thoughts and feelings after passing the exam.
-    - Discuss the value of the certification and its impact on your career.
-    - Offer advice to others who are preparing for the exam.
-- **Conclusion**
-    - Summarize your key takeaways.
-    - Reiterate the importance of dedication, perseverance, and effective study habits.
-    - Offer a final encouraging message to aspiring practitioners.
+1. Gain access to a standard user account (the username is likely "carlos").
+2. Elevate privileges to the administrator account.
+3. Retrieve the contents of the file located at `/home/carlos/secret`.
 
-**3. Writing Tips**
+For more details, you can read about the exam structure [here](https://portswigger.net/web-security/certification/how-it-works#what-the-exam-involves).
 
-- **Be Personal and Engaging:** Share your own experiences, anecdotes, and emotions.
-- **Use Clear and Concise Language:** Avoid jargon whenever possible.
-- **Provide Specific Examples:** Illustrate your points with concrete examples from your study and exam experience.
-- **Focus on Practical Advice:** Provide actionable tips and strategies that other candidates can implement in their own preparation.
-- **Proofread Carefully:** Ensure your article is free of any grammatical or spelling errors.
+The exam duration is four hours.
 
-**4. Optional Additions**
+### My Tips
 
-- **Include screenshots or visuals:** To illustrate concepts or your study process.
-- **Create a Q&A section:** To answer common questions about the exam.
-- **Link to relevant resources:** For readers who want to learn more.
+I passed the exam on my second attempt and discovered various approaches that can be effective. Here are my recommendations:
+
+1. **Start with Active Scanning**: Begin by actively scanning both applications simultaneously. This process may take some time, but it’s worth it. As you explore the websites, generate requests and, if you identify any interesting areas, run a scan for specific insertion points or requests.
+
+   In my second attempt, this strategy proved beneficial. While I was running SQLMap on the first application, I took the opportunity to familiarize myself with the second application. This approach may not suit everyone, but it allowed me to manage my time effectively. As I mentioned during my learning phase, spend time getting comfortable with Burp Suite extensions and be ready to use them quickly during the exam.
+
+2. **Utilize Two Screens**: If possible, set up a dual-screen configuration. Use one larger screen for Burp Suite and the second for your study materials, protocol documentation, and the exam applications. This setup can significantly enhance your workflow.
+
+3. **Be Aware of Obfuscation Techniques**: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.
+
+
+## Reflections and Lessons Learned
+
+After passing the Burp Suite Exam, I felt a profound sense of accomplishment and relief. The journey was challenging, but it ultimately reinforced my passion for penetration testing and web security. The experience taught me the importance of resilience; failing the exam the first time only fueled my determination to succeed on the second attempt. 
+
+The value of this certification extends beyond just a piece of paper. It has significantly enhanced my credibility in the cybersecurity field and opened up new career opportunities. Employers recognize the effort and knowledge required to obtain this certification, and it has positioned me as a more competitive candidate in the job market. 
+
+For those preparing for the exam, my advice is to stay organized and focused. Make use of all available resources, practice extensively, and don’t hesitate to revisit challenging topics. Remember that persistence is key; if you encounter setbacks, view them as learning opportunities rather than failures.
+
+## Conclusion
+
+In summary, my journey to passing the Burp Suite Exam has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.
+
+Dedication, perseverance, and effective study habits are crucial for success in this field. As you embark on your own journey, remember that every challenge you face is an opportunity for growth. Stay motivated, keep pushing forward, and believe in your ability to succeed. To all aspiring practitioners, I encourage you to embrace the journey ahead—your hard work will pay off!
