@@ -46,11 +46,11 @@ Here are the resources I personally utilized during my preparation:
 
 - **PortSwigger Topics and Labs**: I covered all topics and labs except for the expert level. You can find them [here](https://portswigger.net/web-security/all-topics).
 - **YouTube Community Solutions**: I found valuable insights from channels like:
-  - [Intigriti](https://www.youtube.com/c/Intigriti)
-  - [Jarno Timmermans](https://www.youtube.com/c/JarnoTimmermans)
+  - [Intigriti](https://www.youtube.com/@intigriti)
+  - [Jarno Timmermans](https://www.youtube.com/@netletic)
 - **PortSwigger Research Articles**: These were particularly helpful for understanding concepts like request smuggling. Check them out [here](https://portswigger.net/research/articles).
 - **Botesjuan Repository**: This is a fantastic resource, especially for learning how to exploit vulnerabilities like XSS to steal cookies rather than just triggering alerts in the browser. You can find it [here](https://github.com/botesjuan/Burp-Suite-Certified-Practitioner-Exam-Study).
-- **Botesjuan YouTube Playlist**: This playlist is a great companion resource, with shoutouts to [z3nsh3ll](https://www.youtube.com/c/z3nsh3ll) and [John Hammond](https://www.youtube.com/c/JohnHammond010).
+- **Botesjuan YouTube Playlist**: This [playlist](https://youtube.com/playlist?list=PLsDxQTEdg_YkVMP6PybE7I-hAdhR7adem&si=1UtLwY27vcw5FGT-) is a great companion resource, with shoutouts to [z3nsh3ll](https://www.youtube.com/c/z3nsh3ll) and [John Hammond](https://www.youtube.com/c/JohnHammond010).
 - **My Own Site**: I created a site that mirrors the Botesjuan repository but offers better navigation and includes a section with all payloads. You can visit it [here](https://oscp-7.gitbook.io/bscp-notes).
 
 ### Study Methods
@@ -95,14 +95,16 @@ I passed the exam on my second attempt and discovered various approaches that ca
 
 ## Reflections and Lessons Learned
 
-After passing the Burp Suite Exam, I felt a profound sense of accomplishment and relief. The journey was challenging, but it ultimately reinforced my passion for penetration testing and web security. The experience taught me the importance of resilience; failing the exam the first time only fueled my determination to succeed on the second attempt. 
+Passing the Burp Suite Exam filled me with a profound sense of accomplishment and relief. The journey was challenging, but it ultimately deepened my passion for penetration testing and web security. 
 
-The value of this certification extends beyond just a piece of paper. It has significantly enhanced my credibility in the cybersecurity field and opened up new career opportunities. Employers recognize the effort and knowledge required to obtain this certification, and it has positioned me as a more competitive candidate in the job market. 
-
-For those preparing for the exam, my advice is to stay organized and focused. Make use of all available resources, practice extensively, and don’t hesitate to revisit challenging topics. Remember that persistence is key; if you encounter setbacks, view them as learning opportunities rather than failures.
+For those preparing for the exam, I want to emphasize that if you find your motivation waning after months or even years due to your current job, remember that achieving such milestones can reignite your drive. If you have doubts, I assure you that the feeling of passing is incredibly rewarding. I can relate to this personally; I created a blog from scratch and wrote this post in just four days. Two months ago, I would have thought that would take me forever.
 
 ## Conclusion
 
-In summary, my journey to passing the Burp Suite Exam has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.
+In summary, my journey to passing the [Burp Suite Exam](https://portswigger.net/web-security/e/c/690adbbe21505dc3) has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.
 
-Dedication, perseverance, and effective study habits are crucial for success in this field. As you embark on your own journey, remember that every challenge you face is an opportunity for growth. Stay motivated, keep pushing forward, and believe in your ability to succeed. To all aspiring practitioners, I encourage you to embrace the journey ahead—your hard work will pay off!
+Looking ahead, I am eager to deepen my knowledge in the security field. My immediate plan is to gain more experience, hopefully in a new role as a penetration tester, while further developing my skills through CTF platforms and bug bounty programs. I also aspire to attempt the OSCP again and, one day, speak at DEF CON. This professional dream motivates me and provides a boost to my efforts.
+
+PS: As a UFC fan, I want to quote Michael Chandler here: "See you at the top." While I think he is somewhat overhyped by the UFC, I must acknowledge that his self-belief is incredibly strong, and I wish everyone could possess that skill. However, being ranked #7 after 4 losses in 5 fights—"This is number one b***shit."
+
+ 

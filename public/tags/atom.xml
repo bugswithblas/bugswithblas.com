@@ -2,38 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Bugs with Blas</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>http://localhost:53703/tags/</link>
     <description>Recent content in Tags on Bugs with Blas</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 22 Jan 2025 10:00:00 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/atom.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:53703/tags/atom.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Burp Suite</title>
-      <link>http://localhost:1313/tags/burp-suite/</link>
+      <title>Burp</title>
+      <link>http://localhost:53703/tags/burp/</link>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
-      <guid>http://localhost:1313/tags/burp-suite/</guid>
+      <guid>http://localhost:53703/tags/burp/</guid>
       <description></description>
     </item>
     <item>
       <title>Certification</title>
-      <link>http://localhost:1313/tags/certification/</link>
+      <link>http://localhost:53703/tags/certification/</link>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
-      <guid>http://localhost:1313/tags/certification/</guid>
+      <guid>http://localhost:53703/tags/certification/</guid>
       <description></description>
     </item>
     <item>
       <title>Cybersecurity</title>
-      <link>http://localhost:1313/tags/cybersecurity/</link>
+      <link>http://localhost:53703/tags/cybersecurity/</link>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
-      <guid>http://localhost:1313/tags/cybersecurity/</guid>
+      <guid>http://localhost:53703/tags/cybersecurity/</guid>
       <description></description>
     </item>
     <item>
       <title>Pentesting</title>
-      <link>http://localhost:1313/tags/pentesting/</link>
+      <link>http://localhost:53703/tags/pentesting/</link>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
-      <guid>http://localhost:1313/tags/pentesting/</guid>
+      <guid>http://localhost:53703/tags/pentesting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Suite</title>
+      <link>http://localhost:53703/tags/suite/</link>
+      <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
+      <guid>http://localhost:53703/tags/suite/</guid>
       <description></description>
     </item>
   </channel>

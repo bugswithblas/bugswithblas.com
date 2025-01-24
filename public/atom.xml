@@ -37,13 +37,13 @@
 &lt;li&gt;&lt;strong&gt;PortSwigger Topics and Labs&lt;/strong&gt;: I covered all topics and labs except for the expert level. You can find them &lt;a href=&#34;https://portswigger.net/web-security/all-topics&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;YouTube Community Solutions&lt;/strong&gt;: I found valuable insights from channels like:
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/c/Intigriti&#34;&gt;Intigriti&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/c/JarnoTimmermans&#34;&gt;Jarno Timmermans&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/@intigriti&#34;&gt;Intigriti&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/@netletic&#34;&gt;Jarno Timmermans&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;PortSwigger Research Articles&lt;/strong&gt;: These were particularly helpful for understanding concepts like request smuggling. Check them out &lt;a href=&#34;https://portswigger.net/research/articles&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Botesjuan Repository&lt;/strong&gt;: This is a fantastic resource, especially for learning how to exploit vulnerabilities like XSS to steal cookies rather than just triggering alerts in the browser. You can find it &lt;a href=&#34;https://github.com/botesjuan/Burp-Suite-Certified-Practitioner-Exam-Study&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Botesjuan YouTube Playlist&lt;/strong&gt;: This playlist is a great companion resource, with shoutouts to &lt;a href=&#34;https://www.youtube.com/c/z3nsh3ll&#34;&gt;z3nsh3ll&lt;/a&gt; and &lt;a href=&#34;https://www.youtube.com/c/JohnHammond010&#34;&gt;John Hammond&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Botesjuan YouTube Playlist&lt;/strong&gt;: This &lt;a href=&#34;https://youtube.com/playlist?list=PLsDxQTEdg_YkVMP6PybE7I-hAdhR7adem&amp;amp;si=1UtLwY27vcw5FGT-&#34;&gt;playlist&lt;/a&gt; is a great companion resource, with shoutouts to &lt;a href=&#34;https://www.youtube.com/c/z3nsh3ll&#34;&gt;z3nsh3ll&lt;/a&gt; and &lt;a href=&#34;https://www.youtube.com/c/JohnHammond010&#34;&gt;John Hammond&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;My Own Site&lt;/strong&gt;: I created a site that mirrors the Botesjuan repository but offers better navigation and includes a section with all payloads. You can visit it &lt;a href=&#34;https://oscp-7.gitbook.io/bscp-notes&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;study-methods&#34;&gt;Study Methods&lt;/h3&gt;
@@ -79,12 +79,12 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id=&#34;reflections-and-lessons-learned&#34;&gt;Reflections and Lessons Learned&lt;/h2&gt;
-&lt;p&gt;After passing the Burp Suite Exam, I felt a profound sense of accomplishment and relief. The journey was challenging, but it ultimately reinforced my passion for penetration testing and web security. The experience taught me the importance of resilience; failing the exam the first time only fueled my determination to succeed on the second attempt.&lt;/p&gt;
-&lt;p&gt;The value of this certification extends beyond just a piece of paper. It has significantly enhanced my credibility in the cybersecurity field and opened up new career opportunities. Employers recognize the effort and knowledge required to obtain this certification, and it has positioned me as a more competitive candidate in the job market.&lt;/p&gt;
-&lt;p&gt;For those preparing for the exam, my advice is to stay organized and focused. Make use of all available resources, practice extensively, and don’t hesitate to revisit challenging topics. Remember that persistence is key; if you encounter setbacks, view them as learning opportunities rather than failures.&lt;/p&gt;
+&lt;p&gt;Passing the Burp Suite Exam filled me with a profound sense of accomplishment and relief. The journey was challenging, but it ultimately deepened my passion for penetration testing and web security.&lt;/p&gt;
+&lt;p&gt;For those preparing for the exam, I want to emphasize that if you find your motivation waning after months or even years due to your current job, remember that achieving such milestones can reignite your drive. If you have doubts, I assure you that the feeling of passing is incredibly rewarding. I can relate to this personally; I created a blog from scratch and wrote this post in just four days. Two months ago, I would have thought that would take me forever.&lt;/p&gt;
 &lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;In summary, my journey to passing the Burp Suite Exam has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.&lt;/p&gt;
-&lt;p&gt;Dedication, perseverance, and effective study habits are crucial for success in this field. As you embark on your own journey, remember that every challenge you face is an opportunity for growth. Stay motivated, keep pushing forward, and believe in your ability to succeed. To all aspiring practitioners, I encourage you to embrace the journey ahead—your hard work will pay off!&lt;/p&gt;
+&lt;p&gt;In summary, my journey to passing the &lt;a href=&#34;https://portswigger.net/web-security/e/c/690adbbe21505dc3&#34;&gt;Burp Suite Exam&lt;/a&gt; has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.&lt;/p&gt;
+&lt;p&gt;Looking ahead, I am eager to deepen my knowledge in the security field. My immediate plan is to gain more experience, hopefully in a new role as a penetration tester, while further developing my skills through CTF platforms and bug bounty programs. I also aspire to attempt the OSCP again and, one day, speak at DEF CON. This professional dream motivates me and provides a boost to my efforts.&lt;/p&gt;
+&lt;p&gt;PS: As a UFC fan, I want to quote Michael Chandler here: &amp;ldquo;See you at the top.&amp;rdquo; While I think he is somewhat overhyped by the UFC, I must acknowledge that his self-belief is incredibly strong, and I wish everyone could possess that skill. However, being ranked #7 after 4 losses in 5 fights—&amp;ldquo;This is number one b***shit.&amp;rdquo;&lt;/p&gt;
 </description>
       <author>Blazej Gutowski</author>
       <guid>http://localhost:1313/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</guid>
