@@ -1,6 +1,6 @@
 ---
-title: Burp Suite Certified Practitioner in 2025 -  Reflections and Lessons Learned
-description: 
+title: "How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips"
+description: "Discover my journey to becoming a Burp Suite Certified Practitioner in 2025, including lessons learned, challenges faced, and tips for success in cybersecurity."
 showTableOfContents: true
 tags:
   - Burp
@@ -13,7 +13,11 @@ draft: false
 date: 2025-01-22T10:00:00+01:00
 ---
 
-## A Bit About Me
+## Introduction
+
+Did you know that the demand for certified cybersecurity professionals is expected to grow by 35% by 2025? Here’s how I navigated the challenges of becoming a Burp Suite Certified Practitioner and what I learned along the way.
+
+### A Bit About Me
 
 To provide some context, let me share my background. I have nearly seven years of experience as an IT administrator, where I managed servers, networks, internal websites, and IT infrastructure. This role has given me a solid understanding of how applications and websites function, from the hardware level through servers and firewalls, all the way to the end user. These fundamentals have allowed me to grasp how web applications operate "in the background."
 
@@ -55,13 +59,16 @@ Here are the resources I personally utilized during my preparation:
 
 ### Study Methods
 
+#### Initial Preparation  
 My study approach was straightforward: I completed all topics and labs except for the expert ones. After that, I revisited and retook topics where I felt less confident, utilizing all the materials mentioned above—sometimes reading through them multiple times. I also tackled several mystery labs and completed a practice exam, which I highly recommend to familiarize yourself with the exam format.
 
-Following this, I revisited more mystery labs. You can follow the proposed methodology outlined on the PortSwigger website: 
+#### PortSwigger Methodology  
+Following this, I revisited more mystery labs. You can follow the proposed methodology outlined on the PortSwigger website:  
 
 > "Work through the topics within the academy, completing every apprentice and practitioner-level lab as you go. As you reach the end of each topic, use the mystery labs feature to practice solving the labs with no contextual clues. When you've completed all the practitioner-level labs, practice solving mystery labs from all available topics to develop your recon and discovery skills. Then complete a practice exam to familiarize yourself with the exam format. Make sure to read the exam hints and tips, as they contain invaluable information that you'll need to be successful in the exam."
 
-From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again.
+#### Overcoming Challenges  
+From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again. This approach helps solidify your understanding and builds confidence in tackling difficult areas.
 
 ### Time Commitment
 
@@ -80,20 +87,22 @@ For more details, you can read about the exam structure [here](https://portswigg
 
 The exam duration is four hours.
 
+
 ### My Tips
 
 I passed the exam on my second attempt and discovered various approaches that can be effective. Here are my recommendations:
 
 1. **Start with Active Scanning**: Begin by actively scanning both applications simultaneously. This process may take some time, but it’s worth it. As you explore the websites, generate requests and, if you identify any interesting areas, run a scan for specific insertion points or requests.
 
-   In my second attempt, this strategy proved beneficial. While I was running SQLMap on the first application, I took the opportunity to familiarize myself with the second application. This approach may not suit everyone, but it allowed me to manage my time effectively. As I mentioned during my learning phase, spend time getting comfortable with Burp Suite extensions and be ready to use them quickly during the exam.
-
 2. **Utilize Two Screens**: If possible, set up a dual-screen configuration. Use one larger screen for Burp Suite and the second for your study materials, protocol documentation, and the exam applications. This setup can significantly enhance your workflow.
 
 3. **Be Aware of Obfuscation Techniques**: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.
 
+4. **SQL Injection Automation**: During my first attempt, I struggled with **SQL injection**. For the second try I used the **CO extension**, which allows running **sqlmap** directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.  
 
-## Reflections and Lessons Learned
+5. **Extensions and Tools** Stick to the tools and techniques covered in the **PortSwigger Academy topics and labs**. Overcomplicating your approach with unfamiliar tools can waste valuable time. But use some time using it, or use some of newer ones like I used CO for SQL Injection.
+
+## Reflections
 
 Passing the Burp Suite Exam filled me with a profound sense of accomplishment and relief. The journey was challenging, but it ultimately deepened my passion for penetration testing and web security. 
 
@@ -105,6 +114,6 @@ In summary, my journey to passing the [Burp Suite Exam](https://portswigger.net/
 
 Looking ahead, I am eager to deepen my knowledge in the security field. My immediate plan is to gain more experience, hopefully in a new role as a penetration tester, while further developing my skills through CTF platforms and bug bounty programs. I also aspire to attempt the OSCP again and, one day, speak at DEF CON. This professional dream motivates me and provides a boost to my efforts.
 
-PS: As a UFC fan, I want to quote Michael Chandler here: "See you at the top." While I think he is somewhat overhyped by the UFC, I must acknowledge that his self-belief is incredibly strong, and I wish everyone could possess that skill. However, being ranked #7 after 4 losses in 5 fights—"This is number one b***shit."
+Becoming a Burp Suite Certified Practitioner was one of the most challenging yet rewarding experiences of my career. If I can do it, so can you—start your journey today! If you’re considering becoming a Burp Suite Certified Practitioner, I’d love to hear about your journey. For more tips on cybersecurity, penetration testing, CTFs and bug hunting, follow my blog."
 
  

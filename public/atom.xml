@@ -14,9 +14,11 @@
     
     
     <item>
-      <title>Burp Suite Certified Practitioner in 2025 -  Reflections and Lessons Learned</title>
-      <link>http://localhost:1313/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</link>
-      <description>&lt;h2 id=&#34;a-bit-about-me&#34;&gt;A Bit About Me&lt;/h2&gt;
+      <title>How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips</title>
+      <link>http://localhost:1313/posts/bscp-reflections-and-tips/</link>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Did you know that the demand for certified cybersecurity professionals is expected to grow by 35% by 2025? Here’s how I navigated the challenges of becoming a Burp Suite Certified Practitioner and what I learned along the way.&lt;/p&gt;
+&lt;h3 id=&#34;a-bit-about-me&#34;&gt;A Bit About Me&lt;/h3&gt;
 &lt;p&gt;To provide some context, let me share my background. I have nearly seven years of experience as an IT administrator, where I managed servers, networks, internal websites, and IT infrastructure. This role has given me a solid understanding of how applications and websites function, from the hardware level through servers and firewalls, all the way to the end user. These fundamentals have allowed me to grasp how web applications operate &amp;ldquo;in the background.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;Throughout my education and career, I&amp;rsquo;ve also dabbled in coding, working on websites, Android apps, and scripts for internal use. While I wouldn&amp;rsquo;t label myself a programmer, I consider myself a capable code reader. I believe these experiences have provided me with a strong foundation to venture into penetration testing.&lt;/p&gt;
 &lt;h3 id=&#34;why-this-certification&#34;&gt;Why This Certification?&lt;/h3&gt;
@@ -47,12 +49,15 @@
 &lt;li&gt;&lt;strong&gt;My Own Site&lt;/strong&gt;: I created a site that mirrors the Botesjuan repository but offers better navigation and includes a section with all payloads. You can visit it &lt;a href=&#34;https://oscp-7.gitbook.io/bscp-notes&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;study-methods&#34;&gt;Study Methods&lt;/h3&gt;
+&lt;h4 id=&#34;initial-preparation&#34;&gt;Initial Preparation&lt;/h4&gt;
 &lt;p&gt;My study approach was straightforward: I completed all topics and labs except for the expert ones. After that, I revisited and retook topics where I felt less confident, utilizing all the materials mentioned above—sometimes reading through them multiple times. I also tackled several mystery labs and completed a practice exam, which I highly recommend to familiarize yourself with the exam format.&lt;/p&gt;
+&lt;h4 id=&#34;portswigger-methodology&#34;&gt;PortSwigger Methodology&lt;/h4&gt;
 &lt;p&gt;Following this, I revisited more mystery labs. You can follow the proposed methodology outlined on the PortSwigger website:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&amp;ldquo;Work through the topics within the academy, completing every apprentice and practitioner-level lab as you go. As you reach the end of each topic, use the mystery labs feature to practice solving the labs with no contextual clues. When you&amp;rsquo;ve completed all the practitioner-level labs, practice solving mystery labs from all available topics to develop your recon and discovery skills. Then complete a practice exam to familiarize yourself with the exam format. Make sure to read the exam hints and tips, as they contain invaluable information that you&amp;rsquo;ll need to be successful in the exam.&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again.&lt;/p&gt;
+&lt;h4 id=&#34;overcoming-challenges&#34;&gt;Overcoming Challenges&lt;/h4&gt;
+&lt;p&gt;From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again. This approach helps solidify your understanding and builds confidence in tackling difficult areas.&lt;/p&gt;
 &lt;h3 id=&#34;time-commitment&#34;&gt;Time Commitment&lt;/h3&gt;
 &lt;p&gt;I began my preparation in May and passed the exam in January. Throughout this period, I was working full-time and had various personal commitments, including , brithdays, travels and holidays. Therefore, my timeline may not be representative of what others might experience. In hindsight, I believe that 5-6 months is a reasonable timeframe for preparation. However, if you are organized and have more time to dedicate, you could potentially complete it in 3-4 months. Keep in mind that everyone&amp;rsquo;s experience will vary.&lt;/p&gt;
 &lt;h2 id=&#34;exam-experience&#34;&gt;Exam Experience&lt;/h2&gt;
@@ -69,7 +74,6 @@
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Start with Active Scanning&lt;/strong&gt;: Begin by actively scanning both applications simultaneously. This process may take some time, but it’s worth it. As you explore the websites, generate requests and, if you identify any interesting areas, run a scan for specific insertion points or requests.&lt;/p&gt;
-&lt;p&gt;In my second attempt, this strategy proved beneficial. While I was running SQLMap on the first application, I took the opportunity to familiarize myself with the second application. This approach may not suit everyone, but it allowed me to manage my time effectively. As I mentioned during my learning phase, spend time getting comfortable with Burp Suite extensions and be ready to use them quickly during the exam.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Utilize Two Screens&lt;/strong&gt;: If possible, set up a dual-screen configuration. Use one larger screen for Burp Suite and the second for your study materials, protocol documentation, and the exam applications. This setup can significantly enhance your workflow.&lt;/p&gt;
@@ -77,17 +81,23 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Be Aware of Obfuscation Techniques&lt;/strong&gt;: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;SQL Injection Automation&lt;/strong&gt;: During my first attempt, I struggled with &lt;strong&gt;SQL injection&lt;/strong&gt;. For the second try I used the &lt;strong&gt;CO extension&lt;/strong&gt;, which allows running &lt;strong&gt;sqlmap&lt;/strong&gt; directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Extensions and Tools&lt;/strong&gt; Stick to the tools and techniques covered in the &lt;strong&gt;PortSwigger Academy topics and labs&lt;/strong&gt;. Overcomplicating your approach with unfamiliar tools can waste valuable time. But use some time using it, or use some of newer ones like I used CO for SQL Injection.&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;reflections-and-lessons-learned&#34;&gt;Reflections and Lessons Learned&lt;/h2&gt;
+&lt;h2 id=&#34;reflections&#34;&gt;Reflections&lt;/h2&gt;
 &lt;p&gt;Passing the Burp Suite Exam filled me with a profound sense of accomplishment and relief. The journey was challenging, but it ultimately deepened my passion for penetration testing and web security.&lt;/p&gt;
 &lt;p&gt;For those preparing for the exam, I want to emphasize that if you find your motivation waning after months or even years due to your current job, remember that achieving such milestones can reignite your drive. If you have doubts, I assure you that the feeling of passing is incredibly rewarding. I can relate to this personally; I created a blog from scratch and wrote this post in just four days. Two months ago, I would have thought that would take me forever.&lt;/p&gt;
 &lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;In summary, my journey to passing the &lt;a href=&#34;https://portswigger.net/web-security/e/c/690adbbe21505dc3&#34;&gt;Burp Suite Exam&lt;/a&gt; has been both rewarding and enlightening. The key takeaways from this experience include the importance of thorough preparation, the value of utilizing diverse resources, and the necessity of practicing with real-world scenarios.&lt;/p&gt;
 &lt;p&gt;Looking ahead, I am eager to deepen my knowledge in the security field. My immediate plan is to gain more experience, hopefully in a new role as a penetration tester, while further developing my skills through CTF platforms and bug bounty programs. I also aspire to attempt the OSCP again and, one day, speak at DEF CON. This professional dream motivates me and provides a boost to my efforts.&lt;/p&gt;
-&lt;p&gt;PS: As a UFC fan, I want to quote Michael Chandler here: &amp;ldquo;See you at the top.&amp;rdquo; While I think he is somewhat overhyped by the UFC, I must acknowledge that his self-belief is incredibly strong, and I wish everyone could possess that skill. However, being ranked #7 after 4 losses in 5 fights—&amp;ldquo;This is number one b***shit.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Becoming a Burp Suite Certified Practitioner was one of the most challenging yet rewarding experiences of my career. If I can do it, so can you—start your journey today! If you’re considering becoming a Burp Suite Certified Practitioner, I’d love to hear about your journey. For more tips on cybersecurity, penetration testing, CTFs and bug hunting, follow my blog.&amp;quot;&lt;/p&gt;
 </description>
       <author>Blazej Gutowski</author>
-      <guid>http://localhost:1313/posts/burp-suite-certified-practitioner-in-2025----reflections-and-lessons-learned/</guid>
+      <guid>http://localhost:1313/posts/bscp-reflections-and-tips/</guid>
       <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
     </item>
     

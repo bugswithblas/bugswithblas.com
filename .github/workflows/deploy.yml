@@ -25,7 +25,7 @@ jobs:
     - name: Configure Git
       run: |
         git config --global user.name "bgutowski"
-        git config --global user.email "blazej.gutowski@pm.me"
+        git config --global user.email "blas.gutowski@gmail.com"
 
     - name: Build Site
       run: hugo --minify --gc
