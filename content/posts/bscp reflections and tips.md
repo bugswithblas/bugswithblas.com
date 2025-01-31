@@ -3,8 +3,8 @@ title: "How I Became a Burp Suite Certified Practitioner in 2025: Reflections an
 description: "Discover my journey to becoming a Burp Suite Certified Practitioner in 2025, including lessons learned, challenges faced, and tips for success in cybersecurity."
 showTableOfContents: true
 tags:
-  - Burp
-  - Suite
+  - "Burp Suite"
+  - BSCP
   - Certification
   - Cybersecurity
   - Pentesting

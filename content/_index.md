@@ -11,7 +11,7 @@ Thanks for visiting! Whether you’re an IT enthusiast, a professional, or just 
 
 - <a href="https://pl.linkedin.com/in/bgutowski">LinkedIn</a>
 
-- <a href="https://github.com/bgutowski">GitHub</a>
+- <a href="https://github.com/bugswithblas">GitHub</a>
 
 - <a href="https://portswigger.net/web-security/e/c/690adbbe21505dc3">Burp Suite Certified Practitioner Certificate</a>
 
