@@ -12,8 +12,7 @@
 &lt;p>Before diving into the Burp Suite Exam, there are a few essential things you should know. For a comprehensive list of requirements, check out the official &lt;a href="https://portswigger.net/web-security/certification/how-it-works#requirements">PortSwigger certification page&lt;/a>.&lt;/p>
 &lt;p>One crucial detail I initially overlooked was the need for a license for the Pro version of Burp Suite. While most of the requirements are relatively low, you will need to budget $449.00 for the Pro version if you don&amp;rsquo;t already have access to it, plus an additional $99 for the exam. If your current job provides access to Burp Suite, you can use that license. According to PortSwigger:&lt;/p>
 &lt;blockquote>
-&lt;p>&amp;ldquo;If you have a Burp Suite Professional license, but it is registered under an email domain of the company you work for rather than your personal email address, you will still be absolutely fine, from a technical perspective, to use that license for taking the exam. So long as you have access to a valid, active Burp Suite Professional license at the time of your certification, you will be able to use it to take the exam.&amp;rdquo;&lt;/p>
-&lt;/blockquote>
+&lt;p>&amp;ldquo;If you have a Burp Suite Professional license, but it is registered under an email domain of the company you work for rather than your personal email address, you will still be absolutely fine, from a technical perspective, to use that license for taking the exam. So long as you have access to a valid, active Burp Suite Professional license at the time of your certification, you will be able to use it to take the exam.&amp;rdquo;&lt;/p>&lt;/blockquote>
 &lt;p>If you have any concerns about using a company-registered license, it&amp;rsquo;s best to discuss this with your employer, as they can provide guidance.&lt;/p>
 &lt;h3 id="materials">Materials&lt;/h3>
 &lt;p>Here are the resources I personally utilized during my preparation:&lt;/p>
@@ -36,8 +35,7 @@
 &lt;h4 id="portswigger-methodology">PortSwigger Methodology&lt;/h4>
 &lt;p>Following this, I revisited more mystery labs. You can follow the proposed methodology outlined on the PortSwigger website:&lt;/p>
 &lt;blockquote>
-&lt;p>&amp;ldquo;Work through the topics within the academy, completing every apprentice and practitioner-level lab as you go. As you reach the end of each topic, use the mystery labs feature to practice solving the labs with no contextual clues. When you&amp;rsquo;ve completed all the practitioner-level labs, practice solving mystery labs from all available topics to develop your recon and discovery skills. Then complete a practice exam to familiarize yourself with the exam format. Make sure to read the exam hints and tips, as they contain invaluable information that you&amp;rsquo;ll need to be successful in the exam.&amp;rdquo;&lt;/p>
-&lt;/blockquote>
+&lt;p>&amp;ldquo;Work through the topics within the academy, completing every apprentice and practitioner-level lab as you go. As you reach the end of each topic, use the mystery labs feature to practice solving the labs with no contextual clues. When you&amp;rsquo;ve completed all the practitioner-level labs, practice solving mystery labs from all available topics to develop your recon and discovery skills. Then complete a practice exam to familiarize yourself with the exam format. Make sure to read the exam hints and tips, as they contain invaluable information that you&amp;rsquo;ll need to be successful in the exam.&amp;rdquo;&lt;/p>&lt;/blockquote>
 &lt;h4 id="overcoming-challenges">Overcoming Challenges&lt;/h4>
 &lt;p>From my perspective, if a topic seems challenging, revisit it after taking the practice exam and work on it with mystery labs again. This approach helps solidify your understanding and builds confidence in tackling difficult areas.&lt;/p>
 &lt;h3 id="time-commitment">Time Commitment&lt;/h3>
