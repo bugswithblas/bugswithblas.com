@@ -6,8 +6,6 @@ tags:
   - "Burp Suite"
   - BSCP
   - Certification
-  - Cybersecurity
-  - Pentesting
 type: post
 draft: false
 date: 2025-01-22T10:00:00+01:00
