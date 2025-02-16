@@ -8,7 +8,7 @@ tags:
   - Certification
 type: post
 draft: false
-date: 2025-01-22T10:00:00+01:00
+date: 2025-01-22
 ---
 
 ## Introduction
@@ -96,7 +96,7 @@ I passed the exam on my second attempt and discovered various approaches that ca
 
 3. **Be Aware of Obfuscation Techniques**: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.
 
-4. **SQL Injection Automation**: During my first attempt, I struggled with **SQL injection**. For the second try I used the **CO extension**, which allows running **sqlmap** directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.  
+4. **SQL Injection Automation**: During my first attempt, I struggled with **SQL injection**. For the second try I used the **CO2 extension**, which allows running **sqlmap** directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.  
 
 5. **Extensions and Tools** Stick to the tools and techniques covered in the **PortSwigger Academy topics and labs**. Overcomplicating your approach with unfamiliar tools can waste valuable time. But use some time using it, or use some of newer ones like I used CO for SQL Injection.
 

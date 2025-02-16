@@ -3,19 +3,19 @@
     
     <title>Bugs with Blas</title>
     <description>Hi, I&#39;m Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I&#39;ve transitioned into the exciting field of cybersecurity. Here, you&#39;ll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:52535/</link>
     
     <language>en</language>
     <copyright>Copyright 2025, Calvin Tran</copyright>
-    <lastBuildDate>Tue, 28 Jan 2025 10:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 16 Feb 2025 00:00:00 +0000</lastBuildDate>
     <generator>Hugo - gohugo.io</generator>
     <docs>http://cyber.harvard.edu/rss/rss.html</docs>
-    <atom:link href="http://localhost:1313//atom.xml" rel="self" type="application/atom+xml"/>
+    <atom:link href="http://localhost:52535//atom.xml" rel="self" type="application/atom+xml"/>
     
     
     <item>
       <title>How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips</title>
-      <link>http://localhost:1313/posts/bscp-reflections-and-tips/</link>
+      <link>http://localhost:52535/posts/bscp-reflections-and-tips/</link>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Did you know that the demand for certified cybersecurity professionals is expected to grow by 35% by 2025? Here’s how I navigated the challenges of becoming a Burp Suite Certified Practitioner and what I learned along the way.&lt;/p&gt;
 &lt;h3 id=&#34;a-bit-about-me&#34;&gt;A Bit About Me&lt;/h3&gt;
@@ -82,7 +82,7 @@
 &lt;p&gt;&lt;strong&gt;Be Aware of Obfuscation Techniques&lt;/strong&gt;: Remember that the exam may not present obfuscation techniques in the same straightforward manner as the topics covered in the labs. While most labs utilize basic obfuscation, the exam may require you to employ different techniques. Stay alert and be prepared to adapt your strategies accordingly.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;SQL Injection Automation&lt;/strong&gt;: During my first attempt, I struggled with &lt;strong&gt;SQL injection&lt;/strong&gt;. For the second try I used the &lt;strong&gt;CO extension&lt;/strong&gt;, which allows running &lt;strong&gt;sqlmap&lt;/strong&gt; directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SQL Injection Automation&lt;/strong&gt;: During my first attempt, I struggled with &lt;strong&gt;SQL injection&lt;/strong&gt;. For the second try I used the &lt;strong&gt;CO2 extension&lt;/strong&gt;, which allows running &lt;strong&gt;sqlmap&lt;/strong&gt; directly in the system terminal. This was a game-changer because it automated the injection process, freeing up my time to focus on other parts of the exam.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Extensions and Tools&lt;/strong&gt; Stick to the tools and techniques covered in the &lt;strong&gt;PortSwigger Academy topics and labs&lt;/strong&gt;. Overcomplicating your approach with unfamiliar tools can waste valuable time. But use some time using it, or use some of newer ones like I used CO for SQL Injection.&lt;/p&gt;
@@ -97,8 +97,8 @@
 &lt;p&gt;Becoming a Burp Suite Certified Practitioner was one of the most challenging yet rewarding experiences of my career. If I can do it, so can you—start your journey today! If you’re considering becoming a Burp Suite Certified Practitioner, I’d love to hear about your journey. For more tips on cybersecurity, penetration testing, CTFs and bug hunting, follow my blog.&amp;quot;&lt;/p&gt;
 </description>
       <author>Blazej Gutowski</author>
-      <guid>http://localhost:1313/posts/bscp-reflections-and-tips/</guid>
-      <pubDate>Wed, 22 Jan 2025 10:00:00 +0100</pubDate>
+      <guid>http://localhost:52535/posts/bscp-reflections-and-tips/</guid>
+      <pubDate>Wed, 22 Jan 2025 00:00:00 +0000</pubDate>
     </item>
     
   </channel>
