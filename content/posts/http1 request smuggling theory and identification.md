@@ -1,6 +1,6 @@
 ---
 title: "Request Smuggling for HTTP/1.1 - Theory and Identification"
-description: ""
+description: "HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated."
 showTableOfContents: true
 tags:
   - "Request Smuggling"
