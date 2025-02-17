@@ -3,19 +3,244 @@
     
     <title>Bugs with Blas</title>
     <description>Hi, I&#39;m Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I&#39;ve transitioned into the exciting field of cybersecurity. Here, you&#39;ll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description>
-    <link>http://localhost:52535/</link>
+    <link>http://localhost:1313/</link>
     
     <language>en</language>
     <copyright>Copyright 2025, Calvin Tran</copyright>
     <lastBuildDate>Sun, 16 Feb 2025 00:00:00 +0000</lastBuildDate>
     <generator>Hugo - gohugo.io</generator>
     <docs>http://cyber.harvard.edu/rss/rss.html</docs>
-    <atom:link href="http://localhost:52535//atom.xml" rel="self" type="application/atom+xml"/>
+    <atom:link href="http://localhost:1313//atom.xml" rel="self" type="application/atom+xml"/>
     
     
     <item>
+      <title>Request Smuggling for HTTP/1.1 - Theory and Identification</title>
+      <link>http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/</link>
+      <description>&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.&lt;/p&gt;
+&lt;p&gt;To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.&lt;/p&gt;
+&lt;p&gt;For someone unfamiliar with this attack, request smuggling exploits discrepancies in how HTTP requests are parsed between front-end and back-end servers. The goal is to manipulate request boundaries, often causing one request to be interpreted as two separate ones. How is this accomplished? Why does this happen? These are the questions I will attempt to answer.&amp;quot;&lt;/p&gt;
+&lt;p&gt;The impact of request smuggling varies depending on the web application&amp;rsquo;s infrastructure and security controls. In some cases, it can allow an attacker to bypass authentication, access restricted resources, or hijack user sessions—posing a serious security risk.&lt;/p&gt;
+&lt;h2 id=&#34;2-understanding-core-http-headers-in-request-smuggling&#34;&gt;2. Understanding Core HTTP Headers in Request Smuggling&lt;/h2&gt;
+&lt;p&gt;Before diving into attack techniques, it’s important to understand the headers that play a crucial role in HTTP request parsing.&lt;/p&gt;
+&lt;p&gt;But first, when were these headers introduced, and what problems did they solve? &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/HTTP/Evolution_of_HTTP#http1.1_%E2%80%93_the_standardized_protocol&#34;&gt;HTTP/1.1&lt;/a&gt; was introduced in 1997 to address some of the issues in version 1.0. The main problem with HTTP/1.0 was its inefficiency—each request required a full &lt;strong&gt;3-way handshake&lt;/strong&gt; before it could be processed. Additionally, it lacked built-in support for persistent connections and caching mechanisms. One of the solutions introduced in HTTP/1.1 was the Transfer-Encoding header, which helped improve efficiency in data transmission.&lt;/p&gt;
+&lt;h3 id=&#34;key-http-headers-relevant-to-request-smuggling&#34;&gt;&lt;strong&gt;Key HTTP Headers Relevant to Request Smuggling&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;connection-and-keep-alive&#34;&gt;&lt;strong&gt;Connection and Keep-Alive&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;While the Content-Length and Transfer-Encoding headers specify message lengths, the Connection and Keep-Alive headers allow a connection to remain open for multiple requests, reducing the need for a &lt;strong&gt;3-way handshake&lt;/strong&gt; with every request.&lt;/p&gt;
+&lt;p&gt;The Connection header has two primary options:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;keep-alive&lt;/strong&gt; (default in HTTP/1.1): Keeps the connection open for subsequent requests.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;close&lt;/strong&gt;: Closes the connection after the response is sent.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Keep-Alive header specifies the number of requests allowed before the connection is closed and the duration for which an idle connection remains open.&lt;br&gt;
+Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Keep-Alive: &lt;span style=&#34;color:#111&#34;&gt;timeout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;5, &lt;span style=&#34;color:#111&#34;&gt;max&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means the connection will remain open for up to 5 seconds and allow up to 200 requests before closing.&lt;/p&gt;
+&lt;h4 id=&#34;content-length&#34;&gt;&lt;strong&gt;Content-Length&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;What is the format of Content-Length, and why is it used?&lt;/p&gt;
+&lt;p&gt;According to &lt;strong&gt;&lt;a href=&#34;https://httpwg.org/specs/rfc9110.html#field.content-length&#34;&gt;RFC 9110&lt;/a&gt;&lt;/strong&gt;, Content-Length represents the length of the message body as a &lt;strong&gt;decimal, non-negative integer&lt;/strong&gt; (measured in octets).&lt;/p&gt;
+&lt;p&gt;Why is this necessary?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It allows recipients to determine when a message is complete and track its progress.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One important detail from &lt;strong&gt;&lt;a href=&#34;https://httpwg.org/specs/rfc9112.html#body.content-length&#34;&gt;RFC 9112&lt;/a&gt;&lt;/strong&gt; states that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If a message &lt;strong&gt;does not&lt;/strong&gt; have a Transfer-Encoding header, then Content-Length defines its length.&lt;/li&gt;
+&lt;li&gt;A sender &lt;strong&gt;MUST NOT&lt;/strong&gt; include a Content-Length header in a message that also contains a Transfer-Encoding header.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;transfer-encoding&#34;&gt;&lt;strong&gt;Transfer-Encoding&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;As specified in &lt;strong&gt;&lt;a href=&#34;https://httpwg.org/specs/rfc9112.html#field.transfer-encoding&#34;&gt;RFC 9112&lt;/a&gt;&lt;/strong&gt;, the Transfer-Encoding header defines how the message body is encoded for transfer. The most common value is &lt;strong&gt;chunked&lt;/strong&gt; encoding.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How does chunked encoding work?&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The body is sent in a series of chunks.&lt;/li&gt;
+&lt;li&gt;Each chunk begins with its &lt;strong&gt;size in hexadecimal&lt;/strong&gt;, followed by the actual data.&lt;/li&gt;
+&lt;li&gt;A chunk of size 0 signals the end of the message.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This encoding enables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Progressive processing&lt;/strong&gt; (recipients can start handling data before receiving the full message).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dynamic content transmission&lt;/strong&gt; (useful when the final content size is unknown).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Persistent connections&lt;/strong&gt; (keep-alive), improving HTTP efficiency.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;handling-transfer-encoding-and-content-length-in-http&#34;&gt;Handling Transfer-Encoding and Content-Length in HTTP&lt;/h2&gt;
+&lt;p&gt;Even though the specification states that a sender &lt;strong&gt;MUST NOT&lt;/strong&gt; include a Content-Length header in a message that also contains a Transfer-Encoding header, this is not always enforced in practice. This issue was resolved in HTTP/2, where Transfer-Encoding is no longer used.&lt;/p&gt;
+&lt;h3 id=&#34;what-happens-if-both-headers-are-present-in-a-request&#34;&gt;What happens if both headers are present in a request?&lt;/h3&gt;
+&lt;p&gt;Part &lt;strong&gt;&lt;a href=&#34;https://httpwg.org/specs/rfc9112.html#message.body.length&#34;&gt;6.3&lt;/a&gt;&lt;/strong&gt; of RFC 9112 discusses a potential attack scenario and provides guidance on handling such cases. Specifically, point 3 states:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;If a message is received with both a Transfer-Encoding and a Content-Length header field, the Transfer-Encoding overrides the Content-Length. Such a message might indicate an attempt to perform request smuggling (Section 11.2) or response splitting (Section 11.1) and ought to be handled as an error. An intermediary that chooses to forward the message MUST first remove the received Content-Length field and process the Transfer-Encoding (as described below) prior to forwarding the message downstream.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thus, the specification mandates that servers must be aware of both headers. If both are present, the Content-Length header should be removed to prevent misinterpretation.&lt;/p&gt;
+&lt;h3 id=&#34;why-is-this-a-security-concern&#34;&gt;Why is this a security concern?&lt;/h3&gt;
+&lt;p&gt;When the HTTP specification was initially created in 1997, infrastructures were simpler, and most websites were handled by a single server. However, modern web architectures rely on multiple components such as proxies, load balancers, and security gateways. Some of these components do not fully support Transfer-Encoding, or they may interpret conflicting headers differently.&lt;/p&gt;
+&lt;p&gt;This inconsistency in how different servers and intermediaries handle these headers creates an opportunity for &lt;strong&gt;HTTP request smuggling attacks&lt;/strong&gt;. In such attacks, an adversary manipulates headers to cause a server to interpret requests differently from downstream components, potentially leading to security breaches such as cache poisoning, unauthorized request execution, or bypassing authentication mechanisms.&lt;/p&gt;
+&lt;h2 id=&#34;3-identification&#34;&gt;3. Identification&lt;/h2&gt;
+&lt;p&gt;At this stage, what do we know? For this vulnerability to occur, multiple servers must be in a request chain, and they must handle headers inconsistently.&lt;/p&gt;
+&lt;p&gt;The first step is to enumerate proxy servers using tools like traceroute or nslookup. Additionally, the presence of headers like Via or X-Forwarded-For may indicate a multi-hop setup involving proxies or load balancers.&lt;/p&gt;
+&lt;p&gt;Using Burp Suite, the HTTP Request Smuggler extension can automatically send crafted requests to detect vulnerabilities. But what happens under the hood?&lt;/p&gt;
+&lt;h3 id=&#34;basic-attack-techniques&#34;&gt;&lt;strong&gt;Basic Attack Techniques&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Before we proceed, let&amp;rsquo;s go over the three primary types of HTTP request smuggling attacks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CL.TE&lt;/strong&gt; (Content-Length vs. Transfer-Encoding mismatch)
+The frontend server processes Content-Length (CL), while the backend server processes Transfer-Encoding (TE).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TE.CL&lt;/strong&gt; (Transfer-Encoding vs. Content-Length mismatch)
+The reverse of the above: the frontend processes Transfer-Encoding, while the backend relies on Content-Length.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TE.TE&lt;/strong&gt; (Two conflicting Transfer-Encoding headers)
+Different servers in the chain handle the multiple Transfer-Encoding headers inconsistently.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are some prerequisites for identifying these vulnerabilities:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;The attack surface applies only to HTTP/1.1.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;In Burp Suite, navigate to Repeater, switch the HTTP version to 1.1, and verify whether the request is supported.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Enable the option to display non-printable characters. You&amp;rsquo;ll see &lt;code&gt;\r\n&lt;/code&gt; (Carriage Return + Line Feed) at the end of each line. HTTP follows legacy Telnet/MIME standards, where \r\n marks the start of a new line.
+An additional \r\n after the headers marks the transition between headers and the request body.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;understanding-chunked-encoding&#34;&gt;&lt;strong&gt;Understanding Chunked Encoding&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Before testing, it&amp;rsquo;s important to understand the chunked transfer encoding format. According to the HTTP specification, a chunked body is structured as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chunked-body   &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; *chunk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                 last-chunk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                 trailer-section
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                 CRLF
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;chunk&lt;/span&gt;          &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; chunk-size CRLF
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                 chunk-data CRLF
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The chunk size is a hexadecimal value specifying the length of the chunk data.
+The trailer section may contain additional headers, but for this test, we will ignore them.
+A correctly formatted chunked body looks like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;abc&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;0&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Where first chunk of size 3 sends value &lt;code&gt;abc&lt;/code&gt; and next chunk with size 0 and CRLF at next line tells server that it&amp;rsquo;s last chunk.&lt;/p&gt;
+&lt;p&gt;Now, let’s proceed with testing.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Identifying the Vulnerability&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To test for request smuggling, send the following request:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;abc&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here’s what&amp;rsquo;s happening:&lt;/p&gt;
+&lt;p&gt;The body has 13 bytes, but the Content-Length: 6 header tells the server to expect only 6 bytes.
+The presence of X after abc may reveal an inconsistency in how the frontend and backend interpret the request.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Possible Responses&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;Immediate rejection: The frontend correctly recognizes Transfer-Encoding: chunked and interprets X as an invalid chunk size (not hexadecimal).This suggests the server correctly processes TE. But we cannot say how backend is reacting. In this situation is either TE.CL or TE.TE&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Correct response: This means the frontend and backend both rely on Content-Length, making the application resistant to request smuggling.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Timeout: The backend ignores Content-Length, interprets abc as a chunk, but fails on X, as it&amp;rsquo;s not a valid chunk size. The backend waits indefinitely for a valid chunk size, which never arrives. This indicates a TE.CL vulnerability.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Confirming TE.TE vs. TE.CL&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To determine whether the application is vulnerable to TE.TE or TE.CL, send a second request:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;0&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Possible Responses&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;Correct response: This suggests either TE.TE or CL.CL handling.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;CL.TE behavior: The frontend forwards the entire body, but the backend leaves X in the buffer. If a follow-up request is sent, it may cause an invalid method error like XPOST, showing that X was treated as the beginning of the next request.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Timeout: The frontend ignores Content-Length, meaning X is never sent. The backend expects a total body length of 6 but never receives it. This confirms a TE.CL vulnerability.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Automatic Identification&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I showed you how to manually test applications with those two requests. But it&amp;rsquo;s done by the Burp Suite extension &lt;strong&gt;&lt;a href=&#34;https://portswigger.net/bappstore/aaaa60ef945341e8a450217a54a11646&#34;&gt;HTTP Request Smuggler&lt;/a&gt;&lt;/strong&gt;. To run the extension, right-click on the request and Extensions -&amp;gt; HTTP Request Smuggler -&amp;gt; Smuggle Probe. In the target tab, I got the message:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Possible HTTP Request Smuggling: CL.TE multiCase (delayed response).&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And in one of the requests below, it&amp;rsquo;s a request similar to those shown above:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tRANSFER-ENCODING: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;y&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Z&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Q&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The response from this request is a timeout. Why is it suggesting it&amp;rsquo;s CL.TE? Similar to the previous case, the frontend completely ignores TE, but the backend does not. As it gets Q as a chunk size, it waits for the proper value and responds with a timeout.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tRANSFER-ENCODING: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;x&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;y&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;0&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\r\n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This time, automatic detection for TE.CL occurs. A very similar approach is used. The frontend ignores X as it uses TE and detects the last chunk. The backend, however, waits for the 14th byte based on the CL value but never receives it, resulting in a timeout.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Detecting TE.TE&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;As we showed above, TE.TE can be successfully detected with the first two requests. This situation happens when both the backend and frontend use TE, and we can obfuscate headers to force one of the servers not to process it. As explained on PortSwigger Academy:&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Each of these techniques involves a subtle departure from the HTTP specification. Real-world code that implements a protocol specification rarely adheres to it with absolute precision, and it is common for different implementations to tolerate different variations from the specification.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;So it&amp;rsquo;s up to the attacker to find subtle differences that allow a header to be ignored. As you can see in the example above from the extension, it uses an obfuscation technique by changing all the characters to uppercase except the first letter: tRANSFER-ENCODING: chunked. The extension tries to perform multiple identifications at once, so it combines multiple techniques into a single request.&lt;/p&gt;
+&lt;p&gt;There are many techniques to obfuscate the TE header. Here are a couple of them:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding: xchunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding: x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding:&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;tab&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;space&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;Transfer-Encoding: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X: X&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#8045ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;Transfer-Encoding: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-encoding: identity
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-encoding: cow
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tRANSFER-ENCODING: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;4-conclusion--whats-next&#34;&gt;4. Conclusion &amp;amp; What&amp;rsquo;s Next&lt;/h2&gt;
+&lt;p&gt;In this first part, we&amp;rsquo;ve laid the groundwork for understanding HTTP request smuggling. We explored key HTTP headers, examined how inconsistencies between front-end and back-end processing can lead to vulnerabilities, and discussed manual and automated techniques for identifying these issues. By grasping the fundamentals of Content-Length and Transfer-Encoding conflicts, we can now move forward to more advanced exploitation strategies.&lt;/p&gt;
+&lt;p&gt;In the next part, we will delve into various exploitation techniques that go beyond simple detection. We will explore how attackers use request smuggling to bypass authentication, hijack user sessions, and poison caches. Additionally, we&amp;rsquo;ll cover real-world case studies and defense strategies to mitigate these attacks effectively.&lt;/p&gt;
+&lt;p&gt;Stay tuned for the second part, where we shift from identification to exploitation.&lt;/p&gt;
+</description>
+      <author>Blazej Gutowski</author>
+      <guid>http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/</guid>
+      <pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate>
+    </item>
+    
+    <item>
       <title>How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips</title>
-      <link>http://localhost:52535/posts/bscp-reflections-and-tips/</link>
+      <link>http://localhost:1313/posts/bscp-reflections-and-tips/</link>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Did you know that the demand for certified cybersecurity professionals is expected to grow by 35% by 2025? Here’s how I navigated the challenges of becoming a Burp Suite Certified Practitioner and what I learned along the way.&lt;/p&gt;
 &lt;h3 id=&#34;a-bit-about-me&#34;&gt;A Bit About Me&lt;/h3&gt;
@@ -97,7 +322,7 @@
 &lt;p&gt;Becoming a Burp Suite Certified Practitioner was one of the most challenging yet rewarding experiences of my career. If I can do it, so can you—start your journey today! If you’re considering becoming a Burp Suite Certified Practitioner, I’d love to hear about your journey. For more tips on cybersecurity, penetration testing, CTFs and bug hunting, follow my blog.&amp;quot;&lt;/p&gt;
 </description>
       <author>Blazej Gutowski</author>
-      <guid>http://localhost:52535/posts/bscp-reflections-and-tips/</guid>
+      <guid>http://localhost:1313/posts/bscp-reflections-and-tips/</guid>
       <pubDate>Wed, 22 Jan 2025 00:00:00 +0000</pubDate>
     </item>
     

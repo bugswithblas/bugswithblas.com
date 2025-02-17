@@ -2,29 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:52535/</loc>
-    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/posts/</loc>
-    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/http/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/tags/bscp/</loc>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/request-smuggling/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/bscp/</loc>
     <lastmod>2025-01-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/tags/burp-suite/</loc>
+    <loc>http://localhost:1313/tags/burp-suite/</loc>
     <lastmod>2025-01-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/tags/certification/</loc>
+    <loc>http://localhost:1313/tags/certification/</loc>
     <lastmod>2025-01-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/posts/bscp-reflections-and-tips/</loc>
+    <loc>http://localhost:1313/posts/bscp-reflections-and-tips/</loc>
     <lastmod>2025-01-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:52535/tags/</loc>
-    <lastmod>2025-01-22T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/about/</loc>
   </url><url>
-    <loc>http://localhost:52535/about/</loc>
-  </url><url>
-    <loc>http://localhost:52535/pages/</loc>
+    <loc>http://localhost:1313/pages/</loc>
   </url>
 </urlset>

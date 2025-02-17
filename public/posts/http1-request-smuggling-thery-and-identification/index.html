@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Liste - http://localhost:1313/">
-    <title>HTTP Request Smuggling for HTTP/1.1 | Bugs with Blas</title>
+    <title>Request Smuggling for HTTP/1.1 - Theory and Identification | Bugs with Blas</title>
     <meta name="description" content="Hi, I&#39;m Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I&#39;ve transitioned into the exciting field of cybersecurity. Here, you&#39;ll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.">
-    <meta property="og:url" content="http://localhost:1313/posts/http-request-smuggling-for-http1/">
+    <meta property="og:url" content="http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/">
   <meta property="og:site_name" content="Bugs with Blas">
-  <meta property="og:title" content="HTTP Request Smuggling for HTTP/1.1">
+  <meta property="og:title" content="Request Smuggling for HTTP/1.1 - Theory and Identification">
   <meta property="og:description" content="1. Introduction As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.
 To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.">
   <meta property="og:locale" content="en_us">
@@ -21,15 +21,15 @@ To fully understand this attack, it is essential to grasp the fundamentals of th
     <meta property="article:tag" content="HTTP">
 
     
-  <meta itemprop="name" content="HTTP Request Smuggling for HTTP/1.1">
+  <meta itemprop="name" content="Request Smuggling for HTTP/1.1 - Theory and Identification">
   <meta itemprop="description" content="1. Introduction As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.
 To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.">
   <meta itemprop="datePublished" content="2025-02-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-02-16T00:00:00+00:00">
-  <meta itemprop="wordCount" content="1891">
+  <meta itemprop="wordCount" content="1975">
   <meta itemprop="keywords" content="Request Smuggling,HTTP">
     
-    <link rel="canonical" href="http://localhost:1313/posts/http-request-smuggling-for-http1/">
+    <link rel="canonical" href="http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/">
     <link rel="icon" href="http://localhost:1313//assets/favicon.ico">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <link href="https://www.google-analytics.com" rel="preconnect" crossorigin>
@@ -49,15 +49,15 @@ To fully understand this attack, it is essential to grasp the fundamentals of th
       "@context": "http://schema.org",
       "@type": "BlogPosting",
       "articleSection": "posts",
-      "name": "HTTP Request Smuggling for HTTP\/1.1",
-      "headline": "HTTP Request Smuggling for HTTP\/1.1",
+      "name": "Request Smuggling for HTTP\/1.1 - Theory and Identification",
+      "headline": "Request Smuggling for HTTP\/1.1 - Theory and Identification",
       "alternativeHeadline": "",
       "description": "\u003ch2 id=\u00221-introduction\u0022\u003e1. Introduction\u003c\/h2\u003e\n\u003cp\u003eAs I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.\u003c\/p\u003e\n\u003cp\u003eTo fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.\u003c\/p\u003e",
       "inLanguage": "en-us",
       "isFamilyFriendly": "true",
       "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": "http:\/\/localhost:1313\/posts\/http-request-smuggling-for-http1\/"
+          "@id": "http:\/\/localhost:1313\/posts\/http1-request-smuggling-thery-and-identification\/"
       },
       "author" : {
           "@type": "Person",
@@ -88,8 +88,8 @@ To fully understand this attack, it is essential to grasp the fundamentals of th
           }
       },
       "image": "http://localhost:1313/assets/favicon.ico",
-      "url" : "http:\/\/localhost:1313\/posts\/http-request-smuggling-for-http1\/",
-      "wordCount" : "1891",
+      "url" : "http:\/\/localhost:1313\/posts\/http1-request-smuggling-thery-and-identification\/",
+      "wordCount" : "1975",
       "genre" : [ "Request Smuggling" , "HTTP" ],
       "keywords" : [ "Request Smuggling" , "HTTP" ]
   }
@@ -123,7 +123,7 @@ To fully understand this attack, it is essential to grasp the fundamentals of th
 </header>
 <hr class="hr-list" style="padding: 0;margin: 0;">
     <section>
-      <h2 class="post">HTTP Request Smuggling for HTTP/1.1</h2>
+      <h2 class="post">Request Smuggling for HTTP/1.1 - Theory and Identification</h2>
       <h2 id="1-introduction">1. Introduction</h2>
 <p>As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.</p>
 <p>To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.</p>
@@ -336,18 +336,10 @@ The presence of X after abc may reveal an inconsistency in how the frontend and 
 </span></span><span style="display:flex;"><span>Transfer-encoding: cow
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>tRANSFER-ENCODING: chunked
-</span></span></code></pre></div><h2 id="5-exploiting-diffrent-types-of-http-request-smuggling">5. Exploiting diffrent types of HTTP Request Smuggling</h2>
-<p>CL.TE exploitation
-TE.CL explotation
-TE.TE explotation
-CL.0</p>
-<h2 id="6-conclusion">6. Conclusion</h2>
-<ul>
-<li>Summary of key points.</li>
-<li>The evolving nature of HTTP and new security challenges.</li>
-<li>How to defend</li>
-<li>Encouraging proactive security testing and mitigation efforts.</li>
-</ul>
+</span></span></code></pre></div><h2 id="4-conclusion--whats-next">4. Conclusion &amp; What&rsquo;s Next</h2>
+<p>In this first part, we&rsquo;ve laid the groundwork for understanding HTTP request smuggling. We explored key HTTP headers, examined how inconsistencies between front-end and back-end processing can lead to vulnerabilities, and discussed manual and automated techniques for identifying these issues. By grasping the fundamentals of Content-Length and Transfer-Encoding conflicts, we can now move forward to more advanced exploitation strategies.</p>
+<p>In the next part, we will delve into various exploitation techniques that go beyond simple detection. We will explore how attackers use request smuggling to bypass authentication, hijack user sessions, and poison caches. Additionally, we&rsquo;ll cover real-world case studies and defense strategies to mitigate these attacks effectively.</p>
+<p>Stay tuned for the second part, where we shift from identification to exploitation.</p>
 
       
       <div class="post-date">

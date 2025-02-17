@@ -1,12 +1,12 @@
 ---
-title: "HTTP Request Smuggling for HTTP/1.1"
+title: "Request Smuggling for HTTP/1.1 - Theory and Identification"
 description: ""
 showTableOfContents: true
 tags:
   - "Request Smuggling"
   - HTTP
 type: post
-draft: true
+draft: false
 date: 2025-02-16
 ---
 
@@ -116,9 +116,7 @@ Different servers in the chain handle the multiple Transfer-Encoding headers inc
 There are some prerequisites for identifying these vulnerabilities:
  - 1. The attack surface applies only to HTTP/1.1.
  - 2. In Burp Suite, navigate to Repeater, switch the HTTP version to 1.1, and verify whether the request is supported.
- - 3. Enable the option to display non-printable characters.
- 
-`\r\n` (Carriage Return + Line Feed) at the end of each line. HTTP follows legacy Telnet/MIME standards, where \r\n marks the start of a new line.
+ - 3. Enable the option to display non-printable characters. You'll see `\r\n` (Carriage Return + Line Feed) at the end of each line. HTTP follows legacy Telnet/MIME standards, where \r\n marks the start of a new line.
 An additional \r\n after the headers marks the transition between headers and the request body.
 
 
@@ -146,9 +144,12 @@ abc\r\n
 \r\n
 ```
 
+Where first chunk of size 3 sends value `abc` and next chunk with size 0 and CRLF at next line tells server that it's last chunk.
+
 Now, let’s proceed with testing.
 
-Identifying the Vulnerability
+**Identifying the Vulnerability**
+
 To test for request smuggling, send the following request:
 
 ```bash
@@ -163,22 +164,21 @@ X\r\n
 
 Here’s what's happening:
 
-The body has 13 bytes, but the Content-Length: 6 header tells the server to expect only 6 bytes (abc\r\n).
+The body has 13 bytes, but the Content-Length: 6 header tells the server to expect only 6 bytes.
 The presence of X after abc may reveal an inconsistency in how the frontend and backend interpret the request.
-Possible Responses
-Immediate rejection:
 
-The frontend correctly recognizes Transfer-Encoding: chunked and interprets X as an invalid chunk size (not hexadecimal).
-This suggests the server correctly processes TE and is likely not vulnerable.
-Correct response (no smuggling detected):
+**Possible Responses**
 
-This means the frontend and backend both rely on Content-Length, making the application resistant to request smuggling.
-Timeout:
+- 1. Immediate rejection: The frontend correctly recognizes Transfer-Encoding: chunked and interprets X as an invalid chunk size (not hexadecimal).This suggests the server correctly processes TE. But we cannot say how backend is reacting. In this situation is either TE.CL or TE.TE
 
-The backend ignores Content-Length, interprets 3 abc as a chunk, but fails on X, as it's not a valid chunk size.
-The backend waits indefinitely for a valid chunk size, which never arrives.
-This indicates a TE.CL vulnerability.
-Confirming TE.TE vs. TE.CL
+- 2. Correct response: This means the frontend and backend both rely on Content-Length, making the application resistant to request smuggling.
+
+ - 3. Timeout: The backend ignores Content-Length, interprets abc as a chunk, but fails on X, as it's not a valid chunk size. The backend waits indefinitely for a valid chunk size, which never arrives. This indicates a TE.CL vulnerability.
+
+
+
+**Confirming TE.TE vs. TE.CL**
+
 To determine whether the application is vulnerable to TE.TE or TE.CL, send a second request:
 
 ```bash
@@ -190,32 +190,87 @@ Transfer-Encoding: chunked
 X
 ```
 
-Possible Responses
-Correct response:
+**Possible Responses**
 
-This suggests either TE.TE or CL.CL handling.
-CL.TE behavior:
+ - 1. Correct response: This suggests either TE.TE or CL.CL handling.
 
-The frontend forwards the entire body, but the backend leaves X in the buffer.
-If a follow-up request is sent, it may cause an invalid method error like XPOST, showing that X was treated as the beginning of the next request.
-Timeout:
+ - 2. CL.TE behavior: The frontend forwards the entire body, but the backend leaves X in the buffer. If a follow-up request is sent, it may cause an invalid method error like XPOST, showing that X was treated as the beginning of the next request.
 
-The frontend ignores Content-Length, meaning X is never sent.
-The backend expects a total body length of 6 but never receives it.
-This confirms a TE.CL vulnerability.
-
-HTTP Request Smuggler identification
-Detecting TE.TE
+ - 3. Timeout: The frontend ignores Content-Length, meaning X is never sent. The backend expects a total body length of 6 but never receives it. This confirms a TE.CL vulnerability.
 
 
-## 5. Exploiting diffrent types of HTTP Request Smuggling
-CL.TE exploitation
-TE.CL explotation
-TE.TE explotation
-CL.0
+**Automatic Identification**
 
-## 6. Conclusion
-- Summary of key points.  
-- The evolving nature of HTTP and new security challenges.
-- How to defend  
-- Encouraging proactive security testing and mitigation efforts.  
+I showed you how to manually test applications with those two requests. But it's done by the Burp Suite extension **[HTTP Request Smuggler](https://portswigger.net/bappstore/aaaa60ef945341e8a450217a54a11646)**. To run the extension, right-click on the request and Extensions -> HTTP Request Smuggler -> Smuggle Probe. In the target tab, I got the message: 
+
+> "Possible HTTP Request Smuggling: CL.TE multiCase (delayed response)."
+
+And in one of the requests below, it's a request similar to those shown above:
+
+
+```bash
+Content-Length: 13
+tRANSFER-ENCODING: chunked
+\r\n
+3\r\n
+x=y\r\n
+1\r\n
+Z\r\n
+Q\r\n
+\r\n
+```
+
+The response from this request is a timeout. Why is it suggesting it's CL.TE? Similar to the previous case, the frontend completely ignores TE, but the backend does not. As it gets Q as a chunk size, it waits for the proper value and responds with a timeout.
+
+```bash
+Content-Length: 14
+tRANSFER-ENCODING: chunked
+\r\n
+3\r\n
+x=y\r\n
+0\r\n
+\r\n
+X
+```
+
+This time, automatic detection for TE.CL occurs. A very similar approach is used. The frontend ignores X as it uses TE and detects the last chunk. The backend, however, waits for the 14th byte based on the CL value but never receives it, resulting in a timeout.
+
+**Detecting TE.TE**
+
+As we showed above, TE.TE can be successfully detected with the first two requests. This situation happens when both the backend and frontend use TE, and we can obfuscate headers to force one of the servers not to process it. As explained on PortSwigger Academy:
+
+"Each of these techniques involves a subtle departure from the HTTP specification. Real-world code that implements a protocol specification rarely adheres to it with absolute precision, and it is common for different implementations to tolerate different variations from the specification."
+
+So it's up to the attacker to find subtle differences that allow a header to be ignored. As you can see in the example above from the extension, it uses an obfuscation technique by changing all the characters to uppercase except the first letter: tRANSFER-ENCODING: chunked. The extension tries to perform multiple identifications at once, so it combines multiple techniques into a single request.
+
+There are many techniques to obfuscate the TE header. Here are a couple of them:
+
+```bash
+Transfer-Encoding: xchunked
+
+Transfer-Encoding: x
+
+Transfer-Encoding:[tab]chunked
+
+[space]Transfer-Encoding: chunked
+
+X: X[\n]Transfer-Encoding: chunked
+
+Transfer-Encoding
+: chunked
+
+Transfer-encoding: identity
+
+Transfer-encoding: cow
+
+tRANSFER-ENCODING: chunked
+```
+
+
+## 4. Conclusion & What's Next
+
+In this first part, we've laid the groundwork for understanding HTTP request smuggling. We explored key HTTP headers, examined how inconsistencies between front-end and back-end processing can lead to vulnerabilities, and discussed manual and automated techniques for identifying these issues. By grasping the fundamentals of Content-Length and Transfer-Encoding conflicts, we can now move forward to more advanced exploitation strategies.
+
+In the next part, we will delve into various exploitation techniques that go beyond simple detection. We will explore how attackers use request smuggling to bypass authentication, hijack user sessions, and poison caches. Additionally, we'll cover real-world case studies and defense strategies to mitigate these attacks effectively.
+
+Stay tuned for the second part, where we shift from identification to exploitation.
