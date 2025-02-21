@@ -269,8 +269,8 @@ tRANSFER-ENCODING: chunked
 
 ## 4. Conclusion & What's Next
 
-In this first part, we've laid the groundwork for understanding HTTP request smuggling. We explored key HTTP headers, examined how inconsistencies between front-end and back-end processing can lead to vulnerabilities, and discussed manual and automated techniques for identifying these issues. By grasping the fundamentals of Content-Length and Transfer-Encoding conflicts, we can now move forward to more advanced exploitation strategies.
+We've established a solid foundation for understanding HTTP request smuggling. We've examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.
 
-In the next part, we will delve into various exploitation techniques that go beyond simple detection. We will explore how attackers use request smuggling to bypass authentication, hijack user sessions, and poison caches. Additionally, we'll cover real-world case studies and defense strategies to mitigate these attacks effectively.
+In the next article, we'll dive into HTTP/2 request smuggling—how it differs from HTTP/1.1, the nuances of length control, and how these differences can be leveraged for exploitation.
 
-Stay tuned for the second part, where we shift from identification to exploitation.
+Stay tuned for part two.
