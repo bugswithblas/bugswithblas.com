@@ -15,142 +15,147 @@ date: 2025-02-23
 ---
 
 ## 1. Introduction
-- Importance of authentication and authorization in web security  
-- Overview of modern authentication mechanisms  
-- Attackers’ motivation and common security pitfalls  
-
----
+- Importance of authentication and authorization in web security
+- Overview of modern authentication mechanisms
+- Attackers' motivation and common security pitfalls
 
 ## 2. Authentication vs Authorization
-- **Authentication** – verifying user identity  
-- **Authorization** – granting or restricting access  
-- Differences and their role in web applications  
 
----
+Authentication and Authorization are two fundamental concepts in security that address different aspects of user access control.
+
+### Authentication: Who Are You?
+
+Authentication is the process of verifying a user's identity. It's essentially the system asking, "Who are you?" When we authenticate, we provide data that allows the system to confirm our identity with certainty. This could involve:
+
+- Entering a username and password
+- Using biometric data (fingerprint, facial recognition)
+- Providing a security token
+
+### Authorization: What Can You Do?
+
+Once authenticated, authorization comes into play. It determines what actions an authenticated user is permitted to perform within the system. When we try to perform actions like uploading a photo or accessing a specific path, the system asks, "I know who you are, but are you allowed to do this?"
+
+### Key Differences
+To summarize the distinction:
+- **Authentication** - verifying user identity
+- **Authorization** - granting or restricting access
+
 
 ## 3. Types of Authentication
+
+So as we all use webistes and creating accounts, we know that basic type of authentication is providing username and password. Bu underneath of this are many techinques working in the background non visible for the user let's shortly get to know all of them
+
 ### 3.1 HTTP Basic Authentication
-- Sends username and password in base64 encoding in the `Authorization` header
-- Simple but insecure if not used over HTTPS
+
+The simplest one, present firsty in 1992 and is present is http specification since 1996. It's not require login pages, cookies or tokens. All the data are transfered inside header Authorization:
+
+```bash
+Authorization: Basic <encoded64(username:password)>
+```
+
+Basically server when see the header with word Basic decode value and compare with with database or other provider.
+
 
 ### 3.2 HTTP Digest Authentication
-- Uses cryptographic hashing of credentials to improve security over Basic Authentication
-- Still vulnerable to replay attacks if nonce values are predictable
+
+In contrast to the Basic method it use hashing instead of reversiable encoding. The Authentication starts with server sending challenge:
+
+```bash
+GET /admin HTTP/1.1
+Host: example.com
+```
+
+```bash
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Digest realm="Access to the '/' path", nonce="e4549c0548886bc2", algorithm="MD5"
+```
+
+```bash
+GET /admin HTTP/1.1
+Host: example.com
+Authorization: Digest username="user", realm="Access to the '/' path", nonce="e4549c0548886bc2", uri="/admin", algorithm=MD5, response="6299988bb4f05c0d8ad44295873858cf"
+
+```
+
 
 ### 3.3 Session-Based Authentication
-- Uses cookies to maintain authenticated sessions
-- Session ID stored on the server and referenced via cookies
-- Requires proper session management for security
-
 ### 3.4 Token-Based Authentication
-- Stateless authentication mechanism
-- No need to store session state on the server
-- Common implementations include JWT (JSON Web Token)
-
 ### 3.5 One Time Passwords (OTP)
-- Time-based (TOTP) or HMAC-based (HOTP) passwords
-- Used for multi-factor authentication (MFA)
-- Common implementations include Google Authenticator, Authy, and SMS-based OTPs
-
 ### 3.6 OAuth 2.0
-- Authorization framework used for third-party access
-- Access tokens & refresh tokens
-- Grant types: Authorization Code, Implicit, Client Credentials, Resource Owner Password Credentials
-
 ### 3.7 OpenID Connect (OIDC)
-- Identity layer on top of OAuth2
-- User authentication with identity tokens
-
 ### 3.8 WebAuthn (FIDO2)
-- Passwordless authentication using public-key cryptography
-- Supports hardware security keys (YubiKey, Titan, etc.) and biometric authentication
-
 ### 3.9 Magic Links
-- Authentication via email-based login links
-- Used as a passwordless authentication method
-
----
 
 ## 4. Session Management
-- **How Sessions Work**  
-  - Stored on the client side (cookies) or server side
-  - Used for managing user authentication
-
----
+- How Sessions Work
+- Server-side vs Client-side Sessions
 
 ## 5. Cookies: Security Attributes & Best Practices
-- **HttpOnly** – Prevents JavaScript access  
-- **Secure** – Only transmitted over HTTPS  
-- **SameSite** – Protection against CSRF  
-  - None, Lax, Strict  
-- **Domain & Path** – Restricts access scope  
-- **Max-Age & Expires** – Controlling session duration  
-
----
+- HttpOnly, Secure, SameSite
+- Domain & Path
+- Max-Age & Expires
 
 ## 6. Authentication & Session Attacks
 ### 6.1 Session Hijacking
-- Stealing session tokens (via XSS, MitM, etc.)  
-- Preventive measures: HttpOnly, Secure, CSP, HSTS  
-
 ### 6.2 Session Fixation
-- Forcing a user to use a predefined session ID  
-- Mitigation: Regenerate session ID after login  
-
 ### 6.3 CSRF (Cross-Site Request Forgery)
-- Exploiting authenticated sessions  
-- Mitigation: SameSite cookies, CSRF tokens  
-
 ### 6.4 XSS (Cross-Site Scripting) & Token Theft
-- Injecting JavaScript to steal authentication tokens  
-- Protection: CSP, input sanitization, HttpOnly cookies  
-
 ### 6.5 Token Leakage & Replay Attacks
-- Exposure of JWT tokens (e.g., in URL, localStorage)  
-- Mitigation: Secure storage, short-lived tokens, audience validation  
-
 ### 6.6 Credential Stuffing
-- Attackers use leaked credentials from data breaches to gain unauthorized access
-- Mitigation: Enforce strong password policies, MFA, and login attempt monitoring
-
 ### 6.7 Brute Force Attacks
-- Repeated attempts to guess passwords or API keys
-- Mitigation: Implement rate limiting, account lockout mechanisms, and CAPTCHA
-
 ### 6.8 Man-in-the-Middle (MitM) Attacks
-- Interception of authentication credentials during transmission
-- Mitigation: Enforce TLS/SSL, use secure headers (HSTS), and validate certificates
-
 ### 6.9 Phishing Attacks
-- Social engineering attacks to trick users into revealing authentication credentials
-- Mitigation: Use MFA, educate users, and implement phishing-resistant authentication methods
-
 ### 6.10 OAuth Token Abuse
-- Attackers misuse OAuth access tokens for unauthorized access
-- Mitigation: Implement token expiration, scope validation, and secure token storage
-
 ### 6.11 Session Prediction
-- Guessing valid session IDs to hijack user sessions
-- Mitigation: Use cryptographically secure session ID generation
-
 ### 6.12 API Key Leakage
-- API keys exposed in public repositories, URLs, or client-side scripts
-- Mitigation: Store API keys securely, rotate them regularly, and use scopes
-
----
 
 ## 7. Best Practices for Secure Authentication & Authorization
-- Use HTTPS everywhere  
-- Enforce strong password policies + MFA  
-- Implement proper session expiration & token revocation  
-- Use secure cookie attributes  
-- Monitor and log authentication activities  
-- Implement least privilege access control  
-- Conduct regular security audits and penetration testing  
+- HTTPS everywhere
+- Strong password policies + MFA
+- Proper session expiration & token revocation
+- Secure cookie attributes
+- Monitoring and logging
+- Least privilege access control
+- Regular security audits and penetration testing
 
----
+## 8. Implementation Examples
+- JWT implementation
+- OAuth2 flow
+- WebAuthn integration
 
-## 8. Conclusion
-- Summary of key authentication mechanisms  
-- Importance of proper implementation to prevent attacks  
-- Future trends in web authentication (WebAuthn, Passkeys, etc.)  
+## 9. Comparison of Authentication Mechanisms
+- Table comparing different methods (advantages, disadvantages, use cases)
+
+## 10. Mobile Application Authentication
+- Biometric authentication
+- Serverless authentication
+- Mobile-specific challenges and solutions
+
+## 11. Regulatory Compliance
+- GDPR considerations
+- PSD2 and Strong Customer Authentication (SCA)
+
+## 12. Authentication in Microservices Architecture
+- Challenges in distributed environments
+- Service-to-service authentication
+- API gateways and authentication
+
+## 13. Security Testing for Authentication Systems
+- Penetration testing methodologies
+- Automated security scanning
+- Common vulnerabilities to test for
+
+## 14. Real-world Use Cases
+- Google's authentication ecosystem
+- Facebook's authentication and authorization
+- Banking sector authentication practices
+
+## 15. Future Trends in Web Authentication
+- Passwordless authentication
+- Blockchain-based identity management
+- Advancements in WebAuthn and Passkeys
+
+## 16. Conclusion
+- Summary of key authentication mechanisms
+- Importance of proper implementation
+- Balancing security and user experience
