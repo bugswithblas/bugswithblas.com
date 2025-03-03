@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bugs with Blas</title><description>Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description><link>https://bugswithblas.com/</link><language>en</language><copyright>Copyright 2025, Calvin Tran</copyright><lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate><generator>Hugo - gohugo.io</generator><docs>http://cyber.harvard.edu/rss/rss.html</docs><atom:link href="https://bugswithblas.com//atom.xml" rel="self" type="application/atom+xml"/><item><title>Request Smuggling for HTTP/1.1 - Theory and Identification</title><link>https://bugswithblas.com/posts/http1-request-smuggling-theory-and-identification/</link><description>&lt;h2 id="1-introduction">1. Introduction&lt;/h2>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bugs with Blas</title><description>Hi, I'm Błażej Gutowski, and this is my personal portfolio and blog. After several years of experience as an IT administrator, I've transitioned into the exciting field of cybersecurity. Here, you'll find insights into my journey as a penetration tester, my professional portfolio, and a collection of blog posts covering topics like pentesting, vulnerability research, and bug hunting.</description><link>https://bugswithblas.com/</link><language>en</language><copyright>Copyright 2025, Calvin Tran</copyright><lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate><generator>Hugo - gohugo.io</generator><docs>http://cyber.harvard.edu/rss/rss.html</docs><atom:link href="https://bugswithblas.com//atom.xml" rel="self" type="application/atom+xml"/><item><title>Understanding Request Smuggling</title><link>https://bugswithblas.com/posts/understanding-request-smuggling/</link><description>&lt;h2 id="1-introduction">1. Introduction&lt;/h2>
 &lt;p>As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.&lt;/p>
 &lt;p>To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.&lt;/p>
 &lt;p>For someone unfamiliar with this attack, request smuggling exploits discrepancies in how HTTP requests are parsed between front-end and back-end servers. The goal is to manipulate request boundaries, often causing one request to be interpreted as two separate ones. How is this accomplished? Why does this happen? These are the questions I will attempt to answer.&amp;quot;&lt;/p>
@@ -208,10 +208,58 @@ The presence of X after abc may reveal an inconsistency in how the frontend and 
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Transfer-encoding: cow
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tRANSFER-ENCODING: chunked
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="4-conclusion--whats-next">4. Conclusion &amp;amp; What&amp;rsquo;s Next&lt;/h2>
-&lt;p>We&amp;rsquo;ve established a solid foundation for understanding HTTP request smuggling. We&amp;rsquo;ve examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.&lt;/p>
-&lt;p>In the next article, we&amp;rsquo;ll dive into HTTP/2 request smuggling—how it differs from HTTP/1.1, the nuances of length control, and how these differences can be leveraged for exploitation.&lt;/p>
-&lt;p>Stay tuned for part two.&lt;/p></description><author>Blazej Gutowski</author><guid>https://bugswithblas.com/posts/http1-request-smuggling-theory-and-identification/</guid><pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate></item><item><title>How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips</title><link>https://bugswithblas.com/posts/bscp-reflections-and-tips/</link><description>&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="4-http2-request-smuggling">4. HTTP/2 Request Smuggling&lt;/h2>
+&lt;p>HTTP/2, while maintaining the same methods, status codes, and headers as its predecessor, fundamentally changes how data is formatted and transmitted. Unlike the text-based HTTP/1, HTTP/2 is a binary protocol, sending data as a collection of 0s and 1s. In the context of request smuggling, it&amp;rsquo;s crucial to note that HTTP/2 doesn&amp;rsquo;t use Transfer-Encoding or Content-Length headers in the same way. Instead, each frame specifies its length in bytes at the beginning, as defined in the HTTP/2 &lt;strong>&lt;a href="https://datatracker.ietf.org/doc/html/rfc7540#section-4.1">frame format&lt;/a>&lt;/strong>&lt;/p>
+&lt;h3 id="http2-downgrading">Http2 downgrading&lt;/h3>
+&lt;p>The vulnerability of HTTP/2 to request smuggling primarily stems from the process of HTTP/2 downgrading. Many organizations implement this downgrading for backward compatibility with legacy backend systems that haven&amp;rsquo;t yet transitioned to HTTP/2. This flexibility allows administrators to maintain access to older systems while using modern frontend solutions.&lt;/p>
+&lt;p>However, this backward compatibility introduces security risks. When downgrading occurs, the backend loses access to the HTTP/2 frame length value, potentially allowing the injection of HTTP/1 headers.&lt;/p>
+&lt;h3 id="h2cl-and-h2te">H2.CL and H2.TE&lt;/h3>
+&lt;p>In HTTP/2, requests use pseudo-headers instead of the traditional request line. For example, the path is represented by the :path pseudo-header, and the Host header is replaced by :authority. Here&amp;rsquo;s an example of how an attacker might attempt to smuggle a request:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>:method POST
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:path /test
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:authority example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>content-type application/x-www-form-urlencoded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>transfer-encoding chunked
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GET /admin HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Foo: Injected
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>When downgraded to HTTP/1.1, this request might look like:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>POST /test HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Content-Type: application/x-www-form-urlencoded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Transfer-Encoding: chunked
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GET /admin HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Foo: Injected
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In this scenario, the backend might interpret the body as a zero-length chunk, treating the rest as the beginning of a new request. This could potentially allow access to restricted paths like /admin.&lt;/p>
+&lt;p>Similarly, an attacker could attempt to inject a Content-Length header:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>:method POST
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:path /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:authority example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>content-type application/x-www-form-urlencoded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>content-length &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GET /admin HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>When downgraded, this becomes:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>POST / HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Content-Type: application/x-www-form-urlencoded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Content-Length: &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GET /admin HTTP/1.1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Host: example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here, the body of the request might be ignored due to the Content-Length being set to zero, potentially allowing the smuggled request to be processed.&lt;/p>
+&lt;p>There are many of possible injections points you can try, there is a great article about it by James Kettle: &lt;strong>&lt;a href="https://portswigger.net/research/http2">HTTP/2: The Sequel is Always Worse&lt;/a>&lt;/strong>. In this article i want to just show basic mechanism.&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>We’ve established a solid foundation for understanding HTTP request smuggling. We’ve examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.&lt;/p>
+&lt;p>Understanding HTTP/2 request smuggling requires knowledge of how HTTP/2 differs from HTTP/1, particularly in terms of data formatting and transmission. The vulnerability primarily arises from the downgrading process implemented for backward compatibility. By manipulating headers and taking advantage of how different servers interpret requests, attackers can potentially smuggle requests even in HTTP/2 environments.&lt;/p></description><author>Blazej Gutowski</author><guid>https://bugswithblas.com/posts/understanding-request-smuggling/</guid><pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate></item><item><title>How I Became a Burp Suite Certified Practitioner in 2025: Reflections and Tips</title><link>https://bugswithblas.com/posts/bscp-reflections-and-tips/</link><description>&lt;h2 id="introduction">Introduction&lt;/h2>
 &lt;p>Did you know that the demand for certified cybersecurity professionals is expected to grow by 35% by 2025? Here’s how I navigated the challenges of becoming a Burp Suite Certified Practitioner and what I learned along the way.&lt;/p>
 &lt;h3 id="a-bit-about-me">A Bit About Me&lt;/h3>
 &lt;p>To provide some context, let me share my background. I have nearly seven years of experience as an IT administrator, where I managed servers, networks, internal websites, and IT infrastructure. This role has given me a solid understanding of how applications and websites function, from the hardware level through servers and firewalls, all the way to the end user. These fundamentals have allowed me to grasp how web applications operate &amp;ldquo;in the background.&amp;rdquo;&lt;/p>
