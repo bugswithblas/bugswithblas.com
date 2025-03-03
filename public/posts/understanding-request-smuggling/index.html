@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Liste - http://localhost:1313/">
+    <title>Understanding Request Smuggling | Bugs with Blas</title>
+    <meta name="description" content="HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated.">
+    <meta property="og:url" content="http://localhost:1313/posts/understanding-request-smuggling/">
+  <meta property="og:site_name" content="Bugs with Blas">
+  <meta property="og:title" content="Understanding Request Smuggling">
+  <meta property="og:description" content="HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-16T00:00:00+00:00">
+    <meta property="article:tag" content="Request Smuggling">
+    <meta property="article:tag" content="HTTP">
+
+    
+  <meta itemprop="name" content="Understanding Request Smuggling">
+  <meta itemprop="description" content="HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated.">
+  <meta itemprop="datePublished" content="2025-02-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2344">
+  <meta itemprop="keywords" content="Request Smuggling,HTTP">
+    
+    <link rel="canonical" href="http://localhost:1313/posts/understanding-request-smuggling/">
+    <link rel="icon" href="http://localhost:1313//assets/favicon.ico">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link href="https://www.google-analytics.com" rel="preconnect" crossorigin>
+    <link rel="alternate" type="application/atom+xml" title="Bugs with Blas" href="http://localhost:1313//atom.xml" />
+    <link rel="alternate" type="application/json" title="Bugs with Blas" href="http://localhost:1313//feed.json" />
+    <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bricolage+Grotesque">
+    
+    
+    <style>*,:after,:before{box-sizing:border-box;padding:0}body{font:1rem/1.5 bricolage grotesque,-apple-system,BlinkMacSystemFont,segoe ui,Helvetica,Arial,sans-serif;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding:2rem;background:#fffdfa;color:#000}.skip-link{position:absolute;top:-40px;left:0;background:#eee;z-index:100}.skip-link:focus{top:0}header{line-height:2;padding-bottom:1.5rem}.link{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.time{font-variant-numeric:tabular-nums;white-space:nowrap}blockquote{border-left:5px solid #eee;padding-left:1rem;margin:0}a,a:visited{color:inherit}a:hover,a.heading-link{text-decoration:none}pre{padding:.5rem;overflow:auto;overflow-x:scroll;overflow-wrap:normal}code,pre{font-family:San Francisco Mono,Monaco,consolas,lucida console,dejavu sans mono,bitstream vera sans mono,monospace;font-size:normal;font-size:small;background:#eee}code{margin:.1rem;border:none}ul{list-style-type:square}ul,ol{padding-left:1.2rem}.list{line-height:2;list-style-type:none;padding-left:0}.list li{padding-bottom:.1rem}.meta{color:#777}.content{max-width:70ch;margin:0 auto}header{line-height:2;display:flex;justify-content:space-between;padding-bottom:1rem}header a{text-decoration:none}header ul{list-style-type:none;padding:0}header li,header a{display:inline}h2.post{padding-top:.5rem}header ul a:first-child{padding-left:1rem}.nav{height:1px;background:#000;content:'';max-width:10%}.list li{display:flex;align-items:baseline}.list li time{flex:initial}.hr-list{margin-top:0;margin-bottom:0;margin-right:.5rem;margin-left:.5rem;height:1px;border:0;border-bottom:1px dotted #ccc;flex:1 0 1rem}.m,hr{border:0;margin:3rem 0}img{max-width:100%;height:auto}.post-date{margin:5% 0}.index-date{color:#9a9a9a}.animate-blink{animation:opacity 1s infinite;opacity:1}@keyframes opacity{0%{opacity:1}50%{opacity:.5}100%{opacity:0}}.tags{display:flex;justify-content:space-between}.tags ul{padding:0;margin:0}.tags li{display:inline}.avatar{height:120px;width:120px;position:relative;margin:-10px 0 0 15px;float:right;border-radius:50%}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;text-align:left;padding:8px}th{background-color:#f2f2f2} </style>
+  
+    
+  
+  
+  <script type="application/ld+json">
+  {
+      "@context": "http://schema.org",
+      "@type": "BlogPosting",
+      "articleSection": "posts",
+      "name": "Understanding Request Smuggling",
+      "headline": "Understanding Request Smuggling",
+      "alternativeHeadline": "",
+      "description": "HTTP request smuggling is a powerful attack that exploits inconsistencies in how front-end and back-end servers parse HTTP requests. This article provides a deep dive into the fundamentals, covering key HTTP headers like Content-Length and Transfer-Encoding, and explaining how parsing discrepancies create security risks. We explore how modern web architectures contribute to these vulnerabilities and demonstrate both manual and automated.",
+      "inLanguage": "en-us",
+      "isFamilyFriendly": "true",
+      "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "http:\/\/localhost:1313\/posts\/understanding-request-smuggling\/"
+      },
+      "author" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "creator" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "accountablePerson" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "copyrightHolder" : "Bugs with Blas",
+      "copyrightYear" : "2025",
+      "dateCreated": "2025-02-16T00:00:00.00Z",
+      "datePublished": "2025-02-16T00:00:00.00Z",
+      "dateModified": "2025-02-16T00:00:00.00Z",
+      "publisher":{
+          "@type":"Organization",
+          "name": "Bugs with Blas",
+          "url": "http://localhost:1313/",
+          "logo": {
+              "@type": "ImageObject",
+              "url": "http:\/\/localhost:1313\/assets\/favicon.ico",
+              "width":"32",
+              "height":"32"
+          }
+      },
+      "image": "http://localhost:1313/assets/favicon.ico",
+      "url" : "http:\/\/localhost:1313\/posts\/understanding-request-smuggling\/",
+      "wordCount" : "2344",
+      "genre" : [ "Request Smuggling" , "HTTP" ],
+      "keywords" : [ "Request Smuggling" , "HTTP" ]
+  }
+  </script>
+  
+  
+  </head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main</a>
+  <main id="main">
+  <div class="content">
+    <header>
+<p style="padding: 0;margin: 0;">
+  <a href="http://localhost:1313/">
+    <b>Bugs with Blas</b>
+    <span class="text-stone-500 animate-blink">▮</span>
+  </a>
+</p>
+<ul style="padding: 0;margin: 0;">
+  
+  
+  <li class="">
+    <a href="/posts/"><span>Post</span></a>
+    
+  <li class="">
+    <a href="/about/"><span>About</span></a>
+    
+  </li>
+</ul>
+</header>
+<hr class="hr-list" style="padding: 0;margin: 0;">
+    <section>
+      <h2 class="post">Understanding Request Smuggling</h2>
+      <h2 id="1-introduction">1. Introduction</h2>
+<p>As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.</p>
+<p>To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.</p>
+<p>For someone unfamiliar with this attack, request smuggling exploits discrepancies in how HTTP requests are parsed between front-end and back-end servers. The goal is to manipulate request boundaries, often causing one request to be interpreted as two separate ones. How is this accomplished? Why does this happen? These are the questions I will attempt to answer.&quot;</p>
+<p>The impact of request smuggling varies depending on the web application&rsquo;s infrastructure and security controls. In some cases, it can allow an attacker to bypass authentication, access restricted resources, or hijack user sessions—posing a serious security risk.</p>
+<h2 id="2-understanding-core-http-headers-in-request-smuggling">2. Understanding Core HTTP Headers in Request Smuggling</h2>
+<p>Before diving into attack techniques, it’s important to understand the headers that play a crucial role in HTTP request parsing.</p>
+<p>But first, when were these headers introduced, and what problems did they solve? <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Evolution_of_HTTP#http1.1_%E2%80%93_the_standardized_protocol">HTTP/1.1</a> was introduced in 1997 to address some of the issues in version 1.0. The main problem with HTTP/1.0 was its inefficiency—each request required a full <strong>3-way handshake</strong> before it could be processed. Additionally, it lacked built-in support for persistent connections and caching mechanisms. One of the solutions introduced in HTTP/1.1 was the Transfer-Encoding header, which helped improve efficiency in data transmission.</p>
+<h3 id="key-http-headers-relevant-to-request-smuggling"><strong>Key HTTP Headers Relevant to Request Smuggling</strong></h3>
+<h4 id="connection-and-keep-alive"><strong>Connection and Keep-Alive</strong></h4>
+<p>While the Content-Length and Transfer-Encoding headers specify message lengths, the Connection and Keep-Alive headers allow a connection to remain open for multiple requests, reducing the need for a <strong>3-way handshake</strong> with every request.</p>
+<p>The Connection header has two primary options:</p>
+<ul>
+<li><strong>keep-alive</strong> (default in HTTP/1.1): Keeps the connection open for subsequent requests.</li>
+<li><strong>close</strong>: Closes the connection after the response is sent.</li>
+</ul>
+<p>The Keep-Alive header specifies the number of requests allowed before the connection is closed and the duration for which an idle connection remains open.<br>
+Example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Keep-Alive: <span style="color:#111">timeout</span><span style="color:#f92672">=</span>5, <span style="color:#111">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>
+</span></span></code></pre></div><p>This means the connection will remain open for up to 5 seconds and allow up to 200 requests before closing.</p>
+<h4 id="content-length"><strong>Content-Length</strong></h4>
+<p>What is the format of Content-Length, and why is it used?</p>
+<p>According to <strong><a href="https://httpwg.org/specs/rfc9110.html#field.content-length">RFC 9110</a></strong>, Content-Length represents the length of the message body as a <strong>decimal, non-negative integer</strong> (measured in octets).</p>
+<p>Why is this necessary?</p>
+<ul>
+<li>It allows recipients to determine when a message is complete and track its progress.</li>
+</ul>
+<p>One important detail from <strong><a href="https://httpwg.org/specs/rfc9112.html#body.content-length">RFC 9112</a></strong> states that:</p>
+<ul>
+<li>If a message <strong>does not</strong> have a Transfer-Encoding header, then Content-Length defines its length.</li>
+<li>A sender <strong>MUST NOT</strong> include a Content-Length header in a message that also contains a Transfer-Encoding header.</li>
+</ul>
+<h4 id="transfer-encoding"><strong>Transfer-Encoding</strong></h4>
+<p>As specified in <strong><a href="https://httpwg.org/specs/rfc9112.html#field.transfer-encoding">RFC 9112</a></strong>, the Transfer-Encoding header defines how the message body is encoded for transfer. The most common value is <strong>chunked</strong> encoding.</p>
+<p><strong>How does chunked encoding work?</strong></p>
+<ul>
+<li>The body is sent in a series of chunks.</li>
+<li>Each chunk begins with its <strong>size in hexadecimal</strong>, followed by the actual data.</li>
+<li>A chunk of size 0 signals the end of the message.</li>
+</ul>
+<p>This encoding enables:</p>
+<ul>
+<li><strong>Progressive processing</strong> (recipients can start handling data before receiving the full message).</li>
+<li><strong>Dynamic content transmission</strong> (useful when the final content size is unknown).</li>
+<li><strong>Persistent connections</strong> (keep-alive), improving HTTP efficiency.</li>
+</ul>
+<h2 id="handling-transfer-encoding-and-content-length-in-http">Handling Transfer-Encoding and Content-Length in HTTP</h2>
+<p>Even though the specification states that a sender <strong>MUST NOT</strong> include a Content-Length header in a message that also contains a Transfer-Encoding header, this is not always enforced in practice. This issue was resolved in HTTP/2, where Transfer-Encoding is no longer used.</p>
+<h3 id="what-happens-if-both-headers-are-present-in-a-request">What happens if both headers are present in a request?</h3>
+<p>Part <strong><a href="https://httpwg.org/specs/rfc9112.html#message.body.length">6.3</a></strong> of RFC 9112 discusses a potential attack scenario and provides guidance on handling such cases. Specifically, point 3 states:</p>
+<blockquote>
+<p><strong>If a message is received with both a Transfer-Encoding and a Content-Length header field, the Transfer-Encoding overrides the Content-Length. Such a message might indicate an attempt to perform request smuggling (Section 11.2) or response splitting (Section 11.1) and ought to be handled as an error. An intermediary that chooses to forward the message MUST first remove the received Content-Length field and process the Transfer-Encoding (as described below) prior to forwarding the message downstream.</strong></p>
+</blockquote>
+<p>Thus, the specification mandates that servers must be aware of both headers. If both are present, the Content-Length header should be removed to prevent misinterpretation.</p>
+<h3 id="why-is-this-a-security-concern">Why is this a security concern?</h3>
+<p>When the HTTP specification was initially created in 1997, infrastructures were simpler, and most websites were handled by a single server. However, modern web architectures rely on multiple components such as proxies, load balancers, and security gateways. Some of these components do not fully support Transfer-Encoding, or they may interpret conflicting headers differently.</p>
+<p>This inconsistency in how different servers and intermediaries handle these headers creates an opportunity for <strong>HTTP request smuggling attacks</strong>. In such attacks, an adversary manipulates headers to cause a server to interpret requests differently from downstream components, potentially leading to security breaches such as cache poisoning, unauthorized request execution, or bypassing authentication mechanisms.</p>
+<h2 id="3-identification">3. Identification</h2>
+<p>At this stage, what do we know? For this vulnerability to occur, multiple servers must be in a request chain, and they must handle headers inconsistently.</p>
+<p>The first step is to enumerate proxy servers using tools like traceroute or nslookup. Additionally, the presence of headers like Via or X-Forwarded-For may indicate a multi-hop setup involving proxies or load balancers.</p>
+<p>Using Burp Suite, the HTTP Request Smuggler extension can automatically send crafted requests to detect vulnerabilities. But what happens under the hood?</p>
+<h3 id="basic-attack-techniques"><strong>Basic Attack Techniques</strong></h3>
+<p>Before we proceed, let&rsquo;s go over the three primary types of HTTP request smuggling attacks:</p>
+<ul>
+<li><strong>CL.TE</strong> (Content-Length vs. Transfer-Encoding mismatch)
+The frontend server processes Content-Length (CL), while the backend server processes Transfer-Encoding (TE).</li>
+<li><strong>TE.CL</strong> (Transfer-Encoding vs. Content-Length mismatch)
+The reverse of the above: the frontend processes Transfer-Encoding, while the backend relies on Content-Length.</li>
+<li><strong>TE.TE</strong> (Two conflicting Transfer-Encoding headers)
+Different servers in the chain handle the multiple Transfer-Encoding headers inconsistently.</li>
+</ul>
+<p>There are some prerequisites for identifying these vulnerabilities:</p>
+<ul>
+<li>
+<ol>
+<li>The attack surface applies only to HTTP/1.1.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>In Burp Suite, navigate to Repeater, switch the HTTP version to 1.1, and verify whether the request is supported.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>Enable the option to display non-printable characters. You&rsquo;ll see <code>\r\n</code> (Carriage Return + Line Feed) at the end of each line. HTTP follows legacy Telnet/MIME standards, where \r\n marks the start of a new line.
+An additional \r\n after the headers marks the transition between headers and the request body.</li>
+</ol>
+</li>
+</ul>
+<h3 id="understanding-chunked-encoding"><strong>Understanding Chunked Encoding</strong></h3>
+<p>Before testing, it&rsquo;s important to understand the chunked transfer encoding format. According to the HTTP specification, a chunked body is structured as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chunked-body   <span style="color:#f92672">=</span> *chunk
+</span></span><span style="display:flex;"><span>                 last-chunk
+</span></span><span style="display:flex;"><span>                 trailer-section
+</span></span><span style="display:flex;"><span>                 CRLF
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#111">chunk</span>          <span style="color:#f92672">=</span> chunk-size CRLF
+</span></span><span style="display:flex;"><span>                 chunk-data CRLF
+</span></span></code></pre></div><p>The chunk size is a hexadecimal value specifying the length of the chunk data.
+The trailer section may contain additional headers, but for this test, we will ignore them.
+A correctly formatted chunked body looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>3<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>abc<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>0<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span></code></pre></div><p>Where first chunk of size 3 sends value <code>abc</code> and next chunk with size 0 and CRLF at next line tells server that it&rsquo;s last chunk.</p>
+<p>Now, let’s proceed with testing.</p>
+<p><strong>Identifying the Vulnerability</strong></p>
+<p>To test for request smuggling, send the following request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>3<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>abc<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>X<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span></code></pre></div><p>Here’s what&rsquo;s happening:</p>
+<p>The body has 13 bytes, but the Content-Length: 6 header tells the server to expect only 6 bytes.
+The presence of X after abc may reveal an inconsistency in how the frontend and backend interpret the request.</p>
+<p><strong>Possible Responses</strong></p>
+<ul>
+<li>
+<ol>
+<li>Immediate rejection: The frontend correctly recognizes Transfer-Encoding: chunked and interprets X as an invalid chunk size (not hexadecimal).This suggests the server correctly processes TE. But we cannot say how backend is reacting. In this situation is either TE.CL or TE.TE</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>Correct response: This means the frontend and backend both rely on Content-Length, making the application resistant to request smuggling.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>Timeout: The backend ignores Content-Length, interprets abc as a chunk, but fails on X, as it&rsquo;s not a valid chunk size. The backend waits indefinitely for a valid chunk size, which never arrives. This indicates a TE.CL vulnerability.</li>
+</ol>
+</li>
+</ul>
+<p><strong>Confirming TE.TE vs. TE.CL</strong></p>
+<p>To determine whether the application is vulnerable to TE.TE or TE.CL, send a second request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>0<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>X
+</span></span></code></pre></div><p><strong>Possible Responses</strong></p>
+<ul>
+<li>
+<ol>
+<li>Correct response: This suggests either TE.TE or CL.CL handling.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>CL.TE behavior: The frontend forwards the entire body, but the backend leaves X in the buffer. If a follow-up request is sent, it may cause an invalid method error like XPOST, showing that X was treated as the beginning of the next request.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>Timeout: The frontend ignores Content-Length, meaning X is never sent. The backend expects a total body length of 6 but never receives it. This confirms a TE.CL vulnerability.</li>
+</ol>
+</li>
+</ul>
+<p><strong>Automatic Identification</strong></p>
+<p>I showed you how to manually test applications with those two requests. But it&rsquo;s done by the Burp Suite extension <strong><a href="https://portswigger.net/bappstore/aaaa60ef945341e8a450217a54a11646">HTTP Request Smuggler</a></strong>. To run the extension, right-click on the request and Extensions -&gt; HTTP Request Smuggler -&gt; Smuggle Probe. In the target tab, I got the message:</p>
+<blockquote>
+<p>&ldquo;Possible HTTP Request Smuggling: CL.TE multiCase (delayed response).&rdquo;</p>
+</blockquote>
+<p>And in one of the requests below, it&rsquo;s a request similar to those shown above:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">13</span>
+</span></span><span style="display:flex;"><span>tRANSFER-ENCODING: chunked
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>3<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">x</span><span style="color:#f92672">=</span>y<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>1<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>Z<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>Q<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span></code></pre></div><p>The response from this request is a timeout. Why is it suggesting it&rsquo;s CL.TE? Similar to the previous case, the frontend completely ignores TE, but the backend does not. As it gets Q as a chunk size, it waits for the proper value and responds with a timeout.</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">14</span>
+</span></span><span style="display:flex;"><span>tRANSFER-ENCODING: chunked
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>3<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">x</span><span style="color:#f92672">=</span>y<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>0<span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span><span style="color:#8045ff">\r\n</span>
+</span></span><span style="display:flex;"><span>X
+</span></span></code></pre></div><p>This time, automatic detection for TE.CL occurs. A very similar approach is used. The frontend ignores X as it uses TE and detects the last chunk. The backend, however, waits for the 14th byte based on the CL value but never receives it, resulting in a timeout.</p>
+<p><strong>Detecting TE.TE</strong></p>
+<p>As we showed above, TE.TE can be successfully detected with the first two requests. This situation happens when both the backend and frontend use TE, and we can obfuscate headers to force one of the servers not to process it. As explained on PortSwigger Academy:</p>
+<p>&ldquo;Each of these techniques involves a subtle departure from the HTTP specification. Real-world code that implements a protocol specification rarely adheres to it with absolute precision, and it is common for different implementations to tolerate different variations from the specification.&rdquo;</p>
+<p>So it&rsquo;s up to the attacker to find subtle differences that allow a header to be ignored. As you can see in the example above from the extension, it uses an obfuscation technique by changing all the characters to uppercase except the first letter: tRANSFER-ENCODING: chunked. The extension tries to perform multiple identifications at once, so it combines multiple techniques into a single request.</p>
+<p>There are many techniques to obfuscate the TE header. Here are a couple of them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Transfer-Encoding: xchunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding: x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding:<span style="color:#f92672">[</span>tab<span style="color:#f92672">]</span>chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>space<span style="color:#f92672">]</span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X: X<span style="color:#f92672">[</span><span style="color:#8045ff">\n</span><span style="color:#f92672">]</span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding
+</span></span><span style="display:flex;"><span>: chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Transfer-encoding: identity
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Transfer-encoding: cow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tRANSFER-ENCODING: chunked
+</span></span></code></pre></div><h2 id="4-http2-request-smuggling">4. HTTP/2 Request Smuggling</h2>
+<p>HTTP/2, while maintaining the same methods, status codes, and headers as its predecessor, fundamentally changes how data is formatted and transmitted. Unlike the text-based HTTP/1, HTTP/2 is a binary protocol, sending data as a collection of 0s and 1s. In the context of request smuggling, it&rsquo;s crucial to note that HTTP/2 doesn&rsquo;t use Transfer-Encoding or Content-Length headers in the same way. Instead, each frame specifies its length in bytes at the beginning, as defined in the HTTP/2  <strong><a href="https://datatracker.ietf.org/doc/html/rfc7540#section-4.1">frame format</a></strong></p>
+<h3 id="http2-downgrading">Http2 downgrading</h3>
+<p>The vulnerability of HTTP/2 to request smuggling primarily stems from the process of HTTP/2 downgrading. Many organizations implement this downgrading for backward compatibility with legacy backend systems that haven&rsquo;t yet transitioned to HTTP/2. This flexibility allows administrators to maintain access to older systems while using modern frontend solutions.</p>
+<p>However, this backward compatibility introduces security risks. When downgrading occurs, the backend loses access to the HTTP/2 frame length value, potentially allowing the injection of HTTP/1 headers.</p>
+<h3 id="h2cl-and-h2te">H2.CL and H2.TE</h3>
+<p>In HTTP/2, requests use pseudo-headers instead of the traditional request line. For example, the path is represented by the :path pseudo-header, and the Host header is replaced by :authority. Here&rsquo;s an example of how an attacker might attempt to smuggle a request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>:method POST
+</span></span><span style="display:flex;"><span>:path /test
+</span></span><span style="display:flex;"><span>:authority example.com
+</span></span><span style="display:flex;"><span>content-type application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>transfer-encoding chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span><span style="display:flex;"><span>Foo: Injected
+</span></span></code></pre></div><p>When downgraded to HTTP/1.1, this request might look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST /test HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span><span style="display:flex;"><span>Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span><span style="display:flex;"><span>Foo: Injected
+</span></span></code></pre></div><p>In this scenario, the backend might interpret the body as a zero-length chunk, treating the rest as the beginning of a new request. This could potentially allow access to restricted paths like /admin.</p>
+<p>Similarly, an attacker could attempt to inject a Content-Length header:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>:method POST
+</span></span><span style="display:flex;"><span>:path /
+</span></span><span style="display:flex;"><span>:authority example.com
+</span></span><span style="display:flex;"><span>content-type application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>content-length <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span></code></pre></div><p>When downgraded, this becomes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>POST / HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span><span style="display:flex;"><span>Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span></code></pre></div><p>Here, the body of the request might be ignored due to the Content-Length being set to zero, potentially allowing the smuggled request to be processed.</p>
+<p>There are many of possible injections points you can try, there is a great article about it by James Kettle: <strong><a href="https://portswigger.net/research/http2">HTTP/2: The Sequel is Always Worse</a></strong>. In this article i want to just show basic mechanism.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>We’ve established a solid foundation for understanding HTTP request smuggling. We’ve examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.</p>
+<p>Understanding HTTP/2 request smuggling requires knowledge of how HTTP/2 differs from HTTP/1, particularly in terms of data formatting and transmission. The vulnerability primarily arises from the downgrading process implemented for backward compatibility. By manipulating headers and taking advantage of how different servers interpret requests, attackers can potentially smuggle requests even in HTTP/2 environments.</p>
+
+      
+      <div class="post-date">
+        <span class="g time">February 16, 2025 </span> &#8729;
+         
+         <a href="http://localhost:1313/tags/request-smuggling/">request-smuggling</a> <a href="http://localhost:1313/tags/http/">http</a>
+      </div>
+      
+    </section>
+    
+    
+    <div id="comments">
+      
+<script src="https://utteranc.es/client.js"
+    repo=canhtran/maverick
+    issue-term="pathname"
+    theme=github-light
+    crossorigin="anonymous"
+    async>
+</script>
+
+
+    </div>
+    
+    
+  </div>
+</main>
+</body>
+</html>

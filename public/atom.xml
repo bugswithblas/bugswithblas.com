@@ -14,8 +14,8 @@
     
     
     <item>
-      <title>Request Smuggling for HTTP/1.1 - Theory and Identification</title>
-      <link>http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/</link>
+      <title>Understanding Request Smuggling</title>
+      <link>http://localhost:1313/posts/understanding-request-smuggling/</link>
       <description>&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
 &lt;p&gt;As I was preparing to pass the BSCP exam, the most challenging and unfamiliar type of vulnerability for me was HTTP request smuggling.&lt;/p&gt;
 &lt;p&gt;To fully understand this attack, it is essential to grasp the fundamentals of the HTTP protocol and how modern web applications are structured, particularly regarding proxy servers, load balancers, and back-end architecture. In this article, I will expand my knowledge by exploring every aspect of this vulnerability.&lt;/p&gt;
@@ -228,13 +228,61 @@ The presence of X after abc may reveal an inconsistency in how the frontend and 
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-encoding: cow
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tRANSFER-ENCODING: chunked
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;4-conclusion--whats-next&#34;&gt;4. Conclusion &amp;amp; What&amp;rsquo;s Next&lt;/h2&gt;
-&lt;p&gt;In this first part, we&amp;rsquo;ve laid the groundwork for understanding HTTP request smuggling. We explored key HTTP headers, examined how inconsistencies between front-end and back-end processing can lead to vulnerabilities, and discussed manual and automated techniques for identifying these issues. By grasping the fundamentals of Content-Length and Transfer-Encoding conflicts, we can now move forward to more advanced exploitation strategies.&lt;/p&gt;
-&lt;p&gt;In the next part, we will delve into various exploitation techniques that go beyond simple detection. We will explore how attackers use request smuggling to bypass authentication, hijack user sessions, and poison caches. Additionally, we&amp;rsquo;ll cover real-world case studies and defense strategies to mitigate these attacks effectively.&lt;/p&gt;
-&lt;p&gt;Stay tuned for the second part, where we shift from identification to exploitation.&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;4-http2-request-smuggling&#34;&gt;4. HTTP/2 Request Smuggling&lt;/h2&gt;
+&lt;p&gt;HTTP/2, while maintaining the same methods, status codes, and headers as its predecessor, fundamentally changes how data is formatted and transmitted. Unlike the text-based HTTP/1, HTTP/2 is a binary protocol, sending data as a collection of 0s and 1s. In the context of request smuggling, it&amp;rsquo;s crucial to note that HTTP/2 doesn&amp;rsquo;t use Transfer-Encoding or Content-Length headers in the same way. Instead, each frame specifies its length in bytes at the beginning, as defined in the HTTP/2  &lt;strong&gt;&lt;a href=&#34;https://datatracker.ietf.org/doc/html/rfc7540#section-4.1&#34;&gt;frame format&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;http2-downgrading&#34;&gt;Http2 downgrading&lt;/h3&gt;
+&lt;p&gt;The vulnerability of HTTP/2 to request smuggling primarily stems from the process of HTTP/2 downgrading. Many organizations implement this downgrading for backward compatibility with legacy backend systems that haven&amp;rsquo;t yet transitioned to HTTP/2. This flexibility allows administrators to maintain access to older systems while using modern frontend solutions.&lt;/p&gt;
+&lt;p&gt;However, this backward compatibility introduces security risks. When downgrading occurs, the backend loses access to the HTTP/2 frame length value, potentially allowing the injection of HTTP/1 headers.&lt;/p&gt;
+&lt;h3 id=&#34;h2cl-and-h2te&#34;&gt;H2.CL and H2.TE&lt;/h3&gt;
+&lt;p&gt;In HTTP/2, requests use pseudo-headers instead of the traditional request line. For example, the path is represented by the :path pseudo-header, and the Host header is replaced by :authority. Here&amp;rsquo;s an example of how an attacker might attempt to smuggle a request:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:method POST
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:path /test
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:authority example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;content-type application/x-www-form-urlencoded
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;transfer-encoding chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;GET /admin HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Foo: Injected
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When downgraded to HTTP/1.1, this request might look like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;POST /test HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Type: application/x-www-form-urlencoded
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Transfer-Encoding: chunked
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;GET /admin HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Foo: Injected
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this scenario, the backend might interpret the body as a zero-length chunk, treating the rest as the beginning of a new request. This could potentially allow access to restricted paths like /admin.&lt;/p&gt;
+&lt;p&gt;Similarly, an attacker could attempt to inject a Content-Length header:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:method POST
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:path /
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;:authority example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;content-type application/x-www-form-urlencoded
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;content-length &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;GET /admin HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When downgraded, this becomes:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;POST / HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Type: application/x-www-form-urlencoded
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;GET /admin HTTP/1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host: example.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here, the body of the request might be ignored due to the Content-Length being set to zero, potentially allowing the smuggled request to be processed.&lt;/p&gt;
+&lt;p&gt;There are many of possible injections points you can try, there is a great article about it by James Kettle: &lt;strong&gt;&lt;a href=&#34;https://portswigger.net/research/http2&#34;&gt;HTTP/2: The Sequel is Always Worse&lt;/a&gt;&lt;/strong&gt;. In this article i want to just show basic mechanism.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We’ve established a solid foundation for understanding HTTP request smuggling. We’ve examined essential HTTP headers, analyzed how discrepancies between front-end and back-end processing can introduce vulnerabilities, and explored both manual and automated methods for detecting these issues. A key aspect of this is understanding the role of Content-Length and Transfer-Encoding in request handling.&lt;/p&gt;
+&lt;p&gt;Understanding HTTP/2 request smuggling requires knowledge of how HTTP/2 differs from HTTP/1, particularly in terms of data formatting and transmission. The vulnerability primarily arises from the downgrading process implemented for backward compatibility. By manipulating headers and taking advantage of how different servers interpret requests, attackers can potentially smuggle requests even in HTTP/2 environments.&lt;/p&gt;
 </description>
       <author>Blazej Gutowski</author>
-      <guid>http://localhost:1313/posts/http1-request-smuggling-thery-and-identification/</guid>
+      <guid>http://localhost:1313/posts/understanding-request-smuggling/</guid>
       <pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate>
     </item>
     
