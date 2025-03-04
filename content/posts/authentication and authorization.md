@@ -96,19 +96,15 @@ This type is more secure than basic type, but still not very common. Can be usef
 ### 3.3 Session-Based Authentication
 
 There are many security attributes and mechanism for session-based authentication, but the basic flow work as below:
+1. User sends credentials to the server
+2. Server verifies credentials against owned data
+3. Server creates new session and save it
+4. Server sends back session ID to the client
+5. Client saves session ID for further usage
+6. Client request for proctected resources
+7. Server compare sessions ID with those that it stores
+8. Server authorize access to the client
 
-```bash
-user                                server
-          send credentials  --->
-                                    verify credentials
-                                    create session
-                                    save session ID on database
-        <---  send session ID 
-save session ID in browser                     
-        include session cookie in request --->
-                                    verify session ID
-    <---  access for protected resource                        
-```
 
 Server uses `Set-Cookie` header to set session ID for user. Then user each time accessing protected resources will send `Cookie` header with session ID inside.
 
@@ -118,25 +114,34 @@ Widely used especially with server-side frameworks, especially for it's simplici
 
 ### 3.4 Token-Based Authentication
 
-For token-based authentication the flow is very similar but value is stored not as a id of session but as a token.
+The session-based type makes server store active session IDs, making it difficult for growing and dynamic server infrastructure that grows horizontaly.
 
+For token-based authentication the flow is very similar but value is stored not as a id of session but as a token which is signed with cryptographic keys.
+Tokens are store on the local storage of web browser. The flow looks like that:
 
-```bash
-user                                server
-          send credentials  --->
-                                    verify credentials
-                                    generate token
-                                    save token in database
-        <---  send token 
-store token in local storage             
-        include session cookie --->
-                                    verify session ID
-    <---  access to authenticated user                        
-```
+1. User sends credentials to the server
+2. Server verifies credentials against owned data
+3. Server creates new token and sign it
+4. Server sends token to the client
+5. Client saves token on local storage
+6. Client request for proctected resources
+7. Server decrypt token and check token
+8. Server authorize access to the client
 
 Common for security APIs in distributed systems. Very popular in modern web and mobile apps, SSO systems and IoT.
 
 ### 3.5 One Time Passwords (OTP)
+
+The risk of brute force attack and stealing of password, was one of a reason to create second factor for authentication.
+Beside something you know - your credentials, second factor tell the server what we have email or phone.
+The basic flow looks like:
+
+1. Client login with credentials
+2. Server authenticates user and create 6-digit code.
+3. OTP code is sent to the mail or mobile phone
+4. Client enter code on the page
+5. Server verifies code
+6. Server authorize access
 
 Used widely as a second factor and aditional layer of security.
 
@@ -195,11 +200,6 @@ Not very standard for normal use cases. Sometimes useful.
 
 ## 9. Comparison of Authentication Mechanisms
 - Table comparing different methods (advantages, disadvantages, use cases)
-
-## 10. Mobile Application Authentication
-- Biometric authentication
-- Serverless authentication
-- Mobile-specific challenges and solutions
 
 ## 11. Regulatory Compliance
 - GDPR considerations

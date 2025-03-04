@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JWT on Bugs with Blas</title>
+    <link>http://localhost:1313/tags/jwt/</link>
+    <description>Recent content in JWT on Bugs with Blas</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/jwt/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Authentication and Authorization Mechanisms</title>
+      <link>http://localhost:1313/posts/authentication-and-authorization/</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/authentication-and-authorization/</guid>
+      <description>&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Importance of authentication and authorization in web security&lt;/li&gt;&#xA;&lt;li&gt;Overview of modern authentication mechanisms&lt;/li&gt;&#xA;&lt;li&gt;Attackers&amp;rsquo; motivation and common security pitfalls&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;2-authentication-vs-authorization&#34;&gt;2. Authentication vs Authorization&lt;/h2&gt;&#xA;&lt;p&gt;Authentication and Authorization are two fundamental concepts in security that address different aspects of user access control.&lt;/p&gt;&#xA;&lt;h3 id=&#34;authentication-who-are-you&#34;&gt;Authentication: Who Are You?&lt;/h3&gt;&#xA;&lt;p&gt;Authentication is the process of verifying a user&amp;rsquo;s identity. It&amp;rsquo;s essentially the system asking, &amp;ldquo;Who are you?&amp;rdquo; When we authenticate, we provide data that allows the system to confirm our identity with certainty. This could involve:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
