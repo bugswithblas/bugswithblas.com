@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Liste - http://localhost:1313/">
+    <title>Web Authentication and Authorization Mechanisms | Bugs with Blas</title>
+    <meta name="description" content="This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals.">
+    <meta property="og:url" content="http://localhost:1313/posts/authentication-and-authorization/">
+  <meta property="og:site_name" content="Bugs with Blas">
+  <meta property="og:title" content="Web Authentication and Authorization Mechanisms">
+  <meta property="og:description" content="This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-23T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-23T00:00:00+00:00">
+    <meta property="article:tag" content="Authentication">
+    <meta property="article:tag" content="Authorization">
+    <meta property="article:tag" content="Cookies">
+    <meta property="article:tag" content="OAuth">
+    <meta property="article:tag" content="JWT">
+    <meta property="article:tag" content="OpenID">
+
+    
+  <meta itemprop="name" content="Web Authentication and Authorization Mechanisms">
+  <meta itemprop="description" content="This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals.">
+  <meta itemprop="datePublished" content="2025-02-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-02-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1119">
+  <meta itemprop="keywords" content="Authentication,Authorization,Cookies,OAuth,JWT,OpenID">
+    
+    <link rel="canonical" href="http://localhost:1313/posts/authentication-and-authorization/">
+    <link rel="icon" href="http://localhost:1313//assets/favicon.ico">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link href="https://www.google-analytics.com" rel="preconnect" crossorigin>
+    <link rel="alternate" type="application/atom+xml" title="Bugs with Blas" href="http://localhost:1313//atom.xml" />
+    <link rel="alternate" type="application/json" title="Bugs with Blas" href="http://localhost:1313//feed.json" />
+    <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bricolage+Grotesque">
+    
+    
+    <style>*,:after,:before{box-sizing:border-box;padding:0}body{font:1rem/1.5 bricolage grotesque,-apple-system,BlinkMacSystemFont,segoe ui,Helvetica,Arial,sans-serif;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding:2rem;background:#fffdfa;color:#000}.skip-link{position:absolute;top:-40px;left:0;background:#eee;z-index:100}.skip-link:focus{top:0}header{line-height:2;padding-bottom:1.5rem}.link{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.time{font-variant-numeric:tabular-nums;white-space:nowrap}blockquote{border-left:5px solid #eee;padding-left:1rem;margin:0}a,a:visited{color:inherit}a:hover,a.heading-link{text-decoration:none}pre{padding:.5rem;overflow:auto;overflow-x:scroll;overflow-wrap:normal}code,pre{font-family:San Francisco Mono,Monaco,consolas,lucida console,dejavu sans mono,bitstream vera sans mono,monospace;font-size:normal;font-size:small;background:#eee}code{margin:.1rem;border:none}ul{list-style-type:square}ul,ol{padding-left:1.2rem}.list{line-height:2;list-style-type:none;padding-left:0}.list li{padding-bottom:.1rem}.meta{color:#777}.content{max-width:70ch;margin:0 auto}header{line-height:2;display:flex;justify-content:space-between;padding-bottom:1rem}header a{text-decoration:none}header ul{list-style-type:none;padding:0}header li,header a{display:inline}h2.post{padding-top:.5rem}header ul a:first-child{padding-left:1rem}.nav{height:1px;background:#000;content:'';max-width:10%}.list li{display:flex;align-items:baseline}.list li time{flex:initial}.hr-list{margin-top:0;margin-bottom:0;margin-right:.5rem;margin-left:.5rem;height:1px;border:0;border-bottom:1px dotted #ccc;flex:1 0 1rem}.m,hr{border:0;margin:3rem 0}img{max-width:100%;height:auto}.post-date{margin:5% 0}.index-date{color:#9a9a9a}.animate-blink{animation:opacity 1s infinite;opacity:1}@keyframes opacity{0%{opacity:1}50%{opacity:.5}100%{opacity:0}}.tags{display:flex;justify-content:space-between}.tags ul{padding:0;margin:0}.tags li{display:inline}.avatar{height:120px;width:120px;position:relative;margin:-10px 0 0 15px;float:right;border-radius:50%}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;text-align:left;padding:8px}th{background-color:#f2f2f2} </style>
+  
+    
+  
+  
+  <script type="application/ld+json">
+  {
+      "@context": "http://schema.org",
+      "@type": "BlogPosting",
+      "articleSection": "posts",
+      "name": "Web Authentication and Authorization Mechanisms",
+      "headline": "Web Authentication and Authorization Mechanisms",
+      "alternativeHeadline": "",
+      "description": "This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals.",
+      "inLanguage": "en-us",
+      "isFamilyFriendly": "true",
+      "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "http:\/\/localhost:1313\/posts\/authentication-and-authorization\/"
+      },
+      "author" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "creator" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "accountablePerson" : {
+          "@type": "Person",
+          "name": ""
+      },
+      "copyrightHolder" : "Bugs with Blas",
+      "copyrightYear" : "2025",
+      "dateCreated": "2025-02-23T00:00:00.00Z",
+      "datePublished": "2025-02-23T00:00:00.00Z",
+      "dateModified": "2025-02-23T00:00:00.00Z",
+      "publisher":{
+          "@type":"Organization",
+          "name": "Bugs with Blas",
+          "url": "http://localhost:1313/",
+          "logo": {
+              "@type": "ImageObject",
+              "url": "http:\/\/localhost:1313\/assets\/favicon.ico",
+              "width":"32",
+              "height":"32"
+          }
+      },
+      "image": "http://localhost:1313/assets/favicon.ico",
+      "url" : "http:\/\/localhost:1313\/posts\/authentication-and-authorization\/",
+      "wordCount" : "1119",
+      "genre" : [ "Authentication" , "Authorization" , "Cookies" , "oAuth" , "JWT" , "OpenID" ],
+      "keywords" : [ "Authentication" , "Authorization" , "Cookies" , "oAuth" , "JWT" , "OpenID" ]
+  }
+  </script>
+  
+  
+  </head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main</a>
+  <main id="main">
+  <div class="content">
+    <header>
+<p style="padding: 0;margin: 0;">
+  <a href="http://localhost:1313/">
+    <b>Bugs with Blas</b>
+    <span class="text-stone-500 animate-blink">▮</span>
+  </a>
+</p>
+<ul style="padding: 0;margin: 0;">
+  
+  
+  <li class="">
+    <a href="/posts/"><span>Post</span></a>
+    
+  <li class="">
+    <a href="/about/"><span>About</span></a>
+    
+  </li>
+</ul>
+</header>
+<hr class="hr-list" style="padding: 0;margin: 0;">
+    <section>
+      <h2 class="post">Web Authentication and Authorization Mechanisms</h2>
+      <h2 id="1-introduction">1. Introduction</h2>
+<ul>
+<li>Importance of authentication and authorization in web security</li>
+<li>Overview of modern authentication mechanisms</li>
+<li>Attackers&rsquo; motivation and common security pitfalls</li>
+</ul>
+<h2 id="2-authentication-vs-authorization">2. Authentication vs Authorization</h2>
+<p>Authentication and Authorization are two fundamental concepts in security that address different aspects of user access control.</p>
+<h3 id="authentication-who-are-you">Authentication: Who Are You?</h3>
+<p>Authentication is the process of verifying a user&rsquo;s identity. It&rsquo;s essentially the system asking, &ldquo;Who are you?&rdquo; When we authenticate, we provide data that allows the system to confirm our identity with certainty. This could involve:</p>
+<ul>
+<li>Entering a username and password</li>
+<li>Using biometric data (fingerprint, facial recognition)</li>
+<li>Providing a security token</li>
+</ul>
+<h3 id="authorization-what-can-you-do">Authorization: What Can You Do?</h3>
+<p>Once authenticated, authorization comes into play. It determines what actions an authenticated user is permitted to perform within the system. When we try to perform actions like uploading a photo or accessing a specific path, the system asks, &ldquo;I know who you are, but are you allowed to do this?&rdquo;</p>
+<h3 id="key-differences">Key Differences</h3>
+<p>To summarize the distinction:</p>
+<ul>
+<li><strong>Authentication</strong> - verifying user identity</li>
+<li><strong>Authorization</strong> - granting or restricting access</li>
+</ul>
+<h2 id="3-types-of-authentication">3. Types of Authentication</h2>
+<p>So as we all use webistes and creating accounts, we know that basic type of authentication is providing username and password. Bu underneath of this are many techinques working in the background non visible for the user let&rsquo;s shortly get to know all of them</p>
+<h3 id="31-http-basic-authentication">3.1 HTTP Basic Authentication</h3>
+<p>The simplest one, present firsty in 1992 and is present is http specification since 1996. It&rsquo;s not require login pages, cookies or tokens. All the data are transfered inside header Authorization:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Authorization: Basic &lt;encoded64<span style="color:#f92672">(</span>username:password<span style="color:#f92672">)</span>&gt;
+</span></span></code></pre></div><p>Basically server when see the header with word Basic decode value and compare with with database or other provider.</p>
+<p>Not very secure, in usage for internal or legacy systems not recommended on production.</p>
+<h3 id="32-http-digest-authentication">3.2 HTTP Digest Authentication</h3>
+<p>In contrast to the Basic method it use hashing instead of reversiable encoding, so it&rsquo;s another step into more security.
+Let&rsquo;s assume client try to get the authenticated needed request:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: example.com
+</span></span></code></pre></div><p>The server respond with 401 status code and WWW-Authentication header.</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>HTTP/1.1 <span style="color:#ae81ff">401</span> Unauthorized
+</span></span><span style="display:flex;"><span>WWW-Authenticate: Digest <span style="color:#111">realm</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;example.com&#34;</span>, <span style="color:#111">qop</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;auth&#34;</span>, <span style="color:#111">nonce</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;dcd98b7102dd2f0e8b11d0f600bfb0c093&#34;</span>, <span style="color:#111">opaque</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;5ccc069c403ebaf9f0171e9517f40e41&#34;</span>
+</span></span></code></pre></div><p>The elements for header:</p>
+<ul>
+<li>word Digest</li>
+<li>realm, string that tell the client what resource he authenticate for</li>
+<li>qop, auth for authentication only and auth-int adds layer and integrity protection qop is used, the client includes a client nonce (cnonce) and a nonce count (nc) in the response, which adds randomness and prevents replay attacks</li>
+<li>nonce, random value generated for single authentication</li>
+<li>opaque, another security feature when present the client should send it back when authenticate</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Authorization: Digest <span style="color:#111">username</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;user&#34;</span>, <span style="color:#111">realm</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;example.com&#34;</span>, <span style="color:#111">nonce</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;dcd98b7102dd2f0e8b11d0f600bfb0c093&#34;</span>, <span style="color:#111">uri</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/admin&#34;</span>, <span style="color:#111">response</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;6629fae49393a05397450978507c4ef1&#34;</span>, <span style="color:#111">qop</span><span style="color:#f92672">=</span>auth, <span style="color:#111">nc</span><span style="color:#f92672">=</span>00000001, <span style="color:#111">cnonce</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;0a4f113b&#34;</span>
+</span></span></code></pre></div><p>Most important in the client response is value of response where is composed as:</p>
+<ul>
+<li>HA1=MD5(&ldquo;user:example.com:password&rdquo;)</li>
+<li>HA2=MD5(&ldquo;GET:/admin&rdquo;)</li>
+<li>response=MD5(HA1:nonce:nc:cnonce:qop:HA2)</li>
+</ul>
+<p>This type is more secure than basic type, but still not very common. Can be useful for some specific use cases.</p>
+<h3 id="33-session-based-authentication">3.3 Session-Based Authentication</h3>
+<p>There are many security attributes and mechanism for session-based authentication, but the basic flow work as below:</p>
+<ol>
+<li>User sends credentials to the server</li>
+<li>Server verifies credentials against owned data</li>
+<li>Server creates new session and save it</li>
+<li>Server sends back session ID to the client</li>
+<li>Client saves session ID for further usage</li>
+<li>Client request for proctected resources</li>
+<li>Server compare sessions ID with those that it stores</li>
+<li>Server authorize access to the client</li>
+</ol>
+<p>Server uses <code>Set-Cookie</code> header to set session ID for user. Then user each time accessing protected resources will send <code>Cookie</code> header with session ID inside.</p>
+<p>This is the basic of session-based authentication, many security mechanism sits above of this scheme. The most common are: CSRF protection, cookie flags, session rotation policy, which will be considere in next chapter.</p>
+<p>Widely used especially with server-side frameworks, especially for it&rsquo;s simplicity and flexibility.</p>
+<h3 id="34-token-based-authentication">3.4 Token-Based Authentication</h3>
+<p>The session-based type makes server store active session IDs, making it difficult for growing and dynamic server infrastructure that grows horizontaly.</p>
+<p>For token-based authentication the flow is very similar but value is stored not as a id of session but as a token which is signed with cryptographic keys.
+Tokens are store on the local storage of web browser. The flow looks like that:</p>
+<ol>
+<li>User sends credentials to the server</li>
+<li>Server verifies credentials against owned data</li>
+<li>Server creates new token and sign it</li>
+<li>Server sends token to the client</li>
+<li>Client saves token on local storage</li>
+<li>Client request for proctected resources</li>
+<li>Server decrypt token and check token</li>
+<li>Server authorize access to the client</li>
+</ol>
+<p>Common for security APIs in distributed systems. Very popular in modern web and mobile apps, SSO systems and IoT.</p>
+<h3 id="35-one-time-passwords-otp">3.5 One Time Passwords (OTP)</h3>
+<p>The risk of brute force attack and stealing of password, was one of a reason to create second factor for authentication.
+Beside something you know - your credentials, second factor tell the server what we have email or phone.
+The basic flow looks like:</p>
+<ol>
+<li>Client login with credentials</li>
+<li>Server authenticates user and create 6-digit code.</li>
+<li>OTP code is sent to the mail or mobile phone</li>
+<li>Client enter code on the page</li>
+<li>Server verifies code</li>
+<li>Server authorize access</li>
+</ol>
+<p>Used widely as a second factor and aditional layer of security.</p>
+<h3 id="36-oauth-20">3.6 OAuth 2.0</h3>
+<p>Very common when using third-party integrations and API access.</p>
+<h3 id="37-openid-connect-oidc">3.7 OpenID Connect (OIDC)</h3>
+<p>In production a layer on top of oAuth 2.0.</p>
+<h3 id="38-webauthn-fido2">3.8 WebAuthn (FIDO2)</h3>
+<p>It&rsquo;s growing in production as a phishing resistant method.</p>
+<h3 id="39-magic-links">3.9 Magic Links</h3>
+<p>Not very standard for normal use cases. Sometimes useful.</p>
+<h2 id="4-session-management">4. Session Management</h2>
+<ul>
+<li>How Sessions Work</li>
+<li>Server-side vs Client-side Sessions</li>
+</ul>
+<h2 id="5-cookies-security-attributes--best-practices">5. Cookies: Security Attributes &amp; Best Practices</h2>
+<ul>
+<li>HttpOnly, Secure, SameSite</li>
+<li>Domain &amp; Path</li>
+<li>Max-Age &amp; Expires</li>
+</ul>
+<h2 id="6-authentication--session-attacks">6. Authentication &amp; Session Attacks</h2>
+<h3 id="61-session-hijacking">6.1 Session Hijacking</h3>
+<h3 id="62-session-fixation">6.2 Session Fixation</h3>
+<h3 id="63-csrf-cross-site-request-forgery">6.3 CSRF (Cross-Site Request Forgery)</h3>
+<h3 id="64-xss-cross-site-scripting--token-theft">6.4 XSS (Cross-Site Scripting) &amp; Token Theft</h3>
+<h3 id="65-token-leakage--replay-attacks">6.5 Token Leakage &amp; Replay Attacks</h3>
+<h3 id="66-credential-stuffing">6.6 Credential Stuffing</h3>
+<h3 id="67-brute-force-attacks">6.7 Brute Force Attacks</h3>
+<h3 id="68-man-in-the-middle-mitm-attacks">6.8 Man-in-the-Middle (MitM) Attacks</h3>
+<h3 id="69-phishing-attacks">6.9 Phishing Attacks</h3>
+<h3 id="610-oauth-token-abuse">6.10 OAuth Token Abuse</h3>
+<h3 id="611-session-prediction">6.11 Session Prediction</h3>
+<h3 id="612-api-key-leakage">6.12 API Key Leakage</h3>
+<h2 id="7-best-practices-for-secure-authentication--authorization">7. Best Practices for Secure Authentication &amp; Authorization</h2>
+<ul>
+<li>HTTPS everywhere</li>
+<li>Strong password policies + MFA</li>
+<li>Proper session expiration &amp; token revocation</li>
+<li>Secure cookie attributes</li>
+<li>Monitoring and logging</li>
+<li>Least privilege access control</li>
+<li>Regular security audits and penetration testing</li>
+</ul>
+<h2 id="8-implementation-examples">8. Implementation Examples</h2>
+<ul>
+<li>JWT implementation</li>
+<li>OAuth2 flow</li>
+<li>WebAuthn integration</li>
+</ul>
+<h2 id="9-comparison-of-authentication-mechanisms">9. Comparison of Authentication Mechanisms</h2>
+<ul>
+<li>Table comparing different methods (advantages, disadvantages, use cases)</li>
+</ul>
+<h2 id="11-regulatory-compliance">11. Regulatory Compliance</h2>
+<ul>
+<li>GDPR considerations</li>
+<li>PSD2 and Strong Customer Authentication (SCA)</li>
+</ul>
+<h2 id="12-authentication-in-microservices-architecture">12. Authentication in Microservices Architecture</h2>
+<ul>
+<li>Challenges in distributed environments</li>
+<li>Service-to-service authentication</li>
+<li>API gateways and authentication</li>
+</ul>
+<h2 id="13-security-testing-for-authentication-systems">13. Security Testing for Authentication Systems</h2>
+<ul>
+<li>Penetration testing methodologies</li>
+<li>Automated security scanning</li>
+<li>Common vulnerabilities to test for</li>
+</ul>
+<h2 id="14-real-world-use-cases">14. Real-world Use Cases</h2>
+<ul>
+<li>Google&rsquo;s authentication ecosystem</li>
+<li>Facebook&rsquo;s authentication and authorization</li>
+<li>Banking sector authentication practices</li>
+</ul>
+<h2 id="15-future-trends-in-web-authentication">15. Future Trends in Web Authentication</h2>
+<ul>
+<li>Passwordless authentication</li>
+<li>Blockchain-based identity management</li>
+<li>Advancements in WebAuthn and Passkeys</li>
+</ul>
+<h2 id="16-conclusion">16. Conclusion</h2>
+<ul>
+<li>Summary of key authentication mechanisms</li>
+<li>Importance of proper implementation</li>
+<li>Balancing security and user experience</li>
+</ul>
+
+      
+      <div class="post-date">
+        <span class="g time">February 23, 2025 </span> &#8729;
+         
+         <a href="http://localhost:1313/tags/authentication/">authentication</a> <a href="http://localhost:1313/tags/authorization/">authorization</a> <a href="http://localhost:1313/tags/cookies/">cookies</a> <a href="http://localhost:1313/tags/oauth/">oauth</a> <a href="http://localhost:1313/tags/jwt/">jwt</a> <a href="http://localhost:1313/tags/openid/">openid</a>
+      </div>
+      
+    </section>
+    
+    
+    <div id="comments">
+      
+<script src="https://utteranc.es/client.js"
+    repo=canhtran/maverick
+    issue-term="pathname"
+    theme=github-light
+    crossorigin="anonymous"
+    async>
+</script>
+
+
+    </div>
+    
+    
+  </div>
+</main>
+</body>
+</html>
