@@ -55,6 +55,7 @@ Authorization: Basic <encoded64(username:password)>
 
 Basically server when see the header with word Basic decode value and compare with with database or other provider.
 
+Not very secure, in usage for internal or legacy systems not recommended on production.
 
 ### 3.2 HTTP Digest Authentication
 
@@ -90,17 +91,70 @@ Most important in the client response is value of response where is composed as:
 - HA2=MD5("GET:/admin")
 - response=MD5(HA1:nonce:nc:cnonce:qop:HA2)
 
+This type is more secure than basic type, but still not very common. Can be useful for some specific use cases.
 
 ### 3.3 Session-Based Authentication
 
+There are many security attributes and mechanism for session-based authentication, but the basic flow work as below:
 
+```bash
+user                                server
+          send credentials  --->
+                                    verify credentials
+                                    create session
+                                    save session ID on database
+        <---  send session ID 
+save session ID in browser                     
+        include session cookie in request --->
+                                    verify session ID
+    <---  access for protected resource                        
+```
+
+Server uses `Set-Cookie` header to set session ID for user. Then user each time accessing protected resources will send `Cookie` header with session ID inside.
+
+This is the basic of session-based authentication, many security mechanism sits above of this scheme. The most common are: CSRF protection, cookie flags, session rotation policy, which will be considere in next chapter.
+
+Widely used especially with server-side frameworks, especially for it's simplicity and flexibility.
 
 ### 3.4 Token-Based Authentication
+
+For token-based authentication the flow is very similar but value is stored not as a id of session but as a token.
+
+
+```bash
+user                                server
+          send credentials  --->
+                                    verify credentials
+                                    generate token
+                                    save token in database
+        <---  send token 
+store token in local storage             
+        include session cookie --->
+                                    verify session ID
+    <---  access to authenticated user                        
+```
+
+Common for security APIs in distributed systems. Very popular in modern web and mobile apps, SSO systems and IoT.
+
 ### 3.5 One Time Passwords (OTP)
+
+Used widely as a second factor and aditional layer of security.
+
 ### 3.6 OAuth 2.0
+
+Very common when using third-party integrations and API access.
+
 ### 3.7 OpenID Connect (OIDC)
+
+In production a layer on top of oAuth 2.0.
+
 ### 3.8 WebAuthn (FIDO2)
+
+It's growing in production as a phishing resistant method.
+
 ### 3.9 Magic Links
+
+Not very standard for normal use cases. Sometimes useful.
 
 ## 4. Session Management
 - How Sessions Work
