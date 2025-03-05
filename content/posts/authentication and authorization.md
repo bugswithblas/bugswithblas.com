@@ -1,5 +1,5 @@
 ---
-title: "Web Authentication and Authorization Mechanisms"
+title: "Web Authentication Mechanisms"
 description: "This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals."
 showTableOfContents: true
 tags:
@@ -130,7 +130,42 @@ Tokens are store on the local storage of web browser. The flow looks like that:
 
 Common for security APIs in distributed systems. Very popular in modern web and mobile apps, SSO systems and IoT.
 
-### 3.5 One Time Passwords (OTP)
+### 3.5 JWT tokens
+
+
+### 3.6 OpenID Connect (OIDC)
+
+To understand OpenID firtly we must know what oAuth 2.0 is.
+It's a method that allow share data to third party app without need to send password.
+It allow for example a app which allow to upload photo get access to my photos inside Google Photos giving this app permission to the access.
+Under the hood this third party app get access token.
+
+Let's assume we have user Mike who have Google Photos account with photos from holiday and want to create album from those photos on web app GreatAlbums,
+which allow him not to send photos but used those already present on Google Photos.
+
+In this example:
+Mike is `Resource Owner` with access to Google Photos. GreatAlbums app is a `Client`.
+`Authorization Server` is a special oAuth server on Google side which ask for access Mike and sends `access token` to client.
+`Resource Server` is a server that host user photos on Google Photos account.
+
+The flow work like that:
+1. Client redirect user to authorization server and ask for permission to the specified resources
+2. User need to approve access, if you do not have active session it asks for credentials
+3. Authorization server issue authorization code
+4. Client sends authorization code for resource owner with client id and client secret
+5. Authorization server verify client id, client secret and authorization code
+6. Authorization server sends access token to the client
+7. Client can access resources with access token
+
+What about OpenID? It's just a use case of oAuth but the resources that are shared for this third party app are user info allowing to user existing account like Google
+to access this third party website. The flow are very similar as with oAuth but with few diffrences:
+
+1. While client redirect user it adds `scope=openid`
+2. Authorization server send `ID Token` with access token
+
+ID tokens are required to be in format of JWT
+
+### 3.7 One Time Passwords (OTP)
 
 The risk of brute force attack and stealing of password, was one of a reason to create second factor for authentication.
 Beside something you know - your credentials, second factor tell the server what we have email or phone.
@@ -145,30 +180,42 @@ The basic flow looks like:
 
 Used widely as a second factor and aditional layer of security.
 
-### 3.6 OAuth 2.0
-
-Very common when using third-party integrations and API access.
-
-### 3.7 OpenID Connect (OIDC)
-
-In production a layer on top of oAuth 2.0.
 
 ### 3.8 WebAuthn (FIDO2)
 
-It's growing in production as a phishing resistant method.
+While phising attacks are growing the researcher try to implement new way of authentication that allow 
+This is a method of authentication that allow to use diffrent methods than passwords like biometrics (fingerprint or facial) or hardware based (usb or nfc)
+
+When regiester the public and private key pair is generated while private key stays on user hardware the public keys is send to the server. While authentication is taking place
+the figerprint for example is signed with private key sended to the server which decode it with public key and grant access.
+
+It's growing in production as a phishing resistant method, eliminating password and improving user experience.
+Still the physical hardware is needed.
 
 ### 3.9 Magic Links
+Not very popular, but also a method that eliminates passwords reducing risk.
+User just write email on login page, application check email and generate new token which is embeded inside url sended over an email:
 
+```bash
+https://example.com/authenticate?token=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+```
+
+By clicking the url we get authenticate with this token.
 Not very standard for normal use cases. Sometimes useful.
 
-## 4. Session Management
-- How Sessions Work
-- Server-side vs Client-side Sessions
+4. Session Management
+How Sessions Work
+Server-side vs Client-side Sessions
+Session Tokens and Their Vulnerabilities
 
 ## 5. Cookies: Security Attributes & Best Practices
-- HttpOnly, Secure, SameSite
-- Domain & Path
-- Max-Age & Expires
+HttpOnly, Secure, SameSite
+Domain & Path
+Max-Age & Expires
+JWT Security Considerations
+OAuth Token Security
+
+## 6. Tokens: Security Attributes & Best Practices
 
 ## 6. Authentication & Session Attacks
 ### 6.1 Session Hijacking
@@ -176,56 +223,29 @@ Not very standard for normal use cases. Sometimes useful.
 ### 6.3 CSRF (Cross-Site Request Forgery)
 ### 6.4 XSS (Cross-Site Scripting) & Token Theft
 ### 6.5 Token Leakage & Replay Attacks
-### 6.6 Credential Stuffing
 ### 6.7 Brute Force Attacks
-### 6.8 Man-in-the-Middle (MitM) Attacks
-### 6.9 Phishing Attacks
-### 6.10 OAuth Token Abuse
-### 6.11 Session Prediction
-### 6.12 API Key Leakage
+### 6.8 OAuth Token Abuse
+### 6.9 JWT Attacks
+Token Signing Attacks
+None Algorithm Attacks
+Key ID (kid) Attacks
+### 6.10 API Key Leakage
 
-## 7. Best Practices for Secure Authentication & Authorization
-- HTTPS everywhere
-- Strong password policies + MFA
-- Proper session expiration & token revocation
-- Secure cookie attributes
-- Monitoring and logging
-- Least privilege access control
-- Regular security audits and penetration testing
 
-## 8. Implementation Examples
-- JWT implementation
-- OAuth2 flow
-- WebAuthn integration
+7. Best Practices for Secure Authentication & Authorization
+HTTPS everywhere
 
-## 9. Comparison of Authentication Mechanisms
-- Table comparing different methods (advantages, disadvantages, use cases)
+Strong password policies + MFA
+Proper session expiration & token revocation
+Secure cookie attributes
+Monitoring and logging
+Least privilege access control
+Regular security audits and penetration testing
 
-## 11. Regulatory Compliance
-- GDPR considerations
-- PSD2 and Strong Customer Authentication (SCA)
+8. Future Trends in Authentication Security
+Advancements in WebAuthn and Passkeys
+AI and Machine Learning in Auth Security
+Quantum-resistant Authentication Methods
 
-## 12. Authentication in Microservices Architecture
-- Challenges in distributed environments
-- Service-to-service authentication
-- API gateways and authentication
 
-## 13. Security Testing for Authentication Systems
-- Penetration testing methodologies
-- Automated security scanning
-- Common vulnerabilities to test for
-
-## 14. Real-world Use Cases
-- Google's authentication ecosystem
-- Facebook's authentication and authorization
-- Banking sector authentication practices
-
-## 15. Future Trends in Web Authentication
-- Passwordless authentication
-- Blockchain-based identity management
-- Advancements in WebAuthn and Passkeys
-
-## 16. Conclusion
-- Summary of key authentication mechanisms
-- Importance of proper implementation
-- Balancing security and user experience
+9. Conclusions
