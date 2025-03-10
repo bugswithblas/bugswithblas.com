@@ -1,5 +1,5 @@
 ---
-title: "Web Authentication Mechanisms"
+title: "Session and Token based web authentication"
 description: "This article explores web authentication and authorization mechanisms, covering methods like HTTP Basic, Session-Based, Token-Based (JWT, OAuth, OpenID), OTP, and WebAuthn. It details session management, secure cookie attributes, and key attack vectors such as session hijacking, CSRF, XSS, token leakage, and phishing, with mitigation strategies. Best practices include HTTPS enforcement, MFA, session expiration, token revocation, and least privilege access, making it a valuable resource for developers and security professionals."
 showTableOfContents: true
 tags:
@@ -8,6 +8,7 @@ tags:
   - Cookies
   - oAuth
   - JWT
+  - Tokens
   - OpenID
 type: post
 draft: true
@@ -15,9 +16,12 @@ date: 2025-02-23
 ---
 
 ## 1. Introduction
-- Importance of authentication and authorization in web security
-- Overview of modern authentication mechanisms
-- Attackers' motivation and common security pitfalls
+
+In the digital age, where web applications handle sensitive data, robust authentication mechanisms are crucial. 
+Session and token-based authentication protocols form the backbone of user identity management, yet they remain vulnerable to exploitation. 
+As penetration testers and security practitioners, understanding these models is key to safeguarding systems. 
+Both approaches have unique vulnerabilities making them prime targets for attackers. 
+This article will explore the intricacies of these authentication methods, common vulnerabilities, and strategies for hardening web applications against evolving threats.
 
 ## 2. Authentication vs Authorization
 
@@ -41,59 +45,9 @@ To summarize the distinction:
 - **Authorization** - granting or restricting access
 
 
-## 3. Types of Authentication
+## 3. Introduction of mechanisms
 
-So as we all use webistes and creating accounts, we know that basic type of authentication is providing username and password. Bu underneath of this are many techinques working in the background non visible for the user let's shortly get to know all of them
-
-### 3.1 HTTP Basic Authentication
-
-The simplest one, present firsty in 1992 and is present is http specification since 1996. It's not require login pages, cookies or tokens. All the data are transfered inside header Authorization:
-
-```bash
-Authorization: Basic <encoded64(username:password)>
-```
-
-Basically server when see the header with word Basic decode value and compare with with database or other provider.
-
-Not very secure, in usage for internal or legacy systems not recommended on production.
-
-### 3.2 HTTP Digest Authentication
-
-In contrast to the Basic method it use hashing instead of reversiable encoding, so it's another step into more security. 
-Let's assume client try to get the authenticated needed request:
-
-```bash
-GET /admin HTTP/1.1
-Host: example.com
-```
-
-The server respond with 401 status code and WWW-Authentication header. 
-
-```bash
-HTTP/1.1 401 Unauthorized
-WWW-Authenticate: Digest realm="example.com", qop="auth", nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093", opaque="5ccc069c403ebaf9f0171e9517f40e41"
-```
-
-The elements for header:
-- word Digest
-- realm, string that tell the client what resource he authenticate for
-- qop, auth for authentication only and auth-int adds layer and integrity protection qop is used, the client includes a client nonce (cnonce) and a nonce count (nc) in the response, which adds randomness and prevents replay attacks
-- nonce, random value generated for single authentication
-- opaque, another security feature when present the client should send it back when authenticate
-
-
-```bash
-Authorization: Digest username="user", realm="example.com", nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093", uri="/admin", response="6629fae49393a05397450978507c4ef1", qop=auth, nc=00000001, cnonce="0a4f113b"
-```
-
-Most important in the client response is value of response where is composed as:
-- HA1=MD5("user:example.com:password")
-- HA2=MD5("GET:/admin")
-- response=MD5(HA1:nonce:nc:cnonce:qop:HA2)
-
-This type is more secure than basic type, but still not very common. Can be useful for some specific use cases.
-
-### 3.3 Session-Based Authentication
+### 3.1 Session-Based Authentication
 
 There are many security attributes and mechanism for session-based authentication, but the basic flow work as below:
 1. User sends credentials to the server
@@ -107,17 +61,14 @@ There are many security attributes and mechanism for session-based authenticatio
 
 
 Server uses `Set-Cookie` header to set session ID for user. Then user each time accessing protected resources will send `Cookie` header with session ID inside.
+This is the basic of session-based authentication, many security mechanism sits above of this scheme. 
+The most common are: CSRF protection, cookie flags, session rotation policy, which will be considere in next chapter.
 
-This is the basic of session-based authentication, many security mechanism sits above of this scheme. The most common are: CSRF protection, cookie flags, session rotation policy, which will be considere in next chapter.
 
-Widely used especially with server-side frameworks, especially for it's simplicity and flexibility.
+### 3.2 Token-Based Authentication
 
-### 3.4 Token-Based Authentication
-
-The session-based type makes server store active session IDs, making it difficult for growing and dynamic server infrastructure that grows horizontaly.
-
-For token-based authentication the flow is very similar but value is stored not as a id of session but as a token which is signed with cryptographic keys.
-Tokens are store on the local storage of web browser. The flow looks like that:
+For token-based authentication the flow is very similar but value is stored not as a id of session but as a token.
+The flow looks like that:
 
 1. User sends credentials to the server
 2. Server verifies credentials against owned data
@@ -128,12 +79,10 @@ Tokens are store on the local storage of web browser. The flow looks like that:
 7. Server decrypt token and check token
 8. Server authorize access to the client
 
-Common for security APIs in distributed systems. Very popular in modern web and mobile apps, SSO systems and IoT.
-
-### 3.5 JWT tokens
+### 3.3 JWT tokens
 
 
-### 3.6 OpenID Connect (OIDC)
+### 3.4 OpenID Connect (OIDC)
 
 To understand OpenID firtly we must know what oAuth 2.0 is.
 It's a method that allow share data to third party app without need to send password.
@@ -165,87 +114,86 @@ to access this third party website. The flow are very similar as with oAuth but 
 
 ID tokens are required to be in format of JWT
 
-### 3.7 One Time Passwords (OTP)
+## 4. Session Management Vulnerabilities Deep Dive
+Attack Vectors:
+- Session Hijacking via XSS
+  Exploiting reflected/stored XSS to steal session cookies (demonstrate DOM-based token leakage)111
 
-The risk of brute force attack and stealing of password, was one of a reason to create second factor for authentication.
-Beside something you know - your credentials, second factor tell the server what we have email or phone.
-The basic flow looks like:
+- Session Fixation
+  Techniques to force session IDs (e.g., URL rewriting, hidden form fields) with PoC using modified Set-Cookie headers313
 
-1. Client login with credentials
-2. Server authenticates user and create 6-digit code.
-3. OTP code is sent to the mail or mobile phone
-4. Client enter code on the page
-5. Server verifies code
-6. Server authorize access
-
-Used widely as a second factor and aditional layer of security.
+- Client-Side Session Poisoning
+  Manipulating session storage through prototype pollution or insecure deserialization112
 
 
-### 3.8 WebAuthn (FIDO2)
+## 5. JWT Implementation Pitfalls
+ - Algorithm Confusion Attacks
+  alg:none bypass and RSA/HMAC confusion (demo with PyJWT library)715
 
-While phising attacks are growing the researcher try to implement new way of authentication that allow 
-This is a method of authentication that allow to use diffrent methods than passwords like biometrics (fingerprint or facial) or hardware based (usb or nfc)
+- JWK/JKU Header Injection
+  Forging tokens using external key servers (practical example with modified jku header)714
 
-When regiester the public and private key pair is generated while private key stays on user hardware the public keys is send to the server. While authentication is taking place
-the figerprint for example is signed with private key sended to the server which decode it with public key and grant access.
+- Kid Parameter Manipulation
+  Path traversal via kid header to load arbitrary keys715
 
-It's growing in production as a phishing resistant method, eliminating password and improving user experience.
-Still the physical hardware is needed.
+## 6. OAuth/OpenID Connect Attack Surface
 
-### 3.9 Magic Links
-Not very popular, but also a method that eliminates passwords reducing risk.
-User just write email on login page, application check email and generate new token which is embeded inside url sended over an email:
+- Redirect URI Manipulation
+  Chaining open redirects to steal auth codes (step-by-step flow hijacking)810
 
-```bash
-https://example.com/authenticate?token=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+- Dynamic Client Registration Abuse
+  SSRF via malicious logo_uri or jwks_uri parameters10
+
+- Scope Parameter Pollution
+  Privilege escalation through modified scope values8
+
+Real-World Case Study:
+2024 Microsoft Consent Phishing Campaign leveraging malicious OAuth apps9
+
+## 7. Token Storage & Transmission Risks
+
+- LocalStorage XSS Exfiltration
+  Stealing persistent tokens via DOM-based vulnerabilities6
+
+- Service Worker Hijacking
+  Intercepting token refresh mechanisms6
+
+- Compromised Refresh Tokens
+  Chaining token replay with revoked access tokens4
+
+## 8. Cryptographic Implementation Flaws
+- Weak HMAC secrets (brute-force with hashcat)
+- RSA key reuse across environments
+- ECB mode encryption pattern analysis14
+
+## 9. Penetration Testing Methodology
+
+### 9.1 Cookie Attributes Analysis
+HttpOnly, Secure, and SameSite testing
+
+### 9.2 OAuth Flow Validation
+State parameter checks & PKCE verification
+
+### 9.3 Token Entropy Testing
+Statistical analysis of JTI values
+
+### 9.4 Token Lifetime Analysis
+Expiration/refresh timing attacks56
+
+
+6. Defense Tactics for Developers
+Hardening Strategies:
+
+- Session Binding Techniques:
+  IP fingerprinting
+  User-Agent validation
+  Session migration prevention
+
+JWT Security Checklist:
+
+```text
+1. Enforce `alg` whitelist
+2. Validate `aud` and `iss` claims
+3. Implement strict jku validation
+4. Use asymmetric signatures by default
 ```
-
-By clicking the url we get authenticate with this token.
-Not very standard for normal use cases. Sometimes useful.
-
-4. Session Management
-How Sessions Work
-Server-side vs Client-side Sessions
-Session Tokens and Their Vulnerabilities
-
-## 5. Cookies: Security Attributes & Best Practices
-HttpOnly, Secure, SameSite
-Domain & Path
-Max-Age & Expires
-JWT Security Considerations
-OAuth Token Security
-
-## 6. Tokens: Security Attributes & Best Practices
-
-## 6. Authentication & Session Attacks
-### 6.1 Session Hijacking
-### 6.2 Session Fixation
-### 6.3 CSRF (Cross-Site Request Forgery)
-### 6.4 XSS (Cross-Site Scripting) & Token Theft
-### 6.5 Token Leakage & Replay Attacks
-### 6.7 Brute Force Attacks
-### 6.8 OAuth Token Abuse
-### 6.9 JWT Attacks
-Token Signing Attacks
-None Algorithm Attacks
-Key ID (kid) Attacks
-### 6.10 API Key Leakage
-
-
-7. Best Practices for Secure Authentication & Authorization
-HTTPS everywhere
-
-Strong password policies + MFA
-Proper session expiration & token revocation
-Secure cookie attributes
-Monitoring and logging
-Least privilege access control
-Regular security audits and penetration testing
-
-8. Future Trends in Authentication Security
-Advancements in WebAuthn and Passkeys
-AI and Machine Learning in Auth Security
-Quantum-resistant Authentication Methods
-
-
-9. Conclusions
